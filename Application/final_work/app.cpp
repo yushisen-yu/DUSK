@@ -14,3 +14,10 @@ void app_init()
 {
 
 }
+
+
+void background_handler() {
+
+
+
+}

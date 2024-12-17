@@ -10,7 +10,6 @@
 #include "stm32f4xx.h"//内嵌了stm32f4xx_ll_fsmc.h
 
 
-
 SRAM_HandleTypeDef hsram1;//TFT模块
 DMA_HandleTypeDef hdma_memtomem_dma2_stream6;
 /** FSMC GPIO Configuration
@@ -39,56 +38,87 @@ PD7   ------> FSMC_NE1  //这个与实际情况有出入，应该是PB 7
 // FSMC配置
 void fsmc_init()
 {
-    /**************
-     *GPIO配置
-     *************/
-    GPIO_InitTypeDef GPIO_InitStructure;
-    FMC_NORSRAM_TimingTypeDef Timing;
-    /*使能GPIOx时钟*/
-    __HAL_RCC_GPIOB_CLK_ENABLE();
+    //	使能PD,PE,PF,PG时钟
     __HAL_RCC_GPIOD_CLK_ENABLE();
     __HAL_RCC_GPIOE_CLK_ENABLE();
+    __HAL_RCC_GPIOF_CLK_ENABLE();
+    __HAL_RCC_GPIOG_CLK_ENABLE();
+
     /*使能FSMC时钟*/
     __HAL_RCC_FSMC_CLK_ENABLE();
     __HAL_RCC_SYSCFG_CLK_ENABLE();
 
-    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;// 复用推挽输出
-    GPIO_InitStructure.Pull = GPIO_NOPULL;
-    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_LOW;// 改成50MHz就有问题，有干扰信号，导致按键抖动.现改为12.5-50
-    //这是因为输入模式时，速度不用配置
-    /*复用为FSMC*/
-    GPIO_InitStructure.Mode = GPIO_MODE_AF_PP;
+    /**************
+    *GPIO配置
+    *************/
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    //	LCD_BL
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    GPIO_InitStructure.Pin = GPIO_PIN_9;
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;                        //	复用输出	    //	推挽输出
+    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
+    GPIO_InitStructure.Pull = GPIO_PULLDOWN;                        //	上拉
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+
+    //	PD0,1,4,5,8,9,10,14,15 AF OUT
+    GPIO_InitStructure.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_8
+                             | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_14 | GPIO_PIN_15;
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
+    GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
     GPIO_InitStructure.Alternate = GPIO_AF12_FSMC;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);                                //	初始化
 
-    // PORTD复用推挽输出 初始化PD0,1,4,5,8,9,10,11,12,14,15
-    GPIO_InitStructure.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_8 |
-                             GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_14 | GPIO_PIN_15;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);
+    //	PE7~15,AF OUT
+    GPIO_InitStructure.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_11
+                             | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
+//复用加推挽
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;                       //复用加推挽
+    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
+    GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
+    HAL_GPIO_Init(GPIOE, &GPIO_InitStructure);                                //	初始化
 
-    // PORTE,复用推挽输出初始化PE7,8,9,10,11,12,13,14,15
-    GPIO_InitStructure.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_11 |
-                             GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
-    HAL_GPIO_Init(GPIOE, &GPIO_InitStructure);
+    //	LCD_RS PG1,FSMC_A11
+    GPIO_InitStructure.Pin = GPIO_PIN_1;
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
+    GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
+    HAL_GPIO_Init(GPIOG, &GPIO_InitStructure);                                //	初始化
 
-    // PORTE复用推挽输出
-    GPIO_InitStructure.Pin = GPIO_PIN_7;//这个不能配为PD7，不然屏幕乱闪
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStructure);
+    //	LCD_CS PG12,FSMC_NE4
+    GPIO_InitStructure.Pin = GPIO_PIN_12;
+    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
+    GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
+    HAL_GPIO_Init(GPIOG, &GPIO_InitStructure);                                //	初始化
 
-    /************
-     *FSMC模式配置
-     ************/
 
-    Timing.AddressSetupTime = 7;
-    Timing.AddressHoldTime = 4;
-    Timing.DataSetupTime = 10;
-    Timing.BusTurnAroundDuration = 0;
-    // Timing.CLKDivision=0;
-    Timing.CLKDivision = 4;
-    Timing.DataLatency = 0;
-    Timing.AccessMode = FSMC_ACCESS_MODE_B;
 
-    hsram1.Init.NSBank = FSMC_NORSRAM_BANK1;
-    hsram1.Init.DataAddressMux = FSMC_DATA_ADDRESS_MUX_ENABLE;// 地址/数据线复用
+    // FSMC时序
+    FMC_NORSRAM_TimingTypeDef readWriteTiming;
+    FMC_NORSRAM_TimingTypeDef writeTiming;
+
+    readWriteTiming.AddressSetupTime = 0x0F;//	地址建立时间（ADDSET）为16个HCLK 1/168M=6ns*16=96ns
+    readWriteTiming.AddressHoldTime = 0x00;//	地址保持时间（ADDHLD）模式A未用到
+    readWriteTiming.DataSetupTime = 60;    //	数据保存时间为60个HCLK	=6*60=360ns
+    readWriteTiming.BusTurnAroundDuration = 0x00;
+    readWriteTiming.CLKDivision = 0x00;
+    readWriteTiming.DataLatency = 0x00;
+    readWriteTiming.AccessMode = FSMC_ACCESS_MODE_A; //	模式A
+
+
+    writeTiming.AddressSetupTime = 9;        //	地址建立时间（ADDSET）为9个HCLK =54ns
+    writeTiming.AddressHoldTime = 0x00;             //	地址保持时间（A
+    writeTiming.DataSetupTime = 8;      //	数据保存时间为6ns*9个HCLK=54ns
+    writeTiming.BusTurnAroundDuration = 0x00;
+    writeTiming.CLKDivision = 0x00;
+    writeTiming.DataLatency = 0x00;
+    writeTiming.AccessMode = FSMC_ACCESS_MODE_A;     //	模式A
+
+    hsram1.Init.NSBank = FSMC_NORSRAM_BANK4; //  这里我们使用NE4 ，也就对应BTCR[6],[7]。
+    hsram1.Init.DataAddressMux = FSMC_DATA_ADDRESS_MUX_DISABLE;// 	不复用数据地址
     hsram1.Init.MemoryType = FSMC_MEMORY_TYPE_NOR;
     hsram1.Init.MemoryDataWidth = FSMC_NORSRAM_MEM_BUS_WIDTH_16;   // 16位数据宽度
     hsram1.Init.BurstAccessMode = FSMC_BURST_ACCESS_MODE_DISABLE;  // 是否使能突发访问,仅对同步突发存储器有效,此处未用到
@@ -98,17 +128,16 @@ void fsmc_init()
     hsram1.Init.WrapMode = FSMC_WRAP_MODE_DISABLE;
     hsram1.Init.WriteOperation = FSMC_WRITE_OPERATION_ENABLE;     // 存储器写使能
     hsram1.Init.AsynchronousWait = FSMC_ASYNCHRONOUS_WAIT_DISABLE;// 是否使能同步传输模式下的等待信号,此处未用
-    hsram1.Init.ExtendedMode = FSMC_EXTENDED_MODE_DISABLE;        // 读写使用相同的时序
+    hsram1.Init.ExtendedMode = FSMC_EXTENDED_MODE_ENABLE;        // 	读写使用不同的时序
     hsram1.Init.WriteBurst = FSMC_WRITE_BURST_ENABLE;            // 开启突发写，性能翻倍
-    HAL_SRAM_Init(&hsram1, &Timing, &Timing);
+    HAL_SRAM_Init(&hsram1, &readWriteTiming, &writeTiming);
 }
 
 
 /*启用FSMC+DMA向LCD传输数据*/
 #ifdef USE_FSMC_DMA
 
-void fsmc_dma_init()
-{
+void fsmc_dma_init() {
     __HAL_RCC_DMA2_CLK_ENABLE();
 
     hdma_memtomem_dma2_stream6.Instance = DMA2_Stream6;
@@ -124,8 +153,7 @@ void fsmc_dma_init()
     hdma_memtomem_dma2_stream6.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
     hdma_memtomem_dma2_stream6.Init.MemBurst = DMA_MBURST_INC8;   //源地址,16太快了，否则屏幕无反应
     hdma_memtomem_dma2_stream6.Init.PeriphBurst = DMA_MBURST_INC8;//目的地址,16太快了，否则白屏
-    if (HAL_DMA_Init(&hdma_memtomem_dma2_stream6) != HAL_OK)
-    {
+    if (HAL_DMA_Init(&hdma_memtomem_dma2_stream6) != HAL_OK) {
         Error_Handler();
     }
     /*不受FreeRTOS调度*/

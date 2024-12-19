@@ -30,6 +30,23 @@ extern "C" {
 #define LCD_WRITE_CMD(Command) (TFT_CMD = Command)
 #define LCD_WRITE_DATA(Data) (TFT_DATA = Data)
 
+
+/**设备结构体*/
+//LCD重要参数集
+typedef struct
+{
+    uint16_t width;			                                                // LCD 宽度
+    uint16_t height;			                                                // LCD 高度
+    uint16_t id;				                                                // LCD ID
+    uint8_t dir;			                                                // 横屏还是竖屏控制：0，竖屏；1，横屏。
+    uint16_t	wramcmd;		                                                // 开始写gram指令
+    uint16_t  setxcmd;		                                                // 设置x坐标指令
+    uint16_t  setycmd;		                                                // 设置y坐标指令
+} _lcd_dev;
+
+//LCD参数
+extern _lcd_dev lcddev;	//管理LCD重要参数
+
 /**
  * 设置LCD显示窗口
  * 该函数用于配置LCD的显示区域，通过指定窗口的起始和结束坐标

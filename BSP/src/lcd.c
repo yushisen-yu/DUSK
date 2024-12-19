@@ -5,10 +5,213 @@
 #include "lcd.h"
 
 #ifdef USE_LCD
+
 #include "fsmc.h"
 #include "stm32f4xx_hal.h"
 
 extern DMA_HandleTypeDef hdma_memtomem_dma2_stream6;
+
+// ******************配置属性******************
+
+/**LCD基址*/
+//LCD地址结构体
+typedef struct
+{
+    volatile uint16_t LCD_REG;
+    volatile uint16_t LCD_RAM;
+} LCD_TypeDef;
+//使用NOR/SRAM的 Bank1.sector4,地址位HADDR[27,26]=11 A11作为数据命令区分线
+//注意设置时STM32内部会右移一位对其! 1111 1111 1110=0XFFE
+#define LCD_BASE        ((uint32_t)(0x6C000000 | 0x00000FFE))
+#define LCD             ((LCD_TypeDef *) LCD_BASE)
+
+//扫描方向定义
+#define L2R_U2D  0                                                      // 从左到右,从上到下
+#define L2R_D2U  1                                                      // 从左到右,从下到上
+#define R2L_U2D  2                                                      // 从右到左,从上到下
+#define R2L_D2U  3                                                      // 从右到左,从下到上
+
+#define U2D_L2R  4                                                      // 从上到下,从左到右
+#define U2D_R2L  5                                                      // 从上到下,从右到左
+#define D2U_L2R  6                                                      // 从下到上,从左到右
+#define D2U_R2L  7                                                      // 从下到上,从右到左
+
+#define DFT_SCAN_DIR  R2L_D2U                                           // 默认的扫描方向
+
+//#define DFT_SCAN_DIR  L2R_U2D                                           // 默认的扫描方向
+
+//LCD分辨率设置
+#define SSD_HOR_RESOLUTION        800                                        // LCD水平分辨率
+#define SSD_VER_RESOLUTION        480                                        // LCD垂直分辨率
+
+//LCD驱动参数设置
+#define SSD_HOR_PULSE_WIDTH        1                                        // 水平脉宽
+#define SSD_HOR_BACK_PORCH        46                                        // 水平前廊
+#define SSD_HOR_FRONT_PORCH        210                                        // 水平后廊
+
+#define SSD_VER_PULSE_WIDTH        1                                        // 垂直脉宽
+#define SSD_VER_BACK_PORCH        23                                        // 垂直前廊
+#define SSD_VER_FRONT_PORCH        22                                        // 垂直前廊
+
+//如下几个参数，自动计算
+#define SSD_HT    (SSD_HOR_RESOLUTION+SSD_HOR_BACK_PORCH+SSD_HOR_FRONT_PORCH)
+#define SSD_HPS    (SSD_HOR_BACK_PORCH)
+#define SSD_VT    (SSD_VER_RESOLUTION+SSD_VER_BACK_PORCH+SSD_VER_FRONT_PORCH)
+#define SSD_VPS (SSD_VER_BACK_PORCH)
+
+
+//管理LCD重要参数
+//默认为竖屏
+_lcd_dev lcddev;
+
+/***********内联函数*************/
+static void LCD_WR_REG(volatile uint16_t regval)
+{
+    regval = regval;// 这个重复语句不知道谁写的，看着就很烂，算了还是不改动了
+    LCD->LCD_REG = regval;
+}
+
+static void LCD_WR_DATA(volatile uint16_t data)
+{
+    data = data;                                                        // 使用-O2优化的时候,必须插入的延时
+    LCD->LCD_RAM = data;
+}
+
+//读LCD数据
+//返回值:读到的值
+uint16_t LCD_RD_DATA(void)
+{
+    volatile uint16_t ram;                                                            // 防止被优化
+    ram = LCD->LCD_RAM;
+
+    return ram;
+}
+
+//写寄存器
+//LCD_Reg:寄存器地址
+//LCD_RegValue:要写入的数据
+void LCD_WriteReg(uint16_t LCD_Reg, uint16_t LCD_RegValue)
+{
+    LCD->LCD_REG = LCD_Reg;                                                // 写入要写的寄存器序号
+    LCD->LCD_RAM = LCD_RegValue;                                        // 写入数据
+}
+
+//设置LCD的自动扫描方向
+//注意:其他函数可能会受到此函数设置的影响(尤其是9341/6804这两个奇葩),
+//所以,一般设置为L2R_U2D即可,如果设置为其他扫描方式,可能导致显示不正常.
+//dir:0~7,代表8个方向(具体定义见lcd.h)
+//9320/9325/9328/4531/4535/1505/b505/5408/9341/5310/5510/1963等IC已经实际测试
+void LCD_Scan_Dir(uint8_t dir)
+{
+    uint16_t regval = 0;
+    uint16_t dirreg = 0;
+
+    if (lcddev.id == 0X5510)                                             // 5510,特殊处理
+    {
+        switch (dir)
+        {
+            case L2R_U2D://从左到右,从上到下
+                regval |= (0 << 7) | (0 << 6) | (0 << 5);
+                break;
+
+            case L2R_D2U://从左到右,从下到上
+                regval |= (1 << 7) | (0 << 6) | (0 << 5);
+                break;
+
+            case R2L_U2D://从右到左,从上到下
+                regval |= (0 << 7) | (1 << 6) | (0 << 5);
+                break;
+
+            case R2L_D2U://从右到左,从下到上
+                regval |= (1 << 7) | (1 << 6) | (0 << 5);
+                break;
+
+            case U2D_L2R://从上到下,从左到右
+                regval |= (0 << 7) | (0 << 6) | (1 << 5);
+                break;
+
+            case U2D_R2L://从上到下,从右到左
+                regval |= (0 << 7) | (1 << 6) | (1 << 5);
+                break;
+
+            case D2U_L2R://从下到上,从左到右
+                regval |= (1 << 7) | (0 << 6) | (1 << 5);
+                break;
+
+            case D2U_R2L://从下到上,从右到左
+                regval |= (1 << 7) | (1 << 6) | (1 << 5);
+                break;
+        }
+
+        if (lcddev.id == 0X5510)
+        {
+            dirreg = 0X3600;
+        }
+        if (lcddev.id != 0X5510)
+        {
+            regval |= 0X08;                                             // 5510不需要BGR
+        }
+
+        LCD_WriteReg(dirreg, regval);
+
+        if (lcddev.id == 0X5510)
+        {
+            LCD_WR_REG(lcddev.setxcmd);
+            LCD_WR_DATA(0);
+            LCD_WR_REG(lcddev.setxcmd + 1);
+            LCD_WR_DATA(0);
+            LCD_WR_REG(lcddev.setxcmd + 2);
+            LCD_WR_DATA((lcddev.width - 1) >> 8);
+            LCD_WR_REG(lcddev.setxcmd + 3);
+            LCD_WR_DATA((lcddev.width - 1) & 0XFF);
+            LCD_WR_REG(lcddev.setycmd);
+            LCD_WR_DATA(0);
+            LCD_WR_REG(lcddev.setycmd + 1);
+            LCD_WR_DATA(0);
+            LCD_WR_REG(lcddev.setycmd + 2);
+            LCD_WR_DATA((lcddev.height - 1) >> 8);
+            LCD_WR_REG(lcddev.setycmd + 3);
+            LCD_WR_DATA((lcddev.height - 1) & 0XFF);
+        }
+    }
+}
+
+//设置LCD显示方向
+//dir:0,竖屏；1,横屏
+void LCD_Display_Dir(uint8_t dir)
+{
+    if (dir == 0)                                                        // 竖屏
+    {
+        lcddev.dir = 0;                                                    // 竖屏
+        lcddev.width = 240;
+        lcddev.height = 320;
+
+        if (lcddev.id == 0x5510)
+        {
+            lcddev.wramcmd = 0X2C00;
+            lcddev.setxcmd = 0X2A00;
+            lcddev.setycmd = 0X2B00;
+            lcddev.width = 480;
+            lcddev.height = 800;
+        }
+    } else                                                                // 横屏
+    {
+        lcddev.dir = 1;                                                    // 横屏
+        lcddev.width = 320;
+        lcddev.height = 240;
+
+        if (lcddev.id == 0x5510)
+        {
+            lcddev.wramcmd = 0X2C00;
+            lcddev.setxcmd = 0X2A00;
+            lcddev.setycmd = 0X2B00;
+            lcddev.width = 800;
+            lcddev.height = 480;
+        }
+    }
+    LCD_Scan_Dir(DFT_SCAN_DIR);                                            // 默认扫描方向
+}
+
 
 /********************************************************************
  * 名称 : LCD_Init9481
@@ -19,30 +222,31 @@ extern DMA_HandleTypeDef hdma_memtomem_dma2_stream6;
 void lcd_init(void)
 {
 #if LCD_SORTS == 9481
-    HAL_Delay(100); 												    // 	delay 50 ms
+    // 此处实际是ILI93xx
+    HAL_Delay(100);                                                    // 	delay 50 ms
 
     LCD_WR_REG(0XDA00);
-    lcddev.id = LCD_RD_DATA();		//读回0X00
+    lcddev.id = LCD_RD_DATA();        //读回0X00
     LCD_WR_REG(0XDB00);
-    lcddev.id = LCD_RD_DATA();		//读回0X80
+    lcddev.id = LCD_RD_DATA();        //读回0X80
     lcddev.id <<= 8;
     LCD_WR_REG(0XDC00);
-    lcddev.id |= LCD_RD_DATA();		//读回0X00
-    if(lcddev.id == 0x8000)
+    lcddev.id |= LCD_RD_DATA();        //读回0X00
+    if (lcddev.id == 0x8000)
     {
         lcddev.id = 0x5510; //NT35510读回的ID是8000H,为方便区分,我们强制设置为5510
     }
 
-    if(lcddev.id == 0X5510) //如果是这几个IC,则设置WR时序为最快
+    if (lcddev.id == 0X5510) //如果是这几个IC,则设置WR时序为最快
     {
         //重新配置写时序控制寄存器的时序
         FSMC_Bank1E->BWTR[6] &= ~(0XF << 0); //地址建立时间(ADDSET)清零
         FSMC_Bank1E->BWTR[6] &= ~(0XF << 8); //数据保存时间清零
-        FSMC_Bank1E->BWTR[6] |= 3 << 0;		//地址建立时间(ADDSET)为3个HCLK =18ns
-        FSMC_Bank1E->BWTR[6] |= 2 << 8; 	//数据保存时间(DATAST)为6ns*3个HCLK=18ns
+        FSMC_Bank1E->BWTR[6] |= 3 << 0;        //地址建立时间(ADDSET)为3个HCLK =18ns
+        FSMC_Bank1E->BWTR[6] |= 2 << 8;    //数据保存时间(DATAST)为6ns*3个HCLK=18ns
     }
 
-    if(lcddev.id == 0x5510)
+    if (lcddev.id == 0x5510)
     {
         LCD_WriteReg(0xF000, 0x55);
         LCD_WriteReg(0xF001, 0xAA);
@@ -452,15 +656,15 @@ void lcd_init(void)
         LCD_WriteReg(0x3500, 0x00);
         LCD_WriteReg(0x3A00, 0x55); //16-bit/pixel
         LCD_WR_REG(0x1100);
-        LCD_delayus(120);
+        HAL_Delay(120);
         LCD_WR_REG(0x2900);
     }
 
-    LCD_Display_Dir(0);		//默认为竖屏
+    LCD_Display_Dir(0);        //默认为竖屏
 
-    LCD_BL_ON;              // 打开背光
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET); // 打开背光
 
-    LCD_Clear(WHITE);
+    LCD_Clear(0xFFFF);
 
 
 #endif
@@ -562,7 +766,7 @@ void lcd_init(void)
 #endif
 }
 
-void lcd_flush(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, const uint16_t * color_p)
+void lcd_flush(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, const uint16_t *color_p)
 {
 #ifdef USE_FSMC_DMA
     LCD_Set_Window(x1, y1, x2, y2);//设置LCD屏幕的扫描区域
@@ -572,9 +776,6 @@ void lcd_flush(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, const uint16_
     LCD_Color_Fill(area->x1, area->y1, area->x2, area->y2, (const uint16_t *)color_p);
 #endif
 }
-
-
-
 
 
 #endif

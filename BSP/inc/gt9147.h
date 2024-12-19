@@ -44,6 +44,8 @@ uint8_t GT9147_Init(void);
 
 uint8_t GT9147_Scan(uint8_t mode);
 
+uint8_t GT9147_Read(int16_t *x, int16_t *y);
+
 #ifdef __cplusplus
 }
 #endif

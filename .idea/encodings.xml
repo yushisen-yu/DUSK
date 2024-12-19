@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/BSP/inc/ctiic.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BSP/inc/gt9147.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BSP/inc/touch.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BSP/src/ILI93xx.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BSP/src/ctiic.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BSP/src/gt9147.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BSP/src/lcd.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BSP/src/touch.c" charset="UTF-8" />
+  </component>
+</project>

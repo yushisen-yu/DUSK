@@ -74,7 +74,7 @@ void fsmc_init()
     //	PE7~15,AF OUT
     GPIO_InitStructure.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_11
                              | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
-//复用加推挽
+    //复用加推挽
     GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;                       //复用加推挽
     GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
     GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
@@ -137,7 +137,8 @@ void fsmc_init()
 /*启用FSMC+DMA向LCD传输数据*/
 #ifdef USE_FSMC_DMA
 
-void fsmc_dma_init() {
+void fsmc_dma_init()
+{
     __HAL_RCC_DMA2_CLK_ENABLE();
 
     hdma_memtomem_dma2_stream6.Instance = DMA2_Stream6;
@@ -153,7 +154,8 @@ void fsmc_dma_init() {
     hdma_memtomem_dma2_stream6.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
     hdma_memtomem_dma2_stream6.Init.MemBurst = DMA_MBURST_INC8;   //源地址,16太快了，否则屏幕无反应
     hdma_memtomem_dma2_stream6.Init.PeriphBurst = DMA_MBURST_INC8;//目的地址,16太快了，否则白屏
-    if (HAL_DMA_Init(&hdma_memtomem_dma2_stream6) != HAL_OK) {
+    if (HAL_DMA_Init(&hdma_memtomem_dma2_stream6) != HAL_OK)
+    {
         Error_Handler();
     }
     /*不受FreeRTOS调度*/

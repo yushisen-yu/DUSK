@@ -2,7 +2,9 @@
 #define __TOUCH_H__
 
 #include "gt9147.h"
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define TP_PRES_DOWN 0x80  //触屏被按下	  
 #define TP_CATH_PRES 0x40  //有按键按下了 
@@ -49,6 +51,9 @@ void TP_Draw_Big_Point(uint16_t x, uint16_t y, uint16_t color);    //画一个�
 //电阻屏/电容屏 共用函数
 uint8_t TP_Init(void);                                //初始化
 
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 

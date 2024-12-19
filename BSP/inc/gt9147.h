@@ -2,7 +2,9 @@
 #define __GT9147_H
 
 #include "stm32f4xx_hal.h"
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 //IO操作函数
 //#define GT_RST    		PCout(13)	//GT9147复位引脚
 //#define GT_INT    		PBin(1)		//GT9147中断引脚
@@ -41,6 +43,10 @@ void GT9147_RD_Reg(uint16_t reg, uint8_t *buf, uint8_t len);
 uint8_t GT9147_Init(void);
 
 uint8_t GT9147_Scan(uint8_t mode);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

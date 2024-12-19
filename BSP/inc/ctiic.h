@@ -2,7 +2,9 @@
 #define __MYCT_IIC_H
 
 #include "stm32f4xx_hal.h"
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 //CT_SCL    PB10
 //CT_SDA    PB15
 
@@ -27,7 +29,9 @@ uint8_t CT_IIC_Read_Byte(unsigned char ack);    //IIC读取一个字节
 uint8_t CT_IIC_Wait_Ack(void);                //IIC等待ACK信号
 void CT_IIC_Ack(void);                    //IIC发送ACK信号
 void CT_IIC_NAck(void);                    //IIC不发送ACK信号
-
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 

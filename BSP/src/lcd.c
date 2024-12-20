@@ -237,6 +237,9 @@ void lcd_init(void)
         lcddev.id = 0x5510; //NT35510读回的ID是8000H,为方便区分,我们强制设置为5510
     }
 
+    // -------调试
+//    lcddev.id = 0x5510;
+
     if (lcddev.id == 0X5510) //如果是这几个IC,则设置WR时序为最快
     {
         //重新配置写时序控制寄存器的时序
@@ -773,7 +776,7 @@ void lcd_flush(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, const uint16_
     HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream6, (uint32_t) color_p, (uint32_t) TFT_DATA_ADDR,
                      ((x2 + 1) - x1) * ((y2 + 1) - y1));
 #else
-    LCD_Color_Fill(area->x1, area->y1, area->x2, area->y2, (const uint16_t *)color_p);
+    LCD_Color_Fill(x1, y1, x2, y2, (const uint16_t *)color_p);
 #endif
 }
 

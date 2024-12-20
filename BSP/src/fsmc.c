@@ -41,17 +41,41 @@ void fsmc_init()
     //	使能PD,PE,PF,PG时钟
     __HAL_RCC_GPIOD_CLK_ENABLE();
     __HAL_RCC_GPIOE_CLK_ENABLE();
-    __HAL_RCC_GPIOF_CLK_ENABLE();
+//    __HAL_RCC_GPIOF_CLK_ENABLE();
     __HAL_RCC_GPIOG_CLK_ENABLE();
 
     /*使能FSMC时钟*/
     __HAL_RCC_FSMC_CLK_ENABLE();
-    __HAL_RCC_SYSCFG_CLK_ENABLE();
+//    __HAL_RCC_GPIOB_CLK_ENABLE();
+//    __HAL_RCC_SYSCFG_CLK_ENABLE();
 
     /**************
     *GPIO配置
     *************/
-    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitTypeDef GPIO_InitStructure = {0};
+
+    /** FSMC GPIO Configuration
+    PG1   ------> FSMC_A11
+    PE7   ------> FSMC_D4
+    PE8   ------> FSMC_D5
+    PE9   ------> FSMC_D6
+    PE10   ------> FSMC_D7
+    PE11   ------> FSMC_D8
+    PE12   ------> FSMC_D9
+    PE13   ------> FSMC_D10
+    PE14   ------> FSMC_D11
+    PE15   ------> FSMC_D12
+    PD8   ------> FSMC_D13
+    PD9   ------> FSMC_D14
+    PD10   ------> FSMC_D15
+    PD14   ------> FSMC_D0
+    PD15   ------> FSMC_D1
+    PD0   ------> FSMC_D2
+    PD1   ------> FSMC_D3
+    PD4   ------> FSMC_NOE
+    PD5   ------> FSMC_NWE
+    PG12   ------> FSMC_NE4
+    */
 
     //	LCD_BL
     __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -60,39 +84,100 @@ void fsmc_init()
     GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
     GPIO_InitStructure.Pull = GPIO_PULLDOWN;                        //	上拉
     HAL_GPIO_Init(GPIOA, &GPIO_InitStructure);
-
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);// 打开背光
 
     //	PD0,1,4,5,8,9,10,14,15 AF OUT
     GPIO_InitStructure.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_8
                              | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_14 | GPIO_PIN_15;
-    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
-    GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
+    GPIO_InitStructure.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;  //	100MHz
+    GPIO_InitStructure.Pull = GPIO_PULLUP;      //	上拉
     GPIO_InitStructure.Alternate = GPIO_AF12_FSMC;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);                                //	初始化
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);              //	初始化
 
     //	PE7~15,AF OUT
     GPIO_InitStructure.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_11
-                             | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
+           | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
     //复用加推挽
-    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;                       //复用加推挽
-    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
-    GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
-    HAL_GPIO_Init(GPIOE, &GPIO_InitStructure);                                //	初始化
+    GPIO_InitStructure.Mode = GPIO_MODE_AF_PP;      //复用加推挽
+    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;   //	100MHz
+    GPIO_InitStructure.Pull = GPIO_PULLUP;       //	上拉
+    HAL_GPIO_Init(GPIOE, &GPIO_InitStructure);               //	初始化
 
     //	LCD_RS PG1,FSMC_A11
     GPIO_InitStructure.Pin = GPIO_PIN_1;
-    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStructure.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;   //	100MHz
+    GPIO_InitStructure.Pull = GPIO_PULLUP;       //	上拉
+    HAL_GPIO_Init(GPIOG, &GPIO_InitStructure);               //	初始化
+
+    //	LCD_CS PG12,FSMC_NE4
+    GPIO_InitStructure.Pin = GPIO_PIN_12;
+    GPIO_InitStructure.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
     GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
     HAL_GPIO_Init(GPIOG, &GPIO_InitStructure);                                //	初始化
 
-    //	LCD_CS PG12,FSMC_NE4
-    GPIO_InitStructure.Pin = GPIO_PIN_12;
-    GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;                    //	100MHz
-    GPIO_InitStructure.Pull = GPIO_PULLUP;                        //	上拉
-    HAL_GPIO_Init(GPIOG, &GPIO_InitStructure);                                //	初始化
+
+
+//    GPIO_InitTypeDef GPIO_InitStruct = {0};
+//
+//    /* Peripheral clock enable */
+//    __HAL_RCC_FSMC_CLK_ENABLE();
+//
+    /** FSMC GPIO Configuration
+    PG1   ------> FSMC_A11
+    PE7   ------> FSMC_D4
+    PE8   ------> FSMC_D5
+    PE9   ------> FSMC_D6
+    PE10   ------> FSMC_D7
+    PE11   ------> FSMC_D8
+    PE12   ------> FSMC_D9
+    PE13   ------> FSMC_D10
+    PE14   ------> FSMC_D11
+    PE15   ------> FSMC_D12
+    PD8   ------> FSMC_D13
+    PD9   ------> FSMC_D14
+    PD10   ------> FSMC_D15
+    PD14   ------> FSMC_D0
+    PD15   ------> FSMC_D1
+    PD0   ------> FSMC_D2
+    PD1   ------> FSMC_D3
+    PD4   ------> FSMC_NOE
+    PD5   ------> FSMC_NWE
+    PG12   ------> FSMC_NE4
+    */
+//    /* GPIO_InitStruct */
+//    GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_12;
+//    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+//    GPIO_InitStruct.Pull = GPIO_NOPULL;
+//    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+//    GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
+//
+//    HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+//
+//    /* GPIO_InitStruct */
+//    GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10
+//                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14
+//                          |GPIO_PIN_15;
+//    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+//    GPIO_InitStruct.Pull = GPIO_NOPULL;
+//    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+//    GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
+//
+//    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+//
+//    /* GPIO_InitStruct */
+//    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_14
+//                          |GPIO_PIN_15|GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_4
+//                          |GPIO_PIN_5;
+//    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+//    GPIO_InitStruct.Pull = GPIO_NOPULL;
+//    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+//    GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
+//
+//    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
 
 
 
@@ -131,6 +216,51 @@ void fsmc_init()
     hsram1.Init.ExtendedMode = FSMC_EXTENDED_MODE_ENABLE;        // 	读写使用不同的时序
     hsram1.Init.WriteBurst = FSMC_WRITE_BURST_ENABLE;            // 开启突发写，性能翻倍
     HAL_SRAM_Init(&hsram1, &readWriteTiming, &writeTiming);
+
+
+    FSMC_NORSRAM_TimingTypeDef Timing = {0};
+    FSMC_NORSRAM_TimingTypeDef ExtTiming = {0};
+
+    hsram1.Instance = FSMC_NORSRAM_DEVICE;
+    hsram1.Extended = FSMC_NORSRAM_EXTENDED_DEVICE;
+    /* hsram1.Init */
+    hsram1.Init.NSBank = FSMC_NORSRAM_BANK4;
+    hsram1.Init.DataAddressMux = FSMC_DATA_ADDRESS_MUX_DISABLE;
+    hsram1.Init.MemoryType = FSMC_MEMORY_TYPE_SRAM;
+    hsram1.Init.MemoryDataWidth = FSMC_NORSRAM_MEM_BUS_WIDTH_16;
+    hsram1.Init.BurstAccessMode = FSMC_BURST_ACCESS_MODE_DISABLE;
+    hsram1.Init.WaitSignalPolarity = FSMC_WAIT_SIGNAL_POLARITY_LOW;
+    hsram1.Init.WrapMode = FSMC_WRAP_MODE_DISABLE;
+    hsram1.Init.WaitSignalActive = FSMC_WAIT_TIMING_BEFORE_WS;
+    hsram1.Init.WriteOperation = FSMC_WRITE_OPERATION_ENABLE;
+    hsram1.Init.WaitSignal = FSMC_WAIT_SIGNAL_DISABLE;
+    hsram1.Init.ExtendedMode = FSMC_EXTENDED_MODE_ENABLE;
+    hsram1.Init.AsynchronousWait = FSMC_ASYNCHRONOUS_WAIT_DISABLE;
+    hsram1.Init.WriteBurst = FSMC_WRITE_BURST_DISABLE;
+    hsram1.Init.PageSize = FSMC_PAGE_SIZE_NONE;
+    /* Timing */
+    Timing.AddressSetupTime = 11;
+    Timing.AddressHoldTime = 15;
+    Timing.DataSetupTime = 11;
+    Timing.BusTurnAroundDuration = 11;
+    Timing.CLKDivision = 16;
+    Timing.DataLatency = 17;
+    Timing.AccessMode = FSMC_ACCESS_MODE_A;
+    /* ExtTiming */
+    ExtTiming.AddressSetupTime = 15;
+    ExtTiming.AddressHoldTime = 15;
+    ExtTiming.DataSetupTime = 22;
+    ExtTiming.BusTurnAroundDuration = 15;
+    ExtTiming.CLKDivision = 16;
+    ExtTiming.DataLatency = 17;
+    ExtTiming.AccessMode = FSMC_ACCESS_MODE_D;
+
+    if (HAL_SRAM_Init(&hsram1, &Timing, &ExtTiming) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+
 }
 
 

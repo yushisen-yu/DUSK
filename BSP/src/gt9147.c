@@ -284,13 +284,11 @@ uint8_t GT9147_Read(int16_t *x, int16_t *y)
                         tp_dev.x[i] = 800 - (((uint16_t) buf[3] << 8) + buf[2]);
                     } else
                     {
-//                        tp_dev.x[i] = ((uint16_t)buf[1] << 8) + buf[0];
-//                        tp_dev.y[i] = ((uint16_t)buf[3] << 8) + buf[2];
 
                         tp_dev.x[i] = lcddev.width - (((uint16_t) buf[1] << 8) + buf[0]);
                         tp_dev.y[i] = lcddev.height - (((uint16_t) buf[3] << 8) + buf[2]);
                     }
-                    //printf("x[%d]:%d,y[%d]:%d\r\n",i,tp_dev.x[i],i,tp_dev.y[i]);
+
                 }
             }
 

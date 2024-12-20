@@ -9,6 +9,7 @@
 #include "key.hpp"
 #include "GUI.hpp"
 #include "WaveCurve.hpp"
+#include "gt9147.h"
 
 void app_init()
 {
@@ -16,8 +17,13 @@ void app_init()
 }
 
 
-void background_handler() {
+
+int16_t x, y;
+
+// 后台运算
+void background_handler()
+{
 
 
-
+    GT9147_Read(&x,&y);
 }

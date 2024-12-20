@@ -703,11 +703,13 @@ void lcd_init(void)
         LCD_WriteReg(0x3500, 0x00);
         LCD_WriteReg(0x3A00, 0x55); //16-bit/pixel
         LCD_WR_REG(0x1100);
-        HAL_Delay(120);
+//        HAL_Delay(120);//延时120ms
+        HAL_Delay(80);
         LCD_WR_REG(0x2900);
     }
     LCD_Display_Dir(0);        //默认为竖屏
 
+    LCD_Clear(0xFFFF);
 #endif
 
 #if LCD_SORTS == 9488

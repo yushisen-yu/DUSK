@@ -26,7 +26,7 @@ namespace
 {
     constexpr uint16_t MY_DISP_HOR_RES = 480;
     constexpr uint16_t MY_DISP_VER_RES = 800;
-    constexpr uint16_t MY_DISP_BUF_SIZE = 20;
+    constexpr uint16_t MY_DISP_BUF_SIZE = 30;
 
     lv_disp_drv_t disp_drv{};
     lv_indev_drv_t indev_drv{};

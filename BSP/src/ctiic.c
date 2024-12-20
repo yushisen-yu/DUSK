@@ -1,9 +1,25 @@
 #include "ctiic.h"
 
+//#define TIM7_CNT (*(volatile uint32_t *)(TIM7_BASE+0x24))
+////注意:nus的值,不要大于798915us(最大值即2^24/fac_us@fac_us=21)
+//void delay_us(uint32_t us)
+//{
+//    // 频率为84MHz，84M/1000 = 84000
+//    uint32_t final_count =TIM7_CNT+us*84000;
+//
+//
+//    // 针对溢出情况
+//    while (TIM7_CNT>final_count);
+//
+//    // 非溢出
+//    while (TIM7_CNT < final_count);
+//
+//}
+
 //控制I2C速度的延时
 void CT_Delay(void)
 {
-    HAL_Delay(2);
+//    delay_us(2);
 }
 
 //电容触摸芯片IIC接口初始化

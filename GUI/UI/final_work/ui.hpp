@@ -13,7 +13,11 @@ struct lv_ui_t {
     // 主屏幕
     struct {
         Obj screen;// 屏幕自身
+        Obj btn_test;// 测试按钮
+        Obj btn_test_label;// 测试按钮文字
     } main;
+
+
 };
 // 取别名
 using lv_ui_t = struct lv_ui_t;

@@ -25,7 +25,7 @@
 namespace
 {
     constexpr uint16_t MY_DISP_HOR_RES = 480;
-    constexpr uint16_t MY_DISP_VER_RES = 320;
+    constexpr uint16_t MY_DISP_VER_RES = 800;
     constexpr uint16_t MY_DISP_BUF_SIZE = 20;
 
     lv_disp_drv_t disp_drv{};
@@ -115,6 +115,9 @@ auto GUI::disp_drv_init() -> void
     disp_drv.flush_cb = [](lv_disp_drv_t *, const lv_area_t *area, lv_color_t *color_p)
     {
         disp_flush(area->x1, area->y1, area->x2, area->y2, (const uint16_t *) color_p);
+        // 仅限不使用DMA的情况
+        disp_drv.draw_buf->flushing = 0;
+        disp_drv.draw_buf->flushing_last = 0;
     };
     disp_drv.draw_buf = &draw_buf_dsc;
 

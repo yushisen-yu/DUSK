@@ -191,9 +191,6 @@ void fsmc_init()
     // pagesize设置为None
     HAL_SRAM_Init(&hsram1, &readWriteTiming, &writeTiming);
 
-
-
-
 }
 
 

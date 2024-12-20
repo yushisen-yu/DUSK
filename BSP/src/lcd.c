@@ -706,12 +706,7 @@ void lcd_init(void)
         HAL_Delay(120);
         LCD_WR_REG(0x2900);
     }
-
-
     LCD_Display_Dir(0);        //默认为竖屏
-
-    LCD_Clear(0xFFFF);
-
 
 #endif
 
@@ -820,6 +815,7 @@ void lcd_flush(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, const uint16_
                      ((x2 + 1) - x1) * ((y2 + 1) - y1));
 #else
     LCD_Color_Fill(x1, y1, x2, y2, (const uint16_t *) color_p);
+
 #endif
 }
 

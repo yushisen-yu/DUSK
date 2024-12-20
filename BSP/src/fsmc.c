@@ -147,43 +147,14 @@ void fsmc_init()
     PD5   ------> FSMC_NWE
     PG12   ------> FSMC_NE4
     */
-//    /* GPIO_InitStruct */
-//    GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_12;
-//    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-//    GPIO_InitStruct.Pull = GPIO_NOPULL;
-//    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-//    GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
-//
-//    HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-//
-//    /* GPIO_InitStruct */
-//    GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10
-//                          |GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14
-//                          |GPIO_PIN_15;
-//    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-//    GPIO_InitStruct.Pull = GPIO_NOPULL;
-//    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-//    GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
-//
-//    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-//
-//    /* GPIO_InitStruct */
-//    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_14
-//                          |GPIO_PIN_15|GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_4
-//                          |GPIO_PIN_5;
-//    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-//    GPIO_InitStruct.Pull = GPIO_NOPULL;
-//    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-//    GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
-//
-//    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
 
 
 
 
     // FSMC时序
-    FMC_NORSRAM_TimingTypeDef readWriteTiming;
-    FMC_NORSRAM_TimingTypeDef writeTiming;
+    FMC_NORSRAM_TimingTypeDef readWriteTiming = {0};
+    FMC_NORSRAM_TimingTypeDef writeTiming = {0};
 
     readWriteTiming.AddressSetupTime = 0x0F;//	地址建立时间（ADDSET）为16个HCLK 1/168M=6ns*16=96ns
     readWriteTiming.AddressHoldTime = 0x00;//	地址保持时间（ADDHLD）模式A未用到
@@ -202,6 +173,8 @@ void fsmc_init()
     writeTiming.DataLatency = 0x00;
     writeTiming.AccessMode = FSMC_ACCESS_MODE_A;     //	模式A
 
+    hsram1.Instance = FSMC_NORSRAM_DEVICE;
+    hsram1.Extended = FSMC_NORSRAM_EXTENDED_DEVICE;
     hsram1.Init.NSBank = FSMC_NORSRAM_BANK4; //  这里我们使用NE4 ，也就对应BTCR[6],[7]。
     hsram1.Init.DataAddressMux = FSMC_DATA_ADDRESS_MUX_DISABLE;// 	不复用数据地址
     hsram1.Init.MemoryType = FSMC_MEMORY_TYPE_NOR;
@@ -215,50 +188,10 @@ void fsmc_init()
     hsram1.Init.AsynchronousWait = FSMC_ASYNCHRONOUS_WAIT_DISABLE;// 是否使能同步传输模式下的等待信号,此处未用
     hsram1.Init.ExtendedMode = FSMC_EXTENDED_MODE_ENABLE;        // 	读写使用不同的时序
     hsram1.Init.WriteBurst = FSMC_WRITE_BURST_ENABLE;            // 开启突发写，性能翻倍
+    // pagesize设置为None
     HAL_SRAM_Init(&hsram1, &readWriteTiming, &writeTiming);
 
 
-    FSMC_NORSRAM_TimingTypeDef Timing = {0};
-    FSMC_NORSRAM_TimingTypeDef ExtTiming = {0};
-
-    hsram1.Instance = FSMC_NORSRAM_DEVICE;
-    hsram1.Extended = FSMC_NORSRAM_EXTENDED_DEVICE;
-    /* hsram1.Init */
-    hsram1.Init.NSBank = FSMC_NORSRAM_BANK4;
-    hsram1.Init.DataAddressMux = FSMC_DATA_ADDRESS_MUX_DISABLE;
-    hsram1.Init.MemoryType = FSMC_MEMORY_TYPE_SRAM;
-    hsram1.Init.MemoryDataWidth = FSMC_NORSRAM_MEM_BUS_WIDTH_16;
-    hsram1.Init.BurstAccessMode = FSMC_BURST_ACCESS_MODE_DISABLE;
-    hsram1.Init.WaitSignalPolarity = FSMC_WAIT_SIGNAL_POLARITY_LOW;
-    hsram1.Init.WrapMode = FSMC_WRAP_MODE_DISABLE;
-    hsram1.Init.WaitSignalActive = FSMC_WAIT_TIMING_BEFORE_WS;
-    hsram1.Init.WriteOperation = FSMC_WRITE_OPERATION_ENABLE;
-    hsram1.Init.WaitSignal = FSMC_WAIT_SIGNAL_DISABLE;
-    hsram1.Init.ExtendedMode = FSMC_EXTENDED_MODE_ENABLE;
-    hsram1.Init.AsynchronousWait = FSMC_ASYNCHRONOUS_WAIT_DISABLE;
-    hsram1.Init.WriteBurst = FSMC_WRITE_BURST_DISABLE;
-    hsram1.Init.PageSize = FSMC_PAGE_SIZE_NONE;
-    /* Timing */
-    Timing.AddressSetupTime = 11;
-    Timing.AddressHoldTime = 15;
-    Timing.DataSetupTime = 11;
-    Timing.BusTurnAroundDuration = 11;
-    Timing.CLKDivision = 16;
-    Timing.DataLatency = 17;
-    Timing.AccessMode = FSMC_ACCESS_MODE_A;
-    /* ExtTiming */
-    ExtTiming.AddressSetupTime = 15;
-    ExtTiming.AddressHoldTime = 15;
-    ExtTiming.DataSetupTime = 22;
-    ExtTiming.BusTurnAroundDuration = 15;
-    ExtTiming.CLKDivision = 16;
-    ExtTiming.DataLatency = 17;
-    ExtTiming.AccessMode = FSMC_ACCESS_MODE_D;
-
-    if (HAL_SRAM_Init(&hsram1, &Timing, &ExtTiming) != HAL_OK)
-    {
-        Error_Handler();
-    }
 
 
 }

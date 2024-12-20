@@ -22,8 +22,8 @@ extern "C" {
 
 
 /*LCD地址*/
-#define TFT_CMD (*((volatile unsigned short *) 0x60060000)) // TFT命令寄存器片选地址
-#define TFT_DATA (*((volatile unsigned short *) 0x60060002))// TFT数据寄存器片选地址
+#define TFT_CMD (*((volatile unsigned short *) 0x6C000FFE)) // TFT命令寄存器片选地址
+#define TFT_DATA (*((volatile unsigned short *) 0x6C001000))// TFT数据寄存器片选地址
 #define TFT_RST (*((volatile unsigned short *) 0x60060004)) // TFT复位寄存器地址
 #define TFTLED (*((volatile unsigned short *) 0x60060008))  // TFT背光寄存器地址
 #define TFT_DATA_ADDR 0x60060002
@@ -58,29 +58,51 @@ extern _lcd_dev lcddev;	//管理LCD重要参数
  */
 static inline void LCD_Set_Window(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey)
 {
+//    // 设置列地址范围
+//    LCD_WRITE_CMD(0x002A);
+//    LCD_WRITE_DATA(sx >> 8);
+//    LCD_WRITE_DATA(0x00FF & sx);
+//    LCD_WRITE_DATA((ex) >> 8);
+//    LCD_WRITE_DATA(0x00FF & (ex));
+//
+//    // 设置行地址范围
+//    LCD_WRITE_CMD(0x002B);
+//    LCD_WRITE_DATA(sy >> 8);
+//    LCD_WRITE_DATA(0x00FF & sy);
+//    LCD_WRITE_DATA(ey >> 8);
+//    LCD_WRITE_DATA(0x00FF & ey);
+//
+//    // 开始传输数据到LCD
+//    LCD_WRITE_CMD(0x002C);
     // 设置列地址范围
-    LCD_WRITE_CMD(0x002A);
+    LCD_WRITE_CMD(0X2A00);
     LCD_WRITE_DATA(sx >> 8);
+    LCD_WRITE_CMD(0X2A00+1);
     LCD_WRITE_DATA(0x00FF & sx);
+    LCD_WRITE_CMD(0X2A00+2);
     LCD_WRITE_DATA((ex) >> 8);
+    LCD_WRITE_CMD(0X2A00+3);
     LCD_WRITE_DATA(0x00FF & (ex));
 
     // 设置行地址范围
-    LCD_WRITE_CMD(0x002B);
+    LCD_WRITE_CMD(0X2B00);
     LCD_WRITE_DATA(sy >> 8);
+    LCD_WRITE_CMD(0X2B00+1);
     LCD_WRITE_DATA(0x00FF & sy);
+    LCD_WRITE_CMD(0X2B00+2);
     LCD_WRITE_DATA(ey >> 8);
+    LCD_WRITE_CMD(0X2B00+3);
     LCD_WRITE_DATA(0x00FF & ey);
 
     // 开始传输数据到LCD
-    LCD_WRITE_CMD(0x002C);
+    LCD_WRITE_CMD(0X2C00);
 }
 
 /*清空画面*/
 static inline void LCD_Clear(uint16_t color)
 {
-    LCD_Set_Window(0, 0, 479, 319);
-    for (uint32_t i = 0; i < 0x25800; i++)
+    LCD_Set_Window(0, 0,479, 799);
+    for (uint32_t i = 0; i <799*479; i++)
         LCD_WRITE_DATA(color);
 }
 

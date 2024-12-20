@@ -20,10 +20,12 @@ typedef struct
     volatile uint16_t LCD_REG;
     volatile uint16_t LCD_RAM;
 } LCD_TypeDef;
+
 //使用NOR/SRAM的 Bank1.sector4,地址位HADDR[27,26]=11 A11作为数据命令区分线
 //注意设置时STM32内部会右移一位对其! 1111 1111 1110=0XFFE
 #define LCD_BASE        ((uint32_t)(0x6C000000 | 0x00000FFE))
 #define LCD             ((LCD_TypeDef *) LCD_BASE)
+
 
 //扫描方向定义
 #define L2R_U2D  0                                                      // 从左到右,从上到下
@@ -70,6 +72,7 @@ static void LCD_WR_REG(volatile uint16_t regval)
     regval = regval;// 这个重复语句不知道谁写的，看着就很烂，算了还是不改动了
     LCD->LCD_REG = regval;
 }
+
 
 static void LCD_WR_DATA(volatile uint16_t data)
 {
@@ -213,6 +216,46 @@ void LCD_Display_Dir(uint8_t dir)
 }
 
 
+
+
+void LCD_SetCursor(uint16_t Xpos, uint16_t Ypos)
+{
+    if(lcddev.id == 0X5510)
+    {
+        LCD_WR_REG(lcddev.setxcmd);
+        LCD_WR_DATA(Xpos >> 8);
+        LCD_WR_REG(lcddev.setxcmd + 1);
+        LCD_WR_DATA(Xpos & 0XFF);
+        LCD_WR_REG(lcddev.setycmd);
+        LCD_WR_DATA(Ypos >> 8);
+        LCD_WR_REG(lcddev.setycmd + 1);
+        LCD_WR_DATA(Ypos & 0XFF);
+
+    }
+}
+//开始写GRAM
+void LCD_WriteRAM_Prepare(void)
+{
+    LCD->LCD_REG = lcddev.wramcmd;
+}
+//清屏函数
+//color:要清屏的填充色
+void LCD_Clear2(uint16_t color)
+{
+    uint32_t totalpoint = lcddev.width;
+    totalpoint    *= lcddev.height; 			                        // 得到总点数
+
+
+    LCD_SetCursor(0x00, 0x0000);	                                    // 设置光标位置
+
+    LCD_WriteRAM_Prepare();     		                                // 开始写入GRAM
+
+    for(uint32_t index = 0; index < totalpoint; index++)
+    {
+        LCD->LCD_RAM = color;
+    }
+}
+
 /********************************************************************
  * 名称 : LCD_Init9481
  * 功能 : 液晶初始化
@@ -223,7 +266,8 @@ void lcd_init(void)
 {
 #if LCD_SORTS == 9481
     // 此处实际是ILI93xx
-    HAL_Delay(100);                                                    // 	delay 50 ms
+    // 	delay 50 ms
+
 
     LCD_WR_REG(0XDA00);
     lcddev.id = LCD_RD_DATA();        //读回0X00
@@ -232,13 +276,12 @@ void lcd_init(void)
     lcddev.id <<= 8;
     LCD_WR_REG(0XDC00);
     lcddev.id |= LCD_RD_DATA();        //读回0X00
+
     if (lcddev.id == 0x8000)
     {
         lcddev.id = 0x5510; //NT35510读回的ID是8000H,为方便区分,我们强制设置为5510
     }
 
-    // -------调试
-//    lcddev.id = 0x5510;
 
     if (lcddev.id == 0X5510) //如果是这几个IC,则设置WR时序为最快
     {
@@ -248,6 +291,7 @@ void lcd_init(void)
         FSMC_Bank1E->BWTR[6] |= 3 << 0;        //地址建立时间(ADDSET)为3个HCLK =18ns
         FSMC_Bank1E->BWTR[6] |= 2 << 8;    //数据保存时间(DATAST)为6ns*3个HCLK=18ns
     }
+
 
     if (lcddev.id == 0x5510)
     {
@@ -663,9 +707,8 @@ void lcd_init(void)
         LCD_WR_REG(0x2900);
     }
 
-    LCD_Display_Dir(0);        //默认为竖屏
 
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET); // 打开背光
+    LCD_Display_Dir(0);        //默认为竖屏
 
     LCD_Clear(0xFFFF);
 
@@ -776,7 +819,7 @@ void lcd_flush(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, const uint16_
     HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream6, (uint32_t) color_p, (uint32_t) TFT_DATA_ADDR,
                      ((x2 + 1) - x1) * ((y2 + 1) - y1));
 #else
-    LCD_Color_Fill(x1, y1, x2, y2, (const uint16_t *)color_p);
+    LCD_Color_Fill(x1, y1, x2, y2, (const uint16_t *) color_p);
 #endif
 }
 

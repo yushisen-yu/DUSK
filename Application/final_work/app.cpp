@@ -11,10 +11,11 @@
 #include "WaveCurve.hpp"
 #include "gt9147.h"
 #include "delay.h"
+#include "beep.h"
 
 void app_init()
 {
-
+beep_init();
 }
 
 

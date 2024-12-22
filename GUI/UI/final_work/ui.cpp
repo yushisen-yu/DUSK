@@ -4,7 +4,7 @@
 
 #include "ui.hpp"
 #include "GUI.hpp"
-
+#include "beep.h"
 auto Screen::init() -> void
 {
     Component::set_parent(gui->main.screen);
@@ -16,5 +16,21 @@ auto Screen::init() -> void
 
 auto Events::init() -> void
 {
+// lambda匿名
 
+    Events::bond(gui->main.btn_test,btn_fun(
+            []()
+            {
+                static bool flag = false;
+                flag = !flag;
+                if(flag)
+                {
+                    beep_start();
+                }
+                else
+                {
+                    beep_stop();
+                }
+            }
+            ));
 }

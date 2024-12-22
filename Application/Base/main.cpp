@@ -6,6 +6,7 @@
 #include "GUI.hpp"
 #include "key.hpp"
 #include "lcd.h"
+#include "gt9147.h"
 
 extern void app_init();// 应用程序初始化函数,强制定义
 
@@ -27,7 +28,7 @@ int main()
     osKernelInitialize();// FreeRTOS内核初始化
 #endif// APP_NO_RTOS
 
-    GUI::init<lcd_flush>();
+    GUI::init<lcd_flush,GT9147_Read>();
     app_init();
 
 /*主事件循环或调度器*/

@@ -129,13 +129,10 @@ auto GUI::disp_drv_init() -> void
     {
         lv_indev_drv_init(&indev_drv);
         indev_drv.type = LV_INDEV_TYPE_POINTER;
-        indev_drv.read_cb = [](lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
+        indev_drv.read_cb = [](lv_indev_drv_t *indev_drv1, lv_indev_data_t *data)
         {
-            static lv_coord_t last_x = 0;
-            static lv_coord_t last_y = 0;
-
             /*Save the pressed coordinates and the state*/
-            if (touchpad_read(&last_x, &last_y))
+            if (touchpad_read(&data->point.x, &data->point.y))
             {
                 data->state = LV_INDEV_STATE_PR;
             } else
@@ -143,9 +140,6 @@ auto GUI::disp_drv_init() -> void
                 data->state = LV_INDEV_STATE_REL;
             }
 
-            /*Set the last pressed coordinates*/
-            data->point.x = last_x;
-            data->point.y = last_y;
         };
         indev_touchpad = lv_indev_drv_register(&indev_drv);
     }

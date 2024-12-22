@@ -246,57 +246,26 @@ uint8_t GT9147_Scan(uint8_t mode)
 uint8_t GT9147_Read(int16_t *x, int16_t *y)
 {
     uint8_t buf[4];
-    uint8_t i = 0;
-    uint8_t res = 0;
-    uint8_t temp;
-    uint8_t tempsta;
+    uint8_t temp = 0;
     uint8_t mode = 0;
 
     GT9147_RD_Reg(GT_GSTID_REG, &mode, 1);    //读取触摸点的状态
-    temp = 0;
     GT9147_WR_Reg(GT_GSTID_REG, &temp, 1);  //清标志
-    if ((mode & 0XF) && ((mode & 0XF) < 6))
-    {
-        temp = 0XFF << (mode & 0XF);        //将点的个数转换为1的位数,匹配tp_dev.sta定义
-        tempsta = tp_dev.sta;            //保存当前的tp_dev.sta值
-        tp_dev.sta = (~temp) | TP_PRES_DOWN | TP_CATH_PRES;
-        tp_dev.x[4] = tp_dev.x[0];    //保存触点0的数据
-        tp_dev.y[4] = tp_dev.y[0];
-        for (i = 0; i < 5; i++) {
-            if (tp_dev.sta & (1 << i))    //触摸有效?
-            {
-                GT9147_RD_Reg(GT9147_TPX_TBL[i], buf, 4);    //读取XY坐标值
+    if ((mode & 0XF) && ((mode & 0XF) < 6)) {
+        GT9147_RD_Reg(GT9147_TPX_TBL[0], buf, 4);    //读取XY坐标值
 
-                if (tp_dev.touchtype & 0X01) //横屏
-                {
-                    tp_dev.y[i] = ((uint16_t) buf[1] << 8) + buf[0];
-                    tp_dev.x[i] = 800 - (((uint16_t) buf[3] << 8) + buf[2]);
-                } else {
+        *x = lcddev.width - (((uint16_t) buf[1] << 8) + buf[0]);
+        *y = lcddev.height - (((uint16_t) buf[3] << 8) + buf[2]);
 
-                    tp_dev.x[i] = lcddev.width - (((uint16_t) buf[1] << 8) + buf[0]);
-                    tp_dev.y[i] = lcddev.height - (((uint16_t) buf[3] << 8) + buf[2]);
-                }
-
-            }
-        }
-
-        *x = (int16_t) tp_dev.x[0];
-        *y = (int16_t) tp_dev.y[0];
+        return 1;
     }
-
 
     if ((mode & 0X8F) == 0X80)//无触摸点按下
     {
-        if (tp_dev.sta & TP_PRES_DOWN)    //之前是被按下的
-        {
-            tp_dev.sta &= ~(1 << 7);    //标记按键松开
-        }                        //之前就没有被按下
         *x = 0xffff;
         *y = 0xffff;
-        tp_dev.sta &= 0XE0;    //清除点有效标记
     }
-
-    return res;
+    return 0;
 }
 
 

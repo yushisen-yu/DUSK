@@ -25,5 +25,5 @@ void background_handler()
 {
 
 
-    GT9147_Read(&x, &y);
+//    GT9147_Read(&x, &y);
 }

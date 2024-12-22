@@ -32,12 +32,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="触摸功能完全实现">
-      <change afterPath="$PROJECT_DIR$/BSP/inc/beep.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BSP/src/beep.c" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="蜂鸣器调试成功">
+      <change afterPath="$PROJECT_DIR$/BSP/inc/led.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BSP/src/led.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -152,7 +153,7 @@
       <workItem from="1734757735339" duration="203000" />
       <workItem from="1734863389425" duration="79000" />
       <workItem from="1734869356400" duration="4252000" />
-      <workItem from="1734873757436" duration="5633000" />
+      <workItem from="1734873757436" duration="9952000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -234,7 +235,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734877950640</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="蜂鸣器调试成功">
+      <option name="closed" value="true" />
+      <created>1734880257798</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1734880257798</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,7 +288,8 @@
     <MESSAGE value="触摸驱动精简了一部分" />
     <MESSAGE value="触摸驱动精简完成，可以使用。" />
     <MESSAGE value="触摸功能完全实现" />
-    <option name="LAST_COMMIT_MESSAGE" value="触摸功能完全实现" />
+    <MESSAGE value="蜂鸣器调试成功" />
+    <option name="LAST_COMMIT_MESSAGE" value="蜂鸣器调试成功" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

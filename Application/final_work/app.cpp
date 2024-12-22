@@ -12,12 +12,13 @@
 #include "gt9147.h"
 #include "delay.h"
 #include "beep.h"
+#include "led.h"
 
 void app_init()
 {
-beep_init();
+    beep_init();
+    led_init();
 }
-
 
 int16_t x, y;
 

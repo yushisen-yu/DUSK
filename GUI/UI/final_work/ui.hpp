@@ -15,6 +15,8 @@ struct lv_ui_t {
         Obj screen;// 屏幕自身
         Obj btn_test;// 测试按钮
         Obj btn_test_label;// 测试按钮文字
+        Obj btn_led;
+        Obj btn_led_label;// 灯光按钮文字
     } main;
 
 

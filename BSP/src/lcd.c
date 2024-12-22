@@ -710,6 +710,8 @@ void lcd_init(void)
     LCD_Display_Dir(0);        //默认为竖屏
 
     LCD_Clear(0xFFFF);
+
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);// 打开背光
 #endif
 
 #if LCD_SORTS == 9488

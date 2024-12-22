@@ -15,6 +15,7 @@
 #include "lv_port_disp.h"
 #include "GUI.hpp"
 #include "touch.h"
+#include "delay.h"
 
 #endif
 
@@ -37,6 +38,7 @@ void BaseInit()
     fsmc_init();
     lcd_init();// 初始化LCD
     key_exti_init();
+    delay_init();
 
 #ifdef USE_TOUCH
     TP_Init();// 触摸屏初始化

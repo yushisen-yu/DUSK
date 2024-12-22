@@ -32,8 +32,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="为LVGL层提供了触摸驱动的接口，但未验证">
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备创建新分支">
+      <change afterPath="$PROJECT_DIR$/BSP/inc/delay.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BSP/src/delay.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Base/baseInit.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Base/baseInit.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/ctiic.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/ctiic.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +54,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="ZQ" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,7 +100,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "ZQ",
+    "git-widget-placeholder": "YU",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "D:/EDA/MCU/STM32F407VET6",
     "node.js.detected.package.eslint": "true",
@@ -102,22 +108,18 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "MesonSettings",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C/C++",
     "structure.view.defaults.are.configured": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\EDA\MCU\STM32F407VET6\BSP\inc" />
       <recent name="E:\Program\Embedded\MCU\STM32\final_homework\BSP\inc" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Furina.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Furina" TARGET_NAME="Furina.elf" CONFIG_NAME="Debug-MinGW" version="1" RUN_TARGET_PROJECT_NAME="Furina" RUN_TARGET_NAME="Furina.elf">
       <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="D:\EDA\MCU\STM32F407VET6\stlink.cfg" reset-type="INIT" download-type="UPDATED_ONLY">
         <debugger kind="GDB" isBundled="true" />
@@ -144,7 +146,8 @@
       <workItem from="1734691685676" duration="2967000" />
       <workItem from="1734757735339" duration="203000" />
       <workItem from="1734863389425" duration="79000" />
-      <workItem from="1734869356400" duration="789000" />
+      <workItem from="1734869356400" duration="4252000" />
+      <workItem from="1734873757436" duration="2054000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -186,7 +189,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734607105057</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="准备创建新分支">
+      <option name="closed" value="true" />
+      <created>1734870683620</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1734870683620</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -226,6 +237,7 @@
     <MESSAGE value="准备尝试移植LCD" />
     <MESSAGE value="LCD初始化基本完成，但没有经过验证" />
     <MESSAGE value="触摸屏初始化基本完成，但没有经过验证" />
-    <option name="LAST_COMMIT_MESSAGE" value="触摸屏初始化基本完成，但没有经过验证" />
+    <MESSAGE value="准备创建新分支" />
+    <option name="LAST_COMMIT_MESSAGE" value="准备创建新分支" />
   </component>
 </project>

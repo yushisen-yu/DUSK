@@ -1,4 +1,5 @@
 #include "ctiic.h"
+#include "delay.h"
 
 //#define TIM7_CNT (*(volatile uint32_t *)(TIM7_BASE+0x24))
 ////注意:nus的值,不要大于798915us(最大值即2^24/fac_us@fac_us=21)
@@ -13,13 +14,13 @@
 //
 //    // 非溢出
 //    while (TIM7_CNT < final_count);
-//
+
 //}
 
 //控制I2C速度的延时
 void CT_Delay(void)
 {
-//    delay_us(2);
+    delay_us(2);
 }
 
 //电容触摸芯片IIC接口初始化
@@ -35,9 +36,6 @@ void CT_IIC_Init(void)
     GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-    GPIOB->MODER =
-
-            //PB15设置为推挽输出
     GPIO_InitStructure.Pin = GPIO_PIN_15;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
@@ -48,7 +46,7 @@ void CT_IIC_Start(void)
     CT_SDA_OUT();     //sda线输出
     CT_IIC_SDA_HIGH;
     CT_IIC_SCL_HIGH;
-    HAL_Delay(30);
+    delay_us(30);
     CT_IIC_SDA_LOW; //START:when CLK is high,DATA change form high to low
     CT_Delay();
     CT_IIC_SCL_LOW; //钳住I2C总线，准备发送或接收数据
@@ -59,7 +57,7 @@ void CT_IIC_Stop(void)
 {
     CT_SDA_OUT();//sda线输出
     CT_IIC_SCL_HIGH;
-    HAL_Delay(30);
+    delay_us(30);
     CT_IIC_SDA_LOW; //STOP:when CLK is high DATA change form low to high
     CT_Delay();
     CT_IIC_SDA_HIGH; //发送I2C总线结束信号
@@ -142,7 +140,7 @@ uint8_t CT_IIC_Read_Byte(unsigned char ack)
 {
     uint8_t i, receive = 0;
     CT_SDA_IN();//SDA设置为输入
-    HAL_Delay(30);
+    delay_us(30);
     for (i = 0; i < 8; i++)
     {
         CT_IIC_SCL_LOW;

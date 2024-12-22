@@ -6,7 +6,7 @@ set(APP_DIR Application/final_work)
 # 是否使用独立静态库链接
 # 注释后，可以使用链接优化-flto，并且默认开启链接优化
 # ld链接器无法自动创建目录以存放map文件，所以注释下面时需要确保存在bin目录
-set(STATIC_MODULE_LD True)
+#set(STATIC_MODULE_LD True)
 # 使用GUI
 set(GUI_ENABLE True)
 # 使用AI

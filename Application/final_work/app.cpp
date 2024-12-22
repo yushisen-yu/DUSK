@@ -10,12 +10,12 @@
 #include "GUI.hpp"
 #include "WaveCurve.hpp"
 #include "gt9147.h"
+#include "delay.h"
 
 void app_init()
 {
 
 }
-
 
 
 int16_t x, y;
@@ -25,5 +25,5 @@ void background_handler()
 {
 
 
-    GT9147_Read(&x,&y);
+    GT9147_Read(&x, &y);
 }

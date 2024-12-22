@@ -64,8 +64,7 @@ uint8_t GT9147_WR_Reg(uint16_t reg, uint8_t *buf, uint8_t len)
     CT_IIC_Wait_Ack();
     CT_IIC_Send_Byte(reg & 0XFF);    //发送低8位地址
     CT_IIC_Wait_Ack();
-    for (i = 0; i < len; i++)
-    {
+    for (i = 0; i < len; i++) {
         CT_IIC_Send_Byte(buf[i]);    //发数据
         ret = CT_IIC_Wait_Ack();
         if (ret)break;
@@ -91,8 +90,7 @@ void GT9147_RD_Reg(uint16_t reg, uint8_t *buf, uint8_t len)
     CT_IIC_Start();
     CT_IIC_Send_Byte(GT_CMD_RD);   //发送读命令
     CT_IIC_Wait_Ack();
-    for (i = 0; i < len; i++)
-    {
+    for (i = 0; i < len; i++) {
         buf[i] = CT_IIC_Read_Byte(i == (len - 1) ? 0 : 1); //发数据
     }
     CT_IIC_Stop();//产生一个停止条件
@@ -173,15 +171,13 @@ uint8_t GT9147_Scan(uint8_t mode)
         GT9147_RD_Reg(GT_GSTID_REG, &mode, 1);    //读取触摸点的状态
         temp = 0;
         GT9147_WR_Reg(GT_GSTID_REG, &temp, 1);  //清标志
-        if ((mode & 0XF) && ((mode & 0XF) < 6))
-        {
+        if ((mode & 0XF) && ((mode & 0XF) < 6)) {
             temp = 0XFF << (mode & 0XF);        //将点的个数转换为1的位数,匹配tp_dev.sta定义
             tempsta = tp_dev.sta;            //保存当前的tp_dev.sta值
             tp_dev.sta = (~temp) | TP_PRES_DOWN | TP_CATH_PRES;
             tp_dev.x[4] = tp_dev.x[0];    //保存触点0的数据
             tp_dev.y[4] = tp_dev.y[0];
-            for (i = 0; i < 5; i++)
-            {
+            for (i = 0; i < 5; i++) {
                 if (tp_dev.sta & (1 << i))    //触摸有效?
                 {
                     GT9147_RD_Reg(GT9147_TPX_TBL[i], buf, 4);    //读取XY坐标值
@@ -190,8 +186,7 @@ uint8_t GT9147_Scan(uint8_t mode)
                     {
                         tp_dev.y[i] = ((uint16_t) buf[1] << 8) + buf[0];
                         tp_dev.x[i] = 800 - (((uint16_t) buf[3] << 8) + buf[2]);
-                    } else
-                    {
+                    } else {
 //                        tp_dev.x[i] = ((uint16_t)buf[1] << 8) + buf[0];
 //                        tp_dev.y[i] = ((uint16_t)buf[3] << 8) + buf[2];
 
@@ -217,8 +212,7 @@ uint8_t GT9147_Scan(uint8_t mode)
                     mode = 0X80;
                     tp_dev.sta = tempsta;    //恢复tp_dev.sta
                 }
-            } else
-            {
+            } else {
                 t = 0;                    //触发一次,则会最少连续监测10次,从而提高命中率
             }
         }
@@ -235,8 +229,7 @@ uint8_t GT9147_Scan(uint8_t mode)
         tp_dev.sta &= 0XE0;    //清除点有效标记
     }
 
-    if (t > 240)
-    {
+    if (t > 240) {
         t = 10;//重新从10开始计数
     }
 
@@ -258,61 +251,39 @@ uint8_t GT9147_Read(int16_t *x, int16_t *y)
     uint8_t temp;
     uint8_t tempsta;
     uint8_t mode = 0;
-    static uint8_t t = 0; //控制查询间隔,从而降低CPU占用率
-    t++;
-    if ((t % 10) == 0 || t < 10) //空闲时,每进入10次CTP_Scan函数才检测1次,从而节省CPU使用率
+
+    GT9147_RD_Reg(GT_GSTID_REG, &mode, 1);    //读取触摸点的状态
+    temp = 0;
+    GT9147_WR_Reg(GT_GSTID_REG, &temp, 1);  //清标志
+    if ((mode & 0XF) && ((mode & 0XF) < 6))
     {
-        GT9147_RD_Reg(GT_GSTID_REG, &mode, 1);    //读取触摸点的状态
-        temp = 0;
-        GT9147_WR_Reg(GT_GSTID_REG, &temp, 1);  //清标志
-        if ((mode & 0XF) && ((mode & 0XF) < 6))
-        {
-            temp = 0XFF << (mode & 0XF);        //将点的个数转换为1的位数,匹配tp_dev.sta定义
-            tempsta = tp_dev.sta;            //保存当前的tp_dev.sta值
-            tp_dev.sta = (~temp) | TP_PRES_DOWN | TP_CATH_PRES;
-            tp_dev.x[4] = tp_dev.x[0];    //保存触点0的数据
-            tp_dev.y[4] = tp_dev.y[0];
-            for (i = 0; i < 5; i++)
+        temp = 0XFF << (mode & 0XF);        //将点的个数转换为1的位数,匹配tp_dev.sta定义
+        tempsta = tp_dev.sta;            //保存当前的tp_dev.sta值
+        tp_dev.sta = (~temp) | TP_PRES_DOWN | TP_CATH_PRES;
+        tp_dev.x[4] = tp_dev.x[0];    //保存触点0的数据
+        tp_dev.y[4] = tp_dev.y[0];
+        for (i = 0; i < 5; i++) {
+            if (tp_dev.sta & (1 << i))    //触摸有效?
             {
-                if (tp_dev.sta & (1 << i))    //触摸有效?
+                GT9147_RD_Reg(GT9147_TPX_TBL[i], buf, 4);    //读取XY坐标值
+
+                if (tp_dev.touchtype & 0X01) //横屏
                 {
-                    GT9147_RD_Reg(GT9147_TPX_TBL[i], buf, 4);    //读取XY坐标值
+                    tp_dev.y[i] = ((uint16_t) buf[1] << 8) + buf[0];
+                    tp_dev.x[i] = 800 - (((uint16_t) buf[3] << 8) + buf[2]);
+                } else {
 
-                    if (tp_dev.touchtype & 0X01) //横屏
-                    {
-                        tp_dev.y[i] = ((uint16_t) buf[1] << 8) + buf[0];
-                        tp_dev.x[i] = 800 - (((uint16_t) buf[3] << 8) + buf[2]);
-                    } else
-                    {
-
-                        tp_dev.x[i] = lcddev.width - (((uint16_t) buf[1] << 8) + buf[0]);
-                        tp_dev.y[i] = lcddev.height - (((uint16_t) buf[3] << 8) + buf[2]);
-                    }
-
+                    tp_dev.x[i] = lcddev.width - (((uint16_t) buf[1] << 8) + buf[0]);
+                    tp_dev.y[i] = lcddev.height - (((uint16_t) buf[3] << 8) + buf[2]);
                 }
-            }
 
-            res = 1;
-            if (tp_dev.x[0] > lcddev.width || tp_dev.y[0] > lcddev.height)//非法数据(坐标超出了)
-            {
-                if ((mode & 0XF) > 1)        //有其他点有数据,则复第二个触点的数据到第一个触点.
-                {
-                    tp_dev.x[0] = tp_dev.x[1];
-                    tp_dev.y[0] = tp_dev.y[1];
-                    t = 0;                //触发一次,则会最少连续监测10次,从而提高命中率
-                } else                    //非法数据,则忽略此次数据(还原原来的)
-                {
-                    tp_dev.x[0] = tp_dev.x[4];
-                    tp_dev.y[0] = tp_dev.y[4];
-                    mode = 0X80;
-                    tp_dev.sta = tempsta;    //恢复tp_dev.sta
-                }
-            } else
-            {
-                t = 0;                    //触发一次,则会最少连续监测10次,从而提高命中率
             }
         }
+
+        *x = (int16_t) tp_dev.x[0];
+        *y = (int16_t) tp_dev.y[0];
     }
+
 
     if ((mode & 0X8F) == 0X80)//无触摸点按下
     {
@@ -320,18 +291,9 @@ uint8_t GT9147_Read(int16_t *x, int16_t *y)
         {
             tp_dev.sta &= ~(1 << 7);    //标记按键松开
         }                        //之前就没有被按下
-        tp_dev.x[0] = 0xffff;
-        tp_dev.y[0] = 0xffff;
+        *x = 0xffff;
+        *y = 0xffff;
         tp_dev.sta &= 0XE0;    //清除点有效标记
-    }
-
-    // 赋值
-    *x = (int16_t) tp_dev.x[0];
-    *y = (int16_t) tp_dev.y[0];
-
-    if (t > 240)
-    {
-        t = 10;//重新从10开始计数
     }
 
     return res;

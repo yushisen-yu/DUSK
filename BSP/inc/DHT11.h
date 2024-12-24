@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-void DHT11_init();
+void DHT11_Init();
 
 //bool DHT11_Read_Data(float &temp,float &humi);
 unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi);//自定义的快速读取函数

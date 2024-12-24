@@ -32,10 +32,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="LED灯调试成功">
-      <change afterPath="$PROJECT_DIR$/BSP/inc/DHT11.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BSP/src/DHT11.c" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="复制粘贴了一下DHT11的代码，但是会报错">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -146,7 +146,9 @@
       <workItem from="1734863389425" duration="79000" />
       <workItem from="1734869356400" duration="4252000" />
       <workItem from="1734873757436" duration="10197000" />
-      <workItem from="1734999152971" duration="8115000" />
+      <workItem from="1734999152971" duration="8697000" />
+      <workItem from="1735010106201" duration="181000" />
+      <workItem from="1735030219845" duration="4517000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -244,7 +246,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734883950721</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="复制粘贴了一下DHT11的代码，但是会报错">
+      <option name="closed" value="true" />
+      <created>1735008030994</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1735008030994</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -256,6 +266,21 @@
     <isAutomaticReloadCMake value="true" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -266,7 +291,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="ZQ" />
+                        <option value="YU" />
                       </list>
                     </value>
                   </entry>
@@ -291,7 +316,8 @@
     <MESSAGE value="触摸功能完全实现" />
     <MESSAGE value="蜂鸣器调试成功" />
     <MESSAGE value="LED灯调试成功" />
-    <option name="LAST_COMMIT_MESSAGE" value="LED灯调试成功" />
+    <MESSAGE value="复制粘贴了一下DHT11的代码，但是会报错" />
+    <option name="LAST_COMMIT_MESSAGE" value="复制粘贴了一下DHT11的代码，但是会报错" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

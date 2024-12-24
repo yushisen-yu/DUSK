@@ -13,7 +13,7 @@ extern "C" {
 void DHT11_init();
 
 //bool DHT11_Read_Data(float &temp,float &humi);
-bool DHT11_Read_Data_Fast_Pro(float &temp, float &humi);//自定义的快速读取函数
+unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi);//自定义的快速读取函数
 
 #ifdef __cplusplus
 }

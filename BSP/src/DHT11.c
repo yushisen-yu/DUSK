@@ -5,7 +5,6 @@
 #include "DHT11.h"
 #include "stm32f4xx_hal.h"
 #include "delay.h"
-#include "stdbool.h"
 
 
 #define DHT11_Pin GPIO_PIN_6
@@ -47,43 +46,43 @@
 //}
 inline void std_delay_25us()
 {
-  for (uint16_t i = 0; i < 20; ++i)//单个任务时，大概为273
-    ;
+    for (uint16_t i = 0; i < 20; ++i)//单个任务时，大概为273
+        ;
 }
 
 
 void DHT11_Init()
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  DHT11_GPIO_CLK_ENABLE();
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    DHT11_GPIO_CLK_ENABLE();
 
-  GPIO_InitStruct.Pin = DHT11_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  //    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;//输入模式下，最好不要配置速度，所以为了兼容输入就不配置了，即默认2MHz
-  HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);
-  DHT11_High();
+    GPIO_InitStruct.Pin = DHT11_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    //    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;//输入模式下，最好不要配置速度，所以为了兼容输入就不配置了，即默认2MHz
+    HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);
+    DHT11_High();
 }
 
-
+// 不需要很精确的延时
 inline void DHT11_Rst()
 {
-  DHT11_OUT();
-  DHT11_Low();
-  delay_us(30)//根据时序图可知，需要至少拉低18ms
-  DHT11_High();
-  std_delay_25us();//20-40us
+    DHT11_OUT();
+    DHT11_Low();
+    delay_us(30);//根据时序图可知，需要至少拉低18ms
+    DHT11_High();
+    std_delay_25us();//20-40us
 }
 
 inline void DHT11_Check()
 {
-  DHT11_IN();
-  //等待低电平
-  DHT11_Wait_Low();
-  //等待高电平
-  DHT11_Wait_High();
-  // 等待低电平
-  DHT11_Wait_Low();
+    DHT11_IN();
+    //等待低电平
+    DHT11_Wait_Low();
+    //等待高电平
+    DHT11_Wait_High();
+    // 等待低电平
+    DHT11_Wait_Low();
 }
 
 #if USE_YZHX == 0
@@ -144,70 +143,78 @@ static uint8_t timeBufIndex = 0;
 //    }
 //}
 
-bool DHT11_Read_Data_Fast_Pro( float &temp, float &humi)
+unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
 {
-static uint8_t buf[5];
+    static uint8_t buf[5];
+    uint16_t time_count;
+    DHT11_Rst();  // 设置输出模式
+    DHT11_Check();// 设置输入模式
 
-DHT11_Rst();  // 设置输出模式
-DHT11_Check();// 设置输入模式
+    timeBufIndex = 0;          // 重置计数值索引
+    for (int i = 0; i < 40; i++)// 读取40位数据
+    {
+        // DHT11_Read_Byte_Fast_Pro();
+        // 读取一字节
+        for (uint8_t j = 0; j < 8; j++)
+        {
+            DHT11_Wait_High();// 等待变高电平
 
-timeBufIndex = 0;          // 重置计数值索引
-for (unsigned char &i: buf)// 读取40位数据
-{
-//        DHT11_Read_Byte_Fast_Pro();
-//读取一字节
-for (uint8_t j = 0; j < 8; j++)
-{
-DHT11_Wait_High();// 等待变高电平
+            // 开始读数据
 
-// 开始读数据
-uint16_t time_count = 0;
-for (; DHT11_Read() && time_count < DHT11_MAX_DELAY_COUNT; ++time_count) {}
-if (time_count >= DHT11_MAX_DELAY_COUNT)
-{
-return false;
-}
+            for (time_count=0; DHT11_Read() && time_count < DHT11_MAX_DELAY_COUNT; ++time_count)
+            {
+                // 防止卡死
+                if (time_count >= DHT11_MAX_DELAY_COUNT)
+                {
+                    return 0;
+                }
+            }
 
-timeBuf[timeBufIndex++] = time_count >> 4;// 存储计数值,由于事先已经知道一个为875，一个为275左右，所以除以16
-}
-}
+            timeBuf[timeBufIndex++] = time_count >> 4;// 存储计数值,由于事先已经知道一个为875，一个为275左右，所以除以16
+        }
+    }
 
 //    std_delay_25us();
 //    std_delay_25us();
 //    DHT11_OUT();
 //    DHT11_High();
 
-uint16_t timeMax = 0;
-uint16_t timeMin = 0xFFFF;
-for (unsigned short i: timeBuf)
-{
-if (i > timeMax) timeMax = i;
-if (i < timeMin) timeMin = i;
+    /***********************对存储的时间计数进行判断*********************/
+    // 找出最大值和最小值
+    uint16_t timeMax = 0;
+    uint16_t timeMin = 0xFFFF;
+    for (int i = 0; i < 40; i++)
+    {
+        if (i > timeMax) timeMax = i;
+        if (i < timeMin) timeMin = i;
+    }
+
+    // 取中位数
+    uint16_t timeMed = (timeMax + timeMin) >> 1;
+    for (uint8_t i = 0; i < 5; ++i)
+    {
+        // 对保存的时间计数进行判断，大于中位数为1，小于中位数为0
+        uint8_t data = 0;
+        for (uint8_t j = 0; j < 8; j++)
+        {
+            data <<= 1;
+            data |= (timeBuf[i * 8 + j] > timeMed);
+        }
+        buf[i] = data;// 存储数据
+    }
+
+    // 对数据进行校验，然后进行合成处理，得出温湿度
+    if ((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
+    {
+        *humi = (float) (buf[0] * 10 + buf[1]) / 10.0f;
+        *temp = (float) (buf[2] * 10 + buf[3]) / 10.0f;
+        return 1;
+    } else
+    {
+        return 0;
+    }
 }
 
-uint16_t timeMed = (timeMax + timeMin) >> 1;// 取中位数
-for (uint8_t i = 0; i < 5; ++i)
-{
-uint8_t data = 0;
-for (uint8_t j = 0; j < 8; j++)
-{
-data <<= 1;
-data |= (timeBuf[i * 8 + j] > timeMed);
-}
-buf[i] = data;// 存储数据
-}
-
-if ((buf[0] + buf[1] + buf[2] + buf[3]) == buf[4])
-{
-humi = (buf[0] * 10 + buf[1]) / 10.0f;
-temp = (buf[2] * 10 + buf[3]) / 10.0f;
-return true;
-}
-else
-{
-return false;
-}
-}
 #endif
 
 #if USE_YZHX == 2

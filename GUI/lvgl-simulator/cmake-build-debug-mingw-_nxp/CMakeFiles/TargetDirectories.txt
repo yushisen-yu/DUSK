@@ -1,0 +1,8 @@
+D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/liblvgl.dir
+D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libdriver.dir
+D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/librender.dir
+D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir
+D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/Simulator.dir
+D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/copy_libs.dir
+D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/edit_cache.dir
+D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/rebuild_cache.dir

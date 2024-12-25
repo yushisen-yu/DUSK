@@ -1,0 +1,105 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Simulator",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Simulator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Simulator-Debug-861c29785bfcfb3ee39a.json",
+					"name" : "Simulator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "copy_libs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-copy_libs-Debug-ba5e8b497507b7c03c43.json",
+					"name" : "copy_libs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "libdriver::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-libdriver-Debug-d0990030085b6788f82a.json",
+					"name" : "libdriver",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "libgui::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-libgui-Debug-ac39df304e02b1a94a74.json",
+					"name" : "libgui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "liblvgl::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-liblvgl-Debug-8f92183ec7a850cbbe1d.json",
+					"name" : "liblvgl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "librender::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-librender-Debug-e0a5af410e9c4adb3960.json",
+					"name" : "librender",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp",
+		"source" : "D:/EDA/MCU/STM32F407VET6/GUI/lvgl-simulator"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

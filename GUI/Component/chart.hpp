@@ -44,6 +44,10 @@ public:
     /*初始化器*/
     static inline auto init(Obj chart, Coord x_offset, Coord y_offset, Coord w, Coord h,uint16_t point_cnt=128, bool is_grad = true) -> void;
 
+//    设置记号和标签
+    static inline auto
+  set_axis_tick(lv_obj_t * obj, lv_chart_axis_t axis, lv_coord_t major_len, lv_coord_t minor_len,
+                              lv_coord_t major_cnt, lv_coord_t minor_cnt, bool label_en, lv_coord_t draw_size);
 
 };
 
@@ -93,7 +97,6 @@ auto Chart::remove_dot() -> void
 {
     set_style_size(0, LV_PART_INDICATOR);
 }
-
 
 /**
  * @brief 设置图表的网格线数量
@@ -152,3 +155,10 @@ auto Chart::init(Obj chart, Coord x_offset, Coord y_offset, Coord w, Coord h, ui
 
 
 #endif //SIMULATOR_CHART_HPP
+
+
+//设置记号和标签
+auto Chart::set_axis_tick(lv_obj_t * obj, lv_chart_axis_t axis, lv_coord_t major_len, lv_coord_t minor_len,lv_coord_t major_cnt, lv_coord_t minor_cnt, bool label_en, lv_coord_t draw_size)
+{
+    lv_chart_set_axis_tick(obj, axis, major_len, minor_len, major_cnt, minor_cnt, label_en, draw_size);
+}

@@ -1,0 +1,134 @@
+{
+	"kind" : "toolchains",
+	"toolchains" : 
+	[
+		{
+			"compiler" : 
+			{
+				"id" : "GNU",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0/include",
+						"D:/Gui-Guider/environment/mingw/include",
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0/include-fixed"
+					],
+					"linkDirectories" : 
+					[
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0",
+						"D:/Gui-Guider/environment/mingw/lib/gcc",
+						"D:/Gui-Guider/environment/mingw/mingw32/lib",
+						"D:/Gui-Guider/environment/mingw/lib"
+					],
+					"linkFrameworkDirectories" : [],
+					"linkLibraries" : 
+					[
+						"mingw32",
+						"mingwex",
+						"gcc",
+						"moldname",
+						"advapi32",
+						"shell32",
+						"user32",
+						"kernel32",
+						"mingw32",
+						"mingwex",
+						"gcc",
+						"moldname"
+					]
+				},
+				"path" : "gcc",
+				"version" : "9.2.0"
+			},
+			"language" : "C",
+			"sourceFileExtensions" : 
+			[
+				"c",
+				"m"
+			]
+		},
+		{
+			"compiler" : 
+			{
+				"id" : "GNU",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0/include/c++",
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0/include/c++/mingw32",
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0/include/c++/backward",
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0/include",
+						"D:/Gui-Guider/environment/mingw/include",
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0/include-fixed"
+					],
+					"linkDirectories" : 
+					[
+						"D:/Gui-Guider/environment/mingw/lib/gcc/mingw32/9.2.0",
+						"D:/Gui-Guider/environment/mingw/lib/gcc",
+						"D:/Gui-Guider/environment/mingw/mingw32/lib",
+						"D:/Gui-Guider/environment/mingw/lib"
+					],
+					"linkFrameworkDirectories" : [],
+					"linkLibraries" : 
+					[
+						"stdc++",
+						"mingw32",
+						"mingwex",
+						"gcc_s",
+						"gcc",
+						"moldname",
+						"advapi32",
+						"shell32",
+						"user32",
+						"kernel32",
+						"mingw32",
+						"mingwex",
+						"gcc_s",
+						"gcc",
+						"moldname"
+					]
+				},
+				"path" : "g++",
+				"version" : "9.2.0"
+			},
+			"language" : "CXX",
+			"sourceFileExtensions" : 
+			[
+				"C",
+				"M",
+				"c++",
+				"cc",
+				"cpp",
+				"cxx",
+				"mm",
+				"mpp",
+				"CPP",
+				"ixx",
+				"cppm",
+				"ccm",
+				"cxxm",
+				"c++m"
+			]
+		},
+		{
+			"compiler" : 
+			{
+				"implicit" : {},
+				"path" : "D:/Gui-Guider/environment/mingw/bin/windres.exe"
+			},
+			"language" : "RC",
+			"sourceFileExtensions" : 
+			[
+				"rc",
+				"RC"
+			]
+		}
+	],
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}

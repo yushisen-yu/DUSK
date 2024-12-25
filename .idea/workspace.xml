@@ -32,10 +32,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="复制粘贴了一下DHT11的代码，但是会报错">
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="啥也没干，加了个初始化，单纯保存一下">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Component/chart.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Component/chart.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/lv_conf.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/lv_conf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stlink.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/stlink.cfg" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -89,7 +95,7 @@
   &quot;keyToString&quot;: {
     &quot;C/C++ 文件.main.cpp.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.Furina.elf.executor&quot;: &quot;Debug&quot;,
-    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Debug&quot;,
+    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -106,7 +112,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C/C++&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CPPToolchains&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -119,7 +125,7 @@
   </component>
   <component name="RunManager">
     <configuration name="Furina.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Furina" TARGET_NAME="Furina.elf" CONFIG_NAME="Debug-MinGW" version="1" RUN_TARGET_PROJECT_NAME="Furina" RUN_TARGET_NAME="Furina.elf">
-      <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="D:\EDA\MCU\STM32F407VET6\stlink.cfg" reset-type="INIT" download-type="UPDATED_ONLY">
+      <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="D:\EDA\MCU\STM32F407VET6\stlink.cfg" reset-type="RUN" download-type="UPDATED_ONLY">
         <debugger kind="GDB" isBundled="true" />
       </openocd>
       <method v="2">
@@ -148,7 +154,11 @@
       <workItem from="1734873757436" duration="10197000" />
       <workItem from="1734999152971" duration="8697000" />
       <workItem from="1735010106201" duration="181000" />
-      <workItem from="1735030219845" duration="4517000" />
+      <workItem from="1735030219845" duration="5679000" />
+      <workItem from="1735107953799" duration="2647000" />
+      <workItem from="1735110636067" duration="76000" />
+      <workItem from="1735110739995" duration="1000" />
+      <workItem from="1735110806217" duration="8453000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -254,7 +264,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735008030994</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="啥也没干，加了个初始化，单纯保存一下">
+      <option name="closed" value="true" />
+      <created>1735036785833</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1735036785834</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -317,7 +335,8 @@
     <MESSAGE value="蜂鸣器调试成功" />
     <MESSAGE value="LED灯调试成功" />
     <MESSAGE value="复制粘贴了一下DHT11的代码，但是会报错" />
-    <option name="LAST_COMMIT_MESSAGE" value="复制粘贴了一下DHT11的代码，但是会报错" />
+    <MESSAGE value="啥也没干，加了个初始化，单纯保存一下" />
+    <option name="LAST_COMMIT_MESSAGE" value="啥也没干，加了个初始化，单纯保存一下" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

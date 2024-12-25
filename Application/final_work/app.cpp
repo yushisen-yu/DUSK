@@ -21,7 +21,7 @@ void app_init()
 {
   beep_init();
   led_init();
-  DHT11_Init();
+//  DHT11_Init();
 }
 
 int16_t x, y;

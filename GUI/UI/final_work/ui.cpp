@@ -11,6 +11,8 @@
 lv_chart_series_t *temp;
 lv_chart_series_t *humi;
 LV_Timer timer;
+lv_chart_cursor_t* cursor;
+lv_point_t point = {0, 100};
 
 auto Screen::init() -> void {
   Component::set_parent(gui->main.screen);
@@ -19,24 +21,29 @@ auto Screen::init() -> void {
   Button button;
   button.init_font(&lv_customer_font_SourceHanSerifSC_Regular_15);
   button.init(gui->main.btn_test, gui->main.btn_test_label, 100, 600, 100, 100, "蜂鸣器");
-
   button.init(gui->main.btn_led, gui->main.btn_led_label, 250, 600, 100, 100, "灯光");
+  button.init(gui->main.btn_DHT11_value, gui->main.btn_DHT11_value_label, 0, 160, 80, 80, "温湿度");
+  button.init(gui->main.btn_DCMotor,gui->main.btn_DCMotor_label, 100, 450, 100, 100, "拉窗帘/开空调");
+  button.init(gui->main.btn_DHT11_settemp, gui->main.btn_DHT11_settemp_label, 250, 450, 100, 100, "设定温度阈值");
 
-  button.init(gui->main.btn_DHT11_value, gui->main.btn_DHT11_value_label, 0, 100, 80, 80, "温湿度");
-
-  Chart::init(gui->main.chart_DHT11_temp, 50, -300, 360, 100, 64);
+  Chart::init(gui->main.chart_DHT11_temp, 50, -300, 360, 200, 64);
   Chart::set_range(0, 100);
   Chart::set_div_count(5,7);
   Chart::set_axis_tick(gui->main.chart_DHT11_temp, LV_CHART_AXIS_PRIMARY_Y, 5, 3, 4, 2, true, 40);
+  Chart::add_series(temp, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
+  Chart::add_cursor(gui->main.chart_DHT11_temp, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT,cursor);
+  Chart::set_cursor_pos(gui->main.chart_DHT11_temp, cursor, &point);
 
-
-  Chart::init(gui->main.chart_DHT11_humi, 50, -200, 360, 100, 64);
+  Chart::init(gui->main.chart_DHT11_humi, 50, -100, 360, 200, 64);
   Chart::set_range(0, 100);
   Chart::set_div_count(5,7);
   Chart::set_axis_tick(gui->main.chart_DHT11_humi, LV_CHART_AXIS_PRIMARY_Y, 5, 3, 4, 2, true, 40);
+  Chart::add_series(humi, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
+  Chart::add_cursor(gui->main.chart_DHT11_humi, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT,cursor);
+  Chart::set_cursor_pos(gui->main.chart_DHT11_humi, cursor, &point);
 
-  temp = lv_chart_add_series(gui->main.chart_DHT11_temp, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
-  humi = lv_chart_add_series(gui->main.chart_DHT11_humi, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
+//暂定，还没有弄出来，好像是少了一个增加滚动条的函数，找不到？？？
+  Chart::set_style_bg_color(gui->main.chart_DHT11_temp, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 //  Chart::set_next_value(temp, 0, gui->main.chart_DHT11_1);
 
 //  Chart::init(gui->main.chart_DHT11,0,-190,460,100,128);
@@ -50,6 +57,8 @@ auto Events::init() -> void {
                    Chart::set_next_value(temp, lv_tick_get() & 0x3F, gui->main.chart_DHT11_temp);
                    Chart::set_next_value(humi, lv_tick_get() & 0x3F, gui->main.chart_DHT11_humi);
       ),100);
+
+
 
 
 
@@ -106,5 +115,8 @@ auto Events::init() -> void {
          }
        }
   );
+
+
+
 
 }

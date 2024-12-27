@@ -46,9 +46,21 @@ public:
 
 //    设置记号和标签
     static inline auto
-  set_axis_tick(lv_obj_t * obj, lv_chart_axis_t axis, lv_coord_t major_len, lv_coord_t minor_len,
+    set_axis_tick(lv_obj_t * obj, lv_chart_axis_t axis, lv_coord_t major_len, lv_coord_t minor_len,
                               lv_coord_t major_cnt, lv_coord_t minor_cnt, bool label_en, lv_coord_t draw_size);
 
+
+//    添加光标
+    static inline auto
+    add_cursor(lv_obj_t * obj, lv_color_t color,lv_dir_t dir,lv_chart_cursor_t*&cursor);
+
+//  设置光标位置
+    static inline auto
+    set_cursor_pos(lv_obj_t * chart, lv_chart_cursor_t * cursor, lv_point_t * pos);
+
+//    设置滚动条颜色
+static inline auto
+  set_style_bg_color(lv_obj_t * chart, lv_color_t color, lv_style_selector_t selector);
 };
 
 // 初始化图表
@@ -161,4 +173,23 @@ auto Chart::init(Obj chart, Coord x_offset, Coord y_offset, Coord w, Coord h, ui
 auto Chart::set_axis_tick(lv_obj_t * obj, lv_chart_axis_t axis, lv_coord_t major_len, lv_coord_t minor_len,lv_coord_t major_cnt, lv_coord_t minor_cnt, bool label_en, lv_coord_t draw_size)
 {
     lv_chart_set_axis_tick(obj, axis, major_len, minor_len, major_cnt, minor_cnt, label_en, draw_size);
+}
+
+
+//增加光标
+auto Chart::add_cursor(lv_obj_t * obj, lv_color_t color,lv_dir_t dir,lv_chart_cursor_t*&cursor)
+{
+  cursor=lv_chart_add_cursor(obj, color, dir);
+}
+
+//设置光标位置
+auto Chart::set_cursor_pos(lv_obj_t * chart, lv_chart_cursor_t * cursor, lv_point_t * pos)
+{
+    lv_chart_set_cursor_pos(chart, cursor, pos);
+}
+
+//设置滚动条颜色
+auto Chart::set_style_bg_color(lv_obj_t * chart, lv_color_t color, lv_style_selector_t selector)
+{
+  lv_obj_set_style_bg_color(chart, color, selector);
 }

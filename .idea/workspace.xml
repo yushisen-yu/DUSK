@@ -33,14 +33,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="啥也没干，加了个初始化，单纯保存一下">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/Component/chart.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Component/chart.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/lv_conf.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/lv_conf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/Simulator.dir/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/Simulator.dir/main.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/Base/GUI.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/Base/GUI.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/Component/component.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/Component/component.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/Events/events.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/Events/events.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/UI/final_work/ui.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/UI/final_work/ui.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/UI/test.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/CMakeFiles/libgui.dir/D_/EDA/MCU/STM32F407VET6/GUI/UI/test.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/build/bin/Simulator.exe" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/build/bin/Simulator.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/build/lib/liblibgui.a" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/lvgl-simulator/cmake-build-debug-mingw-_nxp/build/lib/liblibgui.a" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stlink.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/stlink.cfg" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
@@ -51,6 +59,22 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="EmbeddedSvdWindowState">
+    <option name="columnWidths">
+      <list>
+        <option value="212" />
+        <option value="92" />
+        <option value="1007" />
+      </list>
+    </option>
+    <option name="columnOrder">
+      <list>
+        <option value="名称" />
+        <option value="值" />
+        <option value="描述" />
+      </list>
+    </option>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-MinGW" />
   <component name="Git.Settings">
@@ -73,6 +97,9 @@
     &quot;accountId&quot;: &quot;c9055145-0301-4fcb-acb5-2b8fc4b98fbb&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/stlink.cfg" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2024" />
@@ -95,7 +122,7 @@
   &quot;keyToString&quot;: {
     &quot;C/C++ 文件.main.cpp.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.Furina.elf.executor&quot;: &quot;Debug&quot;,
-    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Run&quot;,
+    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -158,7 +185,13 @@
       <workItem from="1735107953799" duration="2647000" />
       <workItem from="1735110636067" duration="76000" />
       <workItem from="1735110739995" duration="1000" />
-      <workItem from="1735110806217" duration="8453000" />
+      <workItem from="1735110806217" duration="8571000" />
+      <workItem from="1735131020929" duration="1236000" />
+      <workItem from="1735194734275" duration="162000" />
+      <workItem from="1735195463119" duration="2641000" />
+      <workItem from="1735205959646" duration="493000" />
+      <workItem from="1735288573341" duration="708000" />
+      <workItem from="1735294297686" duration="1281000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />

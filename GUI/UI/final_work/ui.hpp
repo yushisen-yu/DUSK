@@ -12,14 +12,27 @@ struct lv_ui_t {
   // 主屏幕
   struct {
     Obj screen;// 屏幕自身
+
     Obj btn_test;// 测试按钮
     Obj btn_test_label;// 测试按钮
+
     Obj btn_led;
     Obj btn_led_label;// 灯光按钮
+
+    Obj btn_DCMotor;
+    Obj btn_DCMotor_label;
+
+    Obj btn_DHT11_settemp;
+    Obj btn_DHT11_settemp_label;
+
     Obj btn_DHT11_value;
-    Obj btn_DHT11_value_label;//去温湿度的值
+    Obj btn_DHT11_value_label;//取温湿度的值
     Obj chart_DHT11_temp;
     Obj chart_DHT11_humi;
+    Obj chart_DHT11_temp_label;
+    Obj chart_DHT11_humi_label;
+
+
 
   } main;
 

@@ -153,7 +153,7 @@ auto Events::init() -> void
 
                      if (flag2)
                      {
-                         DCMotor_forward();
+                         DCMotor_forward(1000);
                      }
                      else
                      {

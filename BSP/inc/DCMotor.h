@@ -11,9 +11,9 @@ extern "C" {
 
 void DCMotor_init();
 
-void DCMotor_forward();// 正转
+void DCMotor_forward(uint32_t speed);// 正转
 
-void DCMotor_reverse();// 反转
+void DCMotor_reverse(uint32_t speed);// 反转
 
 void DCMotor_stop();// 停止
 

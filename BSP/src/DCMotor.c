@@ -39,17 +39,19 @@ void DCMotor_init()
 }
 
 // 正转
-void DCMotor_forward()
+void DCMotor_forward(uint32_t speed)
 {
     DCMOTOR_A_L;
     DCMOTOR_B_H;
+    TIM10_PWM_SetCompare(speed);
 }
 
 // 反转
-void DCMotor_reverse()
+void DCMotor_reverse(uint32_t speed)
 {
     DCMOTOR_A_H;
     DCMOTOR_B_L;
+    TIM10_PWM_SetCompare(speed);
 }
 
 // 停止

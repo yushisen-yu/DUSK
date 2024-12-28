@@ -32,13 +32,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="补充了DCMotor驱动的细节，正转反转的高低电平控制与TIM10复用的引脚有所冲突，未经测试">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/lv_customer_font_SourceHanSerifSC_Regular_15.c" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/lv_customer_font_SourceHanSerifSC_Regular_15.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
-    </list>
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="调整了一下UI" />
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +150,7 @@
       <workItem from="1734999152971" duration="8115000" />
       <workItem from="1735012976847" duration="22000" />
       <workItem from="1735394815080" duration="3146000" />
-      <workItem from="1735398007869" duration="3818000" />
+      <workItem from="1735398007869" duration="3922000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -278,7 +272,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735398298781</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="调整了一下UI">
+      <option name="closed" value="true" />
+      <created>1735406171252</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1735406171252</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -328,7 +330,8 @@
     <MESSAGE value="DHT11驱动由C++转为C，并且添加了若干注释" />
     <MESSAGE value="尝试写DCMotor驱动，但未经检验" />
     <MESSAGE value="补充了DCMotor驱动的细节，正转反转的高低电平控制与TIM10复用的引脚有所冲突，未经测试" />
-    <option name="LAST_COMMIT_MESSAGE" value="补充了DCMotor驱动的细节，正转反转的高低电平控制与TIM10复用的引脚有所冲突，未经测试" />
+    <MESSAGE value="调整了一下UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="调整了一下UI" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

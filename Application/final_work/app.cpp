@@ -14,14 +14,15 @@
 #include "beep.h"
 #include "led.h"
 #include "DHT11.h"
-
-
+#include "DCMotor.h"
 
 void app_init()
 {
   beep_init();
   led_init();
+  DCMotor_init();
 //  DHT11_Init();
+
 }
 
 int16_t x, y;

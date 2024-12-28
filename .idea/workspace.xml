@@ -32,9 +32,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="啥也没干，加了个初始化，单纯保存一下">
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="OK啊，昨天晚上的滚动条问题弄好了，但是直流电机一插上就开始转？？？">
+      <change afterPath="$PROJECT_DIR$/BSP/inc/DCMotor.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BSP/src/DCMotor.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Component/chart.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Component/chart.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/beep.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/beep.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/led.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/led.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
@@ -104,32 +108,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C/C++ 文件.main.cpp.executor": "Run",
-    "CMake 应用程序.Furina.elf.executor": "Debug",
-    "OpenOCD 下载并运行.Furina.elf.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "YU",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/EDA/MCU/STM32F407VET6",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CPPToolchains",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ 文件.main.cpp.executor&quot;: &quot;Run&quot;,
+    &quot;CMake 应用程序.Furina.elf.executor&quot;: &quot;Debug&quot;,
+    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;YU&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/EDA/MCU/STM32F407VET6&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CPPToolchains&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\EDA\MCU\STM32F407VET6\BSP\inc" />
@@ -137,6 +141,11 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Furina.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Furina" TARGET_NAME="Furina.elf" CONFIG_NAME="Debug-MinGW" version="1" RUN_TARGET_PROJECT_NAME="Furina" RUN_TARGET_NAME="Furina.elf">
       <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="D:\EDA\MCU\STM32F407VET6\stlink.cfg" reset-type="RUN" download-type="UPDATED_ONLY">
         <debugger kind="GDB" isBundled="true" />
@@ -178,7 +187,8 @@
       <workItem from="1735205959646" duration="493000" />
       <workItem from="1735288573341" duration="708000" />
       <workItem from="1735294297686" duration="1297000" />
-      <workItem from="1735374516557" duration="2494000" />
+      <workItem from="1735374516557" duration="2874000" />
+      <workItem from="1735377408096" duration="7498000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -292,7 +302,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735036785834</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="OK啊，昨天晚上的滚动条问题弄好了，但是直流电机一插上就开始转？？？">
+      <option name="closed" value="true" />
+      <created>1735377285255</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1735377285255</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -356,7 +374,8 @@
     <MESSAGE value="LED灯调试成功" />
     <MESSAGE value="复制粘贴了一下DHT11的代码，但是会报错" />
     <MESSAGE value="啥也没干，加了个初始化，单纯保存一下" />
-    <option name="LAST_COMMIT_MESSAGE" value="啥也没干，加了个初始化，单纯保存一下" />
+    <MESSAGE value="OK啊，昨天晚上的滚动条问题弄好了，但是直流电机一插上就开始转？？？" />
+    <option name="LAST_COMMIT_MESSAGE" value="OK啊，昨天晚上的滚动条问题弄好了，但是直流电机一插上就开始转？？？" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

@@ -18,7 +18,7 @@ void beep_init()
     GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStructure.Pull = GPIO_PULLDOWN;
     HAL_GPIO_Init(BEEP_PORT, &GPIO_InitStructure);
-
+  HAL_GPIO_WritePin(BEEP_PORT, BEEP_PIN, GPIO_PIN_RESET);
 
 
 }

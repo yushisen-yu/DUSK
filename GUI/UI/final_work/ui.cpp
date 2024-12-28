@@ -7,6 +7,7 @@
 #ifdef GUI_ENABLE
 #include "beep.h"
 #include "led.h"
+#include "DCMotor.h"
 #endif
 lv_chart_series_t *temp;
 lv_chart_series_t *humi;
@@ -121,6 +122,24 @@ auto Events::init() -> void {
        }
   );
 
+
+
+  bond(gui->main.btn_DCMotor, [](event e) {
+         static volatile bool flag2 = false;
+         switch (lv_event_get_code(e)) {
+           case LV_EVENT_CLICKED:flag2 = !flag2;
+
+             if (flag2) {
+               DCMotor_start();
+             } else {
+               DCMotor_stop();
+             }
+             break;
+           default:break;
+
+         }
+       }
+  );
 
 
 

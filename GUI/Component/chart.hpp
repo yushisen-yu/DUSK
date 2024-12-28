@@ -61,6 +61,12 @@ public:
 //    设置滚动条颜色
 static inline auto
   set_style_bg_color(lv_obj_t * chart, lv_color_t color, lv_style_selector_t selector);
+
+//添加缩放
+static inline auto
+  set_zoom_x_y(lv_obj_t * obj, uint16_t zoom_x,uint16_t zoom_y);
+
+
 };
 
 // 初始化图表
@@ -192,4 +198,11 @@ auto Chart::set_cursor_pos(lv_obj_t * chart, lv_chart_cursor_t * cursor, lv_poin
 auto Chart::set_style_bg_color(lv_obj_t * chart, lv_color_t color, lv_style_selector_t selector)
 {
   lv_obj_set_style_bg_color(chart, color, selector);
+}
+
+//添加缩放
+auto Chart::set_zoom_x_y(lv_obj_t * obj, uint16_t zoom_x,uint16_t zoom_y)
+{
+  lv_chart_set_zoom_x(obj, zoom_x);
+  lv_chart_set_zoom_y(obj, zoom_y);
 }

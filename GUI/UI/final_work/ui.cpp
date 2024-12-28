@@ -33,17 +33,22 @@ auto Screen::init() -> void {
   Chart::add_series(temp, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
   Chart::add_cursor(gui->main.chart_DHT11_temp, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT,cursor);
   Chart::set_cursor_pos(gui->main.chart_DHT11_temp, cursor, &point);
+  Chart::set_zoom_x_y(gui->main.chart_DHT11_temp,512,512);
+  Chart::set_style_bg_color(gui->main.chart_DHT11_temp, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
-  Chart::init(gui->main.chart_DHT11_humi, 50, -100, 360, 200, 64);
+
+  Chart::init(gui->main.chart_DHT11_humi, 50, -90, 360, 200, 64);
   Chart::set_range(0, 100);
   Chart::set_div_count(5,7);
   Chart::set_axis_tick(gui->main.chart_DHT11_humi, LV_CHART_AXIS_PRIMARY_Y, 5, 3, 4, 2, true, 40);
   Chart::add_series(humi, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
   Chart::add_cursor(gui->main.chart_DHT11_humi, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT,cursor);
   Chart::set_cursor_pos(gui->main.chart_DHT11_humi, cursor, &point);
+  Chart::set_zoom_x_y(gui->main.chart_DHT11_humi,512,512);
+  Chart::set_style_bg_color(gui->main.chart_DHT11_humi, lv_palette_main(LV_PALETTE_PINK), LV_PART_SCROLLBAR);
 
-//暂定，还没有弄出来，好像是少了一个增加滚动条的函数，找不到？？？
-  Chart::set_style_bg_color(gui->main.chart_DHT11_temp, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
+
+
 //  Chart::set_next_value(temp, 0, gui->main.chart_DHT11_1);
 
 //  Chart::init(gui->main.chart_DHT11,0,-190,460,100,128);

@@ -12,11 +12,15 @@
 #include "DCMotor.h"
 
 #endif
-lv_chart_series_t *temp;
-lv_chart_series_t *humi;
+lv_chart_series_t *chart_series_temp;
+lv_chart_series_t *chart_series_humi;
 LV_Timer timer;
 lv_chart_cursor_t *cursor;
 lv_point_t point = {0, 100};
+
+
+//#87CEEB
+//#FF7F50
 
 auto Screen::init() -> void
 {
@@ -25,33 +29,39 @@ auto Screen::init() -> void
     // 按钮初始化
     Button button;
     button.init_font(&lv_customer_font_SourceHanSerifSC_Regular_15);
-    button.init(gui->main.btn_test, gui->main.btn_test_label, 100, 600, 100, 100, "蜂鸣器");
-    button.init(gui->main.btn_led, gui->main.btn_led_label, 250, 600, 100, 100, "灯光");
-    button.init(gui->main.btn_DHT11_value, gui->main.btn_DHT11_value_label, 0, 160, 80, 80, "温湿度");
-    button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 100, 450, 100, 100, "拉窗帘/开空调");
-    button.init(gui->main.btn_DHT11_settemp, gui->main.btn_DHT11_settemp_label, 250, 450, 100, 100, "设定温度阈值");
 
-    Chart::init(gui->main.chart_DHT11_temp, 50, -300, 360, 200, 64);
+    ImageButton::init(gui->main.imgbtn_led,150, 330, 80, 80,&_led_off_c_alpha_80x80, &_led_on_c_alpha_80x80);
+    ImageButton::init(gui->main.imgbtn_DHT11_value,50, 340, 60, 60,&_temp_humi2_alpha_60x60, &_temp_humi_other2_alpha_60x60);
+
+
+    button.init(gui->main.btn_test, gui->main.btn_test_label, 100, 620, 100, 100, "蜂鸣器");
+    button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 100, 470, 100, 100, "拉窗帘/开空调");
+    button.init(gui->main.btn_DHT11_settemp, gui->main.btn_DHT11_settemp_label, 250, 470, 100, 100, "设定温度阈值");
+
+    Chart::init(gui->main.chart_DHT11_temp_humi, 10, -240, 400, 280, 64);
     Chart::set_range(0, 100);
     Chart::set_div_count(5, 7);
-    Chart::set_axis_tick(gui->main.chart_DHT11_temp, LV_CHART_AXIS_PRIMARY_Y, 5, 3, 4, 2, true, 40);
-    Chart::add_series(temp, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
-    Chart::add_cursor(gui->main.chart_DHT11_temp, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT, cursor);
-    Chart::set_cursor_pos(gui->main.chart_DHT11_temp, cursor, &point);
-    Chart::set_zoom_x_y(gui->main.chart_DHT11_temp, 512, 512);
-    Chart::set_style_bg_color(gui->main.chart_DHT11_temp, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
+    Chart::set_axis_tick(gui->main.chart_DHT11_temp_humi, LV_CHART_AXIS_PRIMARY_Y, 5, 3, 4, 2, true, 40);
+    // 添加数据
+
+    Chart::add_series(chart_series_temp, lv_color_hex(0x30C0D0), LV_CHART_AXIS_PRIMARY_Y);
+    Chart::add_series(chart_series_humi, lv_color_hex(0xC678DD), LV_CHART_AXIS_PRIMARY_Y);
+    Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT, cursor);
+    Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &point);
+    Chart::set_zoom_x_y(gui->main.chart_DHT11_temp_humi, 512, 512);
+    Chart::set_style_bg_color(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
 
-    Chart::init(gui->main.chart_DHT11_humi, 50, -90, 360, 200, 64);
-    Chart::set_range(0, 100);
-    Chart::set_div_count(5, 7);
-    Chart::set_axis_tick(gui->main.chart_DHT11_humi, LV_CHART_AXIS_PRIMARY_Y, 5, 3, 4, 2, true, 40);
-    Chart::add_series(humi, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
-    Chart::add_cursor(gui->main.chart_DHT11_humi, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT, cursor);
-    Chart::set_cursor_pos(gui->main.chart_DHT11_humi, cursor, &point);
-    Chart::set_zoom_x_y(gui->main.chart_DHT11_humi, 512, 512);
-    Chart::set_style_bg_color(gui->main.chart_DHT11_humi, lv_palette_main(LV_PALETTE_PINK), LV_PART_SCROLLBAR);
-
+//    Chart::init(gui->main.chart_DHT11_humi, 50, -90, 360, 200, 64);
+//    Chart::set_range(0, 100);
+//    Chart::set_div_count(5, 7);
+//    Chart::set_axis_tick(gui->main.chart_DHT11_humi, LV_CHART_AXIS_PRIMARY_Y, 5, 3, 4, 2, true, 40);
+//    Chart::add_series(humi, lv_color_hex(0), LV_CHART_AXIS_PRIMARY_Y);
+//    Chart::add_cursor(gui->main.chart_DHT11_humi, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT, cursor);
+//    Chart::set_cursor_pos(gui->main.chart_DHT11_humi, cursor, &point);
+//    Chart::set_zoom_x_y(gui->main.chart_DHT11_humi, 512, 512);
+//    Chart::set_style_bg_color(gui->main.chart_DHT11_humi, lv_palette_main(LV_PALETTE_PINK), LV_PART_SCROLLBAR);
+//
 
 
 //  Chart::set_next_value(temp, 0, gui->main.chart_DHT11_1);
@@ -65,8 +75,8 @@ auto Events::init() -> void
 // lambda匿名
 
     timer.create(timer_fun(
-                         Chart::set_next_value(temp, lv_tick_get() & 0x3F, gui->main.chart_DHT11_temp);
-                         Chart::set_next_value(humi, lv_tick_get() & 0x3F, gui->main.chart_DHT11_humi);
+            UI::add_temp_data( lv_tick_get() & 0x3F);
+            UI::add_humi_data( lv_tick_get() / 3 & 0x3F);
                  ), 100);
 
 
@@ -90,7 +100,7 @@ auto Events::init() -> void
             }
     ));
 
-    bond(gui->main.btn_led, [](event e)
+    bond(gui->main.imgbtn_led, [](event e)
          {
              static volatile bool flag2 = false;
              switch (lv_event_get_code(e))
@@ -118,7 +128,7 @@ auto Events::init() -> void
          }
     );
 
-    bond(gui->main.btn_DHT11_value, [](event e)
+    bond(gui->main.imgbtn_DHT11_value, [](event e)
          {
              static volatile bool flag2 = false;
              switch (lv_event_get_code(e))
@@ -153,11 +163,15 @@ auto Events::init() -> void
 
                      if (flag2)
                      {
+#ifdef GUI_ENABLE
                          DCMotor_forward(1000);
+#endif
                      }
                      else
                      {
+#ifdef GUI_ENABLE
                          DCMotor_stop();
+#endif
                      }
                      break;
                  default:
@@ -168,4 +182,18 @@ auto Events::init() -> void
     );
 
 
+}
+
+
+
+// 添加温度数据
+auto UI::add_temp_data(auto temp) -> void
+{
+    Chart::set_next_value(chart_series_temp, temp, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
+}
+
+// 添加湿度数据
+auto UI::add_humi_data(auto humi) -> void
+{
+    Chart::set_next_value(chart_series_humi, humi, GUI_Base::get_ui()->main.chart_DHT11_humi);
 }

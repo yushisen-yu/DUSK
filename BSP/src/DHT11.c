@@ -155,12 +155,11 @@ unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
     {
         // DHT11_Read_Byte_Fast_Pro();
         // 读取一字节
-        for (uint8_t j = 0; j < 8; j++)
+        for (int j = 0; j < 8; j++)
         {
             DHT11_Wait_High();// 等待变高电平
 
             // 开始读数据
-
             for (time_count=0; DHT11_Read() && time_count < DHT11_MAX_DELAY_COUNT; ++time_count)
             {
                 // 防止卡死

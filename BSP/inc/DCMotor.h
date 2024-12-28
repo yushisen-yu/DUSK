@@ -11,9 +11,12 @@ extern "C" {
 
 void DCMotor_init();
 
-void DCMotor_start();
+void DCMotor_forward();// 正转
 
-void DCMotor_stop();
+void DCMotor_reverse();// 反转
+
+void DCMotor_stop();// 停止
+
 
 #ifdef __cplusplus
 }

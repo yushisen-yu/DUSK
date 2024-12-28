@@ -4,31 +4,57 @@
 
 #include "stm32f4xx_hal.h"
 #include "DCMotor.h"
+#include "PWM.h"
 
+#define DCMOTOR_A_PIN GPIO_PIN_8
+#define DCMOTOR_B_PIN GPIO_PIN_9
+#define DCMOTOR_PORT GPIOB
 
-#define DCMoter_PIN GPIO_PIN_8
-#define DCMoter_PORT GPIOB
+//MOTOR_A   PB8 反转
+#define    DCMOTOR_A_L         HAL_GPIO_WritePin(DCMOTOR_PORT, DCMOTOR_A_PIN, GPIO_PIN_RESET)
+#define    DCMOTOR_A_H         HAL_GPIO_WritePin(DCMOTOR_PORT, DCMOTOR_A_PIN, GPIO_PIN_SET)
+
+//MOTOR_B   PB9 正转
+#define    DCMOTOR_B_L         HAL_GPIO_WritePin(DCMOTOR_PORT, DCMOTOR_B_PIN, GPIO_PIN_RESET)
+#define    DCMOTOR_B_H         HAL_GPIO_WritePin(DCMOTOR_PORT, DCMOTOR_B_PIN, GPIO_PIN_SET)
 
 void DCMotor_init()
 {
-    GPIO_InitTypeDef GPIO_InitStructure= {0};
+    GPIO_InitTypeDef GPIO_InitStructure = {0};
     __HAL_RCC_GPIOB_CLK_ENABLE();
-//DCMOTOR_A正转     PC13
+    // DCMOTOR_A正转
 
-    GPIO_InitStructure.Pin = DCMoter_PIN;
+    GPIO_InitStructure.Pin =/*DCMOTOR_A_PIN|*/DCMOTOR_B_PIN;
     GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStructure.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(DCMoter_PORT, &GPIO_InitStructure);
-  HAL_GPIO_WritePin(DCMoter_PORT,DCMoter_PIN, GPIO_PIN_RESET);
+    HAL_GPIO_Init(DCMOTOR_PORT, &GPIO_InitStructure);
+
+    // 默认停止
+    /* DCMOTOR_A_L;*/
+    DCMOTOR_B_L;
+
+    TIM10_PWM_SetCompare(0);
+
 }
 
-void DCMotor_start()
+// 正转
+void DCMotor_forward()
 {
-  HAL_GPIO_WritePin(DCMoter_PORT,DCMoter_PIN, GPIO_PIN_SET);
+    DCMOTOR_A_L;
+    DCMOTOR_B_H;
 }
 
+// 反转
+void DCMotor_reverse()
+{
+    DCMOTOR_A_H;
+    DCMOTOR_B_L;
+}
+
+// 停止
 void DCMotor_stop()
 {
-  HAL_GPIO_WritePin(DCMoter_PORT,DCMoter_PIN, GPIO_PIN_RESET);
+    DCMOTOR_A_L;
+    DCMOTOR_B_L;
 }

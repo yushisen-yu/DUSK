@@ -32,13 +32,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="OK啊，昨天晚上的滚动条问题弄好了，但是直流电机一插上就开始转？？？">
-      <change afterPath="$PROJECT_DIR$/BSP/inc/DCMotor.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BSP/src/DCMotor.c" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="DHT11驱动由C++转为C，并且添加了若干注释">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BSP/src/beep.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/beep.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BSP/src/led.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/led.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/inc/DCMotor.h" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/inc/DCMotor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/DCMotor.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/DCMotor.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/DHT11.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/DHT11.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
@@ -49,22 +48,6 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
-  </component>
-  <component name="EmbeddedSvdWindowState">
-    <option name="columnWidths">
-      <list>
-        <option value="212" />
-        <option value="92" />
-        <option value="1007" />
-      </list>
-    </option>
-    <option name="columnOrder">
-      <list>
-        <option value="名称" />
-        <option value="值" />
-        <option value="描述" />
-      </list>
-    </option>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-MinGW" />
   <component name="Git.Settings">
@@ -83,13 +66,10 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/yushisen-yu/DUSK.git&quot;,
-    &quot;accountId&quot;: &quot;c9055145-0301-4fcb-acb5-2b8fc4b98fbb&quot;
+    &quot;url&quot;: &quot;https://github.com/yushisen-yu/DUSK&quot;,
+    &quot;accountId&quot;: &quot;a679c97f-91ee-40eb-8ce5-af8a944aaf79&quot;
   }
 }</component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/stlink.cfg" root0="SKIP_INSPECTION" />
-  </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2024" />
@@ -112,7 +92,7 @@
   &quot;keyToString&quot;: {
     &quot;C/C++ 文件.main.cpp.executor&quot;: &quot;Run&quot;,
     &quot;CMake 应用程序.Furina.elf.executor&quot;: &quot;Debug&quot;,
-    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Run&quot;,
+    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -121,7 +101,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;YU&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ZQ&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/EDA/MCU/STM32F407VET6&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -129,7 +109,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CPPToolchains&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.C/C++&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -141,13 +121,8 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Furina.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Furina" TARGET_NAME="Furina.elf" CONFIG_NAME="Debug-MinGW" version="1" RUN_TARGET_PROJECT_NAME="Furina" RUN_TARGET_NAME="Furina.elf">
-      <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="D:\EDA\MCU\STM32F407VET6\stlink.cfg" reset-type="RUN" download-type="UPDATED_ONLY">
+      <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="D:\EDA\MCU\STM32F407VET6\stlink.cfg" reset-type="INIT" download-type="UPDATED_ONLY">
         <debugger kind="GDB" isBundled="true" />
       </openocd>
       <method v="2">
@@ -174,21 +149,10 @@
       <workItem from="1734863389425" duration="79000" />
       <workItem from="1734869356400" duration="4252000" />
       <workItem from="1734873757436" duration="10197000" />
-      <workItem from="1734999152971" duration="8697000" />
-      <workItem from="1735010106201" duration="181000" />
-      <workItem from="1735030219845" duration="5679000" />
-      <workItem from="1735107953799" duration="2647000" />
-      <workItem from="1735110636067" duration="76000" />
-      <workItem from="1735110739995" duration="1000" />
-      <workItem from="1735110806217" duration="8571000" />
-      <workItem from="1735131020929" duration="1236000" />
-      <workItem from="1735194734275" duration="162000" />
-      <workItem from="1735195463119" duration="2641000" />
-      <workItem from="1735205959646" duration="493000" />
-      <workItem from="1735288573341" duration="708000" />
-      <workItem from="1735294297686" duration="1297000" />
-      <workItem from="1735374516557" duration="2874000" />
-      <workItem from="1735377408096" duration="7498000" />
+      <workItem from="1734999152971" duration="8115000" />
+      <workItem from="1735012976847" duration="22000" />
+      <workItem from="1735394815080" duration="3146000" />
+      <workItem from="1735398007869" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -286,31 +250,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734883950721</updated>
     </task>
-    <task id="LOCAL-00013" summary="复制粘贴了一下DHT11的代码，但是会报错">
+    <task id="LOCAL-00013" summary="DHT11驱动由C++转为C，并且添加了若干注释">
       <option name="closed" value="true" />
-      <created>1735008030994</created>
+      <created>1735009287597</created>
       <option name="number" value="00013" />
       <option name="presentableId" value="LOCAL-00013" />
       <option name="project" value="LOCAL" />
-      <updated>1735008030994</updated>
+      <updated>1735009287597</updated>
     </task>
-    <task id="LOCAL-00014" summary="啥也没干，加了个初始化，单纯保存一下">
-      <option name="closed" value="true" />
-      <created>1735036785833</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1735036785834</updated>
-    </task>
-    <task id="LOCAL-00015" summary="OK啊，昨天晚上的滚动条问题弄好了，但是直流电机一插上就开始转？？？">
-      <option name="closed" value="true" />
-      <created>1735377285255</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1735377285255</updated>
-    </task>
-    <option name="localTasksCounter" value="16" />
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -322,21 +270,6 @@
     <isAutomaticReloadCMake value="true" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="User">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="*" />
-                </option>
-              </RecentGroup>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -347,7 +280,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="YU" />
+                        <option value="ZQ" />
                       </list>
                     </value>
                   </entry>
@@ -372,10 +305,8 @@
     <MESSAGE value="触摸功能完全实现" />
     <MESSAGE value="蜂鸣器调试成功" />
     <MESSAGE value="LED灯调试成功" />
-    <MESSAGE value="复制粘贴了一下DHT11的代码，但是会报错" />
-    <MESSAGE value="啥也没干，加了个初始化，单纯保存一下" />
-    <MESSAGE value="OK啊，昨天晚上的滚动条问题弄好了，但是直流电机一插上就开始转？？？" />
-    <option name="LAST_COMMIT_MESSAGE" value="OK啊，昨天晚上的滚动条问题弄好了，但是直流电机一插上就开始转？？？" />
+    <MESSAGE value="DHT11驱动由C++转为C，并且添加了若干注释" />
+    <option name="LAST_COMMIT_MESSAGE" value="DHT11驱动由C++转为C，并且添加了若干注释" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

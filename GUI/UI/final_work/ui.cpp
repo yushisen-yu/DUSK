@@ -48,7 +48,7 @@ auto Screen::init() -> void
     Chart::add_series(chart_series_humi, lv_color_hex(0xC678DD), LV_CHART_AXIS_PRIMARY_Y);
     Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT, cursor);
     Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &point);
-    Chart::set_zoom_x_y(gui->main.chart_DHT11_temp_humi, 512, 512);
+    Chart::set_zoom_x(gui->main.chart_DHT11_temp_humi, 512);
     Chart::set_style_bg_color(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
 
@@ -164,13 +164,15 @@ auto Events::init() -> void
                      if (flag2)
                      {
 #ifdef GUI_ENABLE
-                         DCMotor_forward(1000);
+                         DCMotor_forward(0);
+
 #endif
                      }
                      else
                      {
 #ifdef GUI_ENABLE
-                         DCMotor_stop();
+                       DCMotor_forward(1000);
+//                       DCMotor_stop();
 #endif
                      }
                      break;

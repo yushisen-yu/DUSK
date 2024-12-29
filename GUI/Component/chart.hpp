@@ -64,7 +64,7 @@ static inline auto
 
 //添加缩放
 static inline auto
-  set_zoom_x_y(lv_obj_t * obj, uint16_t zoom_x,uint16_t zoom_y);
+  set_zoom_x(lv_obj_t * obj, uint16_t zoom_x);
 
 
 };
@@ -201,8 +201,8 @@ auto Chart::set_style_bg_color(lv_obj_t * chart, lv_color_t color, lv_style_sele
 }
 
 //添加缩放
-auto Chart::set_zoom_x_y(lv_obj_t * obj, uint16_t zoom_x,uint16_t zoom_y)
+auto Chart::set_zoom_x(lv_obj_t * obj, uint16_t zoom_x)
 {
   lv_chart_set_zoom_x(obj, zoom_x);
-  lv_chart_set_zoom_y(obj, zoom_y);
+//  lv_chart_set_zoom_y(obj, zoom_y);
 }

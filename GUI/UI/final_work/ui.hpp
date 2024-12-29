@@ -13,7 +13,7 @@ struct lv_ui_t {
   struct {
     Obj screen;// 屏幕自身
 
-    Obj btn_test;// 测试按钮
+    Obj btn_beep;// 测试按钮
     Obj btn_test_label;// 测试按钮
 
     Obj imgbtn_led;

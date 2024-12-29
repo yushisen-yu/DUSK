@@ -32,9 +32,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="解决了加速度传感器数据不稳定">
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-    </list>
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="成功切换引脚" />
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1614,7 +1612,7 @@
   "keyToString": {
     "C/C++ 文件.main.cpp.executor": "Run",
     "CMake 应用程序.Furina.elf.executor": "Debug",
-    "OpenOCD 下载并运行.Furina.elf.executor": "Debug",
+    "OpenOCD 下载并运行.Furina.elf.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -1883,7 +1881,23 @@
       <option name="project" value="LOCAL" />
       <updated>1735480526636</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="添加了加速度传感器的显示">
+      <option name="closed" value="true" />
+      <created>1735482735015</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1735482735015</updated>
+    </task>
+    <task id="LOCAL-00027" summary="成功切换引脚">
+      <option name="closed" value="true" />
+      <created>1735483893466</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1735483893466</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1918,8 +1932,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="可以用的版本" />
-    <MESSAGE value="完成fsmc.c的配置" />
     <MESSAGE value="准备尝试移植LCD" />
     <MESSAGE value="LCD初始化基本完成，但没有经过验证" />
     <MESSAGE value="触摸屏初始化基本完成，但没有经过验证" />
@@ -1943,15 +1955,29 @@
     <MESSAGE value="准备尝试加速度驱动" />
     <MESSAGE value="加速度驱动初始化成功，但数据不稳定" />
     <MESSAGE value="解决了加速度传感器数据不稳定" />
-    <option name="LAST_COMMIT_MESSAGE" value="解决了加速度传感器数据不稳定" />
+    <MESSAGE value="添加了加速度传感器的显示" />
+    <MESSAGE value="成功切换引脚" />
+    <option name="LAST_COMMIT_MESSAGE" value="成功切换引脚" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Application/final_work/app.cpp</url>
+          <line>175</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="y" />
         <watch expression="x" />
         <watch expression="z" />
         <watch expression="angle" />
+        <watch expression="delay_tick" />
+        <watch expression="angle1" />
+        <watch expression="angle2" />
       </configuration>
     </watches-manager>
   </component>

@@ -4,43 +4,46 @@
 
 #ifndef FURINA_UI_H
 #define FURINA_UI_H
+
 #include "lvgl.h"
 
 /*********************组件*******************/
-struct lv_ui_t {
-  using Obj = lv_obj_t *;
-  // 主屏幕
-  struct {
-    Obj screen;// 屏幕自身
+struct lv_ui_t
+{
+    using Obj = lv_obj_t *;
+    // 主屏幕
+    struct
+    {
+        Obj screen;// 屏幕自身
 
-    Obj btn_beep;// 测试按钮
-    Obj btn_test_label;// 测试按钮
+        Obj btn_beep;// 测试按钮
+        Obj btn_test_label;// 测试按钮
 
-    Obj imgbtn_led;
-    Obj btn_led_label;// 灯光按钮
+        Obj imgbtn_led;
+        Obj btn_led_label;// 灯光按钮
 
-    Obj btn_DCMotor;// 直流电机按钮
-    Obj btn_DCMotor_label;
+        Obj btn_DCMotor;// 直流电机按钮
+        Obj btn_DCMotor_label;
 
-    Obj btn_DHT11_settemp;// 温湿度阈值设定按钮
-    Obj btn_DHT11_settemp_label;
+        Obj btn_DHT11_settemp;// 温湿度阈值设定按钮
+        Obj btn_DHT11_settemp_label;
 
-    Obj btn_switch_DHT_acc;// 切换温湿度传感器和加速度传感器的按钮
-    Obj btn_switch_DHT_acc_label;
+        Obj btn_switch_DHT_acc;// 切换温湿度传感器和加速度传感器的按钮
+        Obj btn_switch_DHT_acc_label;
 
-    Obj imgbtn_DHT11;
-    Obj btn_DHT11_value_label;//取温湿度的值
-    Obj chart_DHT11_temp_humi;
-    Obj chart_DHT11_humi;
-    Obj chart_DHT11_temp_label;
-    Obj chart_DHT11_humi_label;
+        Obj imgbtn_DHT11;
+        Obj btn_DHT11_value_label;//取温湿度的值
+        Obj chart_DHT11_temp_humi;
+        Obj chart_DHT11_humi;
+        Obj chart_DHT11_temp_label;
+        Obj chart_DHT11_humi_label;
 
-    // 滚动条
-    Obj roller;
+        // 滚动条
+        Obj roller;
 
-    Obj init;
+        Obj init;
 
-  } main;
+    } main;
 
 };
 // 取别名
@@ -57,10 +60,11 @@ LV_IMG_DECLARE(_temp_humi_other2_alpha_60x60)
 /**
  * @brief 界面接口
  */
-class UI {
+class UI
+{
 public:
-    static auto add_temp_data(short temp)-> void;// 添加温度数据
-    static auto add_humi_data(short humi)->  void;// 添加湿度数据
+    static auto add_temp_data(short temp) -> void;// 添加温度数据
+    static auto add_humi_data(short humi) -> void;// 添加湿度数据
 private:
 };
 

@@ -111,38 +111,35 @@ auto Events::init() -> void
          )
     );
 
-    bond(gui->main.imgbtn_DHT11,
-         imgbtn_fun2([]()
+
+    bond(gui->main.btn_DCMotor, [](event e)
+         {
+             static volatile bool flag2 = false;
+             switch (lv_event_get_code(e))
+             {
+                 case LV_EVENT_CLICKED:
+                     flag2 = !flag2;
+
+                     if (flag2)
                      {
 #ifdef GUI_ENABLE
-//                         start_DHT11();
+                         DCMotor_forward(1000);
 #endif
-
-                     }, []()
+                     }
+                     else
                      {
 #ifdef GUI_ENABLE
-//                         stop_DHT11();
+//                         DCMotor_reverse(300);
+                         DCMotor_stop();
 #endif
+                     }
+                     break;
+                 default:
+                     break;
 
-                     })
+             }
+         }
     );
-
-
-    bond(gui->main.btn_DCMotor, imgbtn_fun2(
-            []()
-            {
-#ifdef GUI_ENABLE
-                DCMotor_forward(800);
-#endif
-            },
-            []()
-            {
-#ifdef GUI_ENABLE
-                DCMotor_stop();
-#endif
-            }
-
-    ));
 
 
 }

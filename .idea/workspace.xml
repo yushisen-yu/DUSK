@@ -32,7 +32,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="成功切换引脚" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备尝试MP3模块">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/inc/USART3.h" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/inc/USART3.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/inc/mp3.h" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/inc/mp3.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/USART3.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/USART3.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/mp3.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/mp3.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Drivers/stm32f4xx_hal_conf.h" beforeDir="false" afterPath="$PROJECT_DIR$/Drivers/stm32f4xx_hal_conf.h" afterDir="false" />
+    </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1897,7 +1905,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735483893466</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="准备尝试MP3模块">
+      <option name="closed" value="true" />
+      <created>1735484114411</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1735484114411</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1932,7 +1948,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="准备尝试移植LCD" />
     <MESSAGE value="LCD初始化基本完成，但没有经过验证" />
     <MESSAGE value="触摸屏初始化基本完成，但没有经过验证" />
     <MESSAGE value="准备创建新分支" />
@@ -1957,18 +1972,10 @@
     <MESSAGE value="解决了加速度传感器数据不稳定" />
     <MESSAGE value="添加了加速度传感器的显示" />
     <MESSAGE value="成功切换引脚" />
-    <option name="LAST_COMMIT_MESSAGE" value="成功切换引脚" />
+    <MESSAGE value="准备尝试MP3模块" />
+    <option name="LAST_COMMIT_MESSAGE" value="准备尝试MP3模块" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Application/final_work/app.cpp</url>
-          <line>175</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="com.jetbrains.cidr.embedded.openocd.conf.type">
         <watch expression="y" />

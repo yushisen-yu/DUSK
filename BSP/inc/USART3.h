@@ -1,24 +1,30 @@
 #ifndef USART3_H
 #define USART3_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-//  ÓÃÓÚUSART½ÓÊÕÊı¾İ°ü
-struct UsartData                                                        
-{		
-	unsigned char *Rxbuf;
-    unsigned int   RXlenth;
-    unsigned char  Time;
-    unsigned char  ReceiveFinish;
+//  ç”¨äºUSARTæ¥æ”¶æ•°æ®åŒ…
+struct UsartData
+{
+    unsigned char *Rxbuf;
+    unsigned int RXlenth;
+    unsigned char Time;
+    unsigned char ReceiveFinish;
 };
-typedef  struct UsartData USARTDATA;
-typedef  USARTDATA       *PUSARTDATA;
+typedef struct UsartData USARTDATA;
+typedef USARTDATA *PUSARTDATA;
 
-extern USARTDATA   Uart3;
-extern USARTDATA   Uart6;
+extern USARTDATA Uart3;
+extern USARTDATA Uart6;
 
-// º¯ÊıÉùÃ÷
+// å‡½æ•°å£°æ˜
 void UART3_Configuration(void);
 void USART3_Senddata(unsigned char *Data, unsigned int length);
 void UART6_Configuration(unsigned int baud);
 void USART6_Senddata(unsigned char *Data, unsigned int length);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

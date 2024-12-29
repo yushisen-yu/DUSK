@@ -1,168 +1,317 @@
-#include "stm32f4xx.h"
+#include "stm32f4xx_hal.h"
 #include "USART3.h"
-#include "stdio.h"
-
+#include "string.h"
 unsigned char Uart6ReceiveBuf[300] = {0};
+uint8_t databuf[20]={0};
 
-//  ½á¹¹Ìå¶¨Òå
-USARTDATA   Uart3;
-USARTDATA   Uart6;
-
+//  ç»“æ„ä½“å®šä¹‰
+USARTDATA Uart3;
+USARTDATA Uart6;
+UART_HandleTypeDef huart6;
 /**********************************************************************************************************
-º¯ÊıÃû³Æ£ºUART3ÅäÖÃ
-ÊäÈë²ÎÊı£ºÎŞ
-Êä³ö²ÎÊı£ºÎŞ
-º¯Êı·µ»Ø£ºÎŞ
+å‡½æ•°åç§°ï¼šUART3é…ç½®
+è¾“å…¥å‚æ•°ï¼šæ— 
+è¾“å‡ºå‚æ•°ï¼šæ— 
+å‡½æ•°è¿”å›ï¼šæ— 
 **********************************************************************************************************/
 // USART3_TX	 PB10	//  out
 // USART3_RX	 PB11	//  in
+//void UART3_Configuration(void)
+//{
+//    GPIO_InitTypeDef GPIO_InitStructure;
+//    USART_InitTypeDef USART_InitStructure;
+//
+//    //  å¼€å¯GPIO_Dçš„æ—¶é’Ÿ
+//    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+//
+//    //  å¼€å¯ä¸²å£3çš„æ—¶é’Ÿ
+//    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+//
+//    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+//    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+//    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+//    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+//    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+//    GPIO_Init(GPIOC, &GPIO_InitStructure);
+//
+//    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+//    GPIO_Init(GPIOC, &GPIO_InitStructure);
+//
+//
+//    GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_USART3);
+//    GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_USART3);
+//
+//
+//    USART_InitStructure.USART_BaudRate = 115200;
+//    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+//    USART_InitStructure.USART_StopBits = USART_StopBits_1;
+//    USART_InitStructure.USART_Parity = USART_Parity_No;
+//    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+//    USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
+//
+//    USART_Init(USART3, &USART_InitStructure);
+//
+//    /* ä½¿èƒ½ä¸²å£3 */
+//    USART_Cmd(USART3, ENABLE);
+//    USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
+//}
 void UART3_Configuration(void)
 {
-		GPIO_InitTypeDef    GPIO_InitStructure;
-	USART_InitTypeDef   USART_InitStructure;
+    /* å®šä¹‰GPIOåˆå§‹åŒ–ç»“æ„ä½“ */
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    /* å®šä¹‰USARTåˆå§‹åŒ–ç»“æ„ä½“ */
+    /* å®šä¹‰UARTå¥æŸ„ */
+    UART_HandleTypeDef huart3;
 
-	//  ¿ªÆôGPIO_DµÄÊ±ÖÓ 
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
-    
-	//  ¿ªÆô´®¿Ú3µÄÊ±ÖÓ 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+    __HAL_RCC_GPIOC_CLK_ENABLE();  // å¼€å¯GPIOCçš„æ—¶é’Ÿ
+    __HAL_RCC_USART3_CLK_ENABLE(); // å¼€å¯ä¸²å£3çš„æ—¶é’Ÿ
 
-	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_11;
-	GPIO_Init(GPIOC, &GPIO_InitStructure);
-	
-	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_10;
-	GPIO_Init(GPIOC, &GPIO_InitStructure);
+    // é…ç½®PC10 (USART3_TX) å’Œ PC11 (USART3_RX) ä¸ºå¤ç”¨æ¨æŒ½è¾“å‡ºï¼Œä¸Šæ‹‰ï¼Œ2MHzé€Ÿåº¦
+    GPIO_InitStruct.Pin = GPIO_PIN_10 | GPIO_PIN_11;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW; // å¯¹åº”2MHz
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART3; // è®¾ç½®ä¸ºUSART3å¤ç”¨åŠŸèƒ½
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-	
-	GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_USART3);
-	GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_USART3);
-
-
-	USART_InitStructure.USART_BaudRate   = 115200;
-	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-	USART_InitStructure.USART_StopBits   = USART_StopBits_1;
-	USART_InitStructure.USART_Parity     = USART_Parity_No;
-	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-	USART_InitStructure.USART_Mode                = USART_Mode_Tx | USART_Mode_Rx;
-
-	USART_Init(USART3, &USART_InitStructure);
-
-	/* Ê¹ÄÜ´®¿Ú3 */
-	USART_Cmd(USART3, ENABLE);
-	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
-}
-
-/**********************************************************************************************************
-º¯ÊıÃû³Æ£ºputcharº¯ÊıÖØ¶¨Òå
-ÊäÈë²ÎÊı£ºÎŞ
-Êä³ö²ÎÊı£ºÎŞ
-º¯Êı·µ»Ø£ºÎŞ
-**********************************************************************************************************/
-int fputc(int ch, FILE *f)
-{
-    USART3->SR;                                                         // ·ÀÖ¹¸´Î»ºóÎŞ·¨´òÓ¡Ê××Ö·û
-    
-    USART_SendData(USART3, (u8) ch);
-    while(USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET)
+    // åˆå§‹åŒ–USART3
+    huart3.Instance = USART3;
+    huart3.Init.BaudRate = 115200;
+    huart3.Init.WordLength = UART_WORDLENGTH_8B;
+    huart3.Init.StopBits = UART_STOPBITS_1;
+    huart3.Init.Parity = UART_PARITY_NONE;
+    huart3.Init.Mode = UART_MODE_TX_RX;
+    huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+    if (HAL_UART_Init(&huart3) != HAL_OK)
     {
-        ; 
+        // Initialization Error
+        Error_Handler();
     }
-    
-    return (ch);
+
+    // ä½¿èƒ½æ¥æ”¶ä¸­æ–­
+    __HAL_UART_ENABLE_IT(&huart3, UART_IT_RXNE);
 }
 
-/**********************************************************************************************************
-º¯ÊıÃû³Æ£ºUSART3·¢ËÍÊı¾İº¯Êı
-ÊäÈë²ÎÊı£º·¢ËÍÊı¾İÊ×µØÖ·ºÍÊı¾İ³¤¶È
-Êä³ö²ÎÊı£ºÎŞ
-**********************************************************************************************************/
-void USART3_Senddata(unsigned char *Data, unsigned int length)
-{
-    while(length--)
-    {
-        USART_SendData(USART3,*Data++);
-        while (USART_GetFlagStatus(USART3, USART_FLAG_TC)==RESET);
-    }
-}
+
+
+///**********************************************************************************************************
+//å‡½æ•°åç§°ï¼šputcharå‡½æ•°é‡å®šä¹‰
+//è¾“å…¥å‚æ•°ï¼šæ— 
+//è¾“å‡ºå‚æ•°ï¼šæ— 
+//å‡½æ•°è¿”å›ï¼šæ— 
+//**********************************************************************************************************/
+//int fputc(int ch, FILE *f)
+//{
+//    USART3->SR;                                                         // é˜²æ­¢å¤ä½åæ— æ³•æ‰“å°é¦–å­—ç¬¦
+//
+//    USART_SendData(USART3, (uint8_t) ch);
+//    while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET)
+//    { ;
+//    }
+//
+//    return (ch);
+//}
+//
+///**********************************************************************************************************
+//å‡½æ•°åç§°ï¼šUSART3å‘é€æ•°æ®å‡½æ•°
+//è¾“å…¥å‚æ•°ï¼šå‘é€æ•°æ®é¦–åœ°å€å’Œæ•°æ®é•¿åº¦
+//è¾“å‡ºå‚æ•°ï¼šæ— 
+//**********************************************************************************************************/
+//void USART3_Senddata(unsigned char *Data, unsigned int length)
+//{
+//    while (length--)
+//    {
+//        USART_SendData(USART3, *Data++);
+//        while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
+//    }
+//}
 
 /**********************************************************************************************************
-º¯ÊıÃû³Æ£ºUART1ÅäÖÃ
-ÊäÈë²ÎÊı£ºÎŞ
-Êä³ö²ÎÊı£ºÎŞ
-º¯Êı·µ»Ø£ºÎŞ
+å‡½æ•°åç§°ï¼šUART1é…ç½®
+è¾“å…¥å‚æ•°ï¼šæ— 
+è¾“å‡ºå‚æ•°ï¼šæ— 
+å‡½æ•°è¿”å›ï¼šæ— 
 **********************************************************************************************************/
 // USART6_TX	 PC6	//  out
 // USART6_RX	 PC7	//  in
+//void UART6_Configuration(unsigned int baud)
+//{
+//    GPIO_InitTypeDef GPIO_InitStructure;
+//    USART_InitTypeDef USART_InitStructure;
+//    NVIC_InitTypeDef NVIC_InitStructure;
+//
+//    Uart6.ReceiveFinish = 0;
+//    Uart6.RXlenth = 0;
+//    Uart6.Time = 0;
+//    Uart6.Rxbuf = Uart6ReceiveBuf;
+//
+//    //  å¼€å¯GPIOAçš„æ—¶é’Ÿ
+//    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+//
+//    //  å¼€å¯ä¸²å£1çš„æ—¶é’Ÿ
+//    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART6, ENABLE);
+//
+//    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+//    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+//    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+//    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+//    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
+//    GPIO_Init(GPIOC, &GPIO_InitStructure);
+//
+//    GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_USART6);
+//    GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_USART6);
+//
+//
+//    USART_InitStructure.USART_BaudRate = baud;
+//    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+//    USART_InitStructure.USART_StopBits = USART_StopBits_1;
+//    USART_InitStructure.USART_Parity = USART_Parity_No;
+//    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+//    USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
+//
+//    USART_Init(USART6, &USART_InitStructure);
+//
+//    /* ä½¿èƒ½ä¸²å£1 */
+//    USART_Cmd(USART6, ENABLE);
+//    USART_ITConfig(USART6, USART_IT_RXNE, ENABLE);
+//
+//    /* NVIC configuration */
+//    /* Configure the Priority Group to 2 bits */
+//    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+//
+//    /* Enable the USARTx Interrupt */
+//    NVIC_InitStructure.NVIC_IRQChannel = USART6_IRQn;
+//    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+//    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+//    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//    NVIC_Init(&NVIC_InitStructure);
+//
+//    /* Enable USART */
+//    USART_Cmd(USART6, ENABLE);
+//}
 void UART6_Configuration(unsigned int baud)
 {
-	GPIO_InitTypeDef    GPIO_InitStructure;
-	USART_InitTypeDef   USART_InitStructure;
-	NVIC_InitTypeDef    NVIC_InitStructure;
-    
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    __HAL_RCC_GPIOC_CLK_ENABLE();  // å¼€å¯GPIOCçš„æ—¶é’Ÿ
+    __HAL_RCC_USART6_CLK_ENABLE(); // å¼€å¯ä¸²å£6çš„æ—¶é’Ÿ
+
+    // åˆå§‹åŒ–Uart6ç»“æ„ä½“æˆå‘˜
     Uart6.ReceiveFinish = 0;
     Uart6.RXlenth = 0;
     Uart6.Time = 0;
     Uart6.Rxbuf = Uart6ReceiveBuf;
 
-	//  ¿ªÆôGPIOAµÄÊ±ÖÓ 
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
-    
-	//  ¿ªÆô´®¿Ú1µÄÊ±ÖÓ 
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART6, ENABLE);
+    // é…ç½®PC6 (USART6_TX) å’Œ PC7 (USART6_RX) ä¸ºå¤ç”¨æ¨æŒ½è¾“å‡ºï¼Œä¸Šæ‹‰ï¼Œ2MHzé€Ÿåº¦
+    GPIO_InitStruct.Pin = GPIO_PIN_6 | GPIO_PIN_7;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW; // å¯¹åº”2MHz
+    GPIO_InitStruct.Alternate = GPIO_AF8_USART6; // è®¾ç½®ä¸ºUSART6å¤ç”¨åŠŸèƒ½
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_6|GPIO_Pin_7;
-	GPIO_Init(GPIOC, &GPIO_InitStructure);
+    // åˆå§‹åŒ–USART6
+    huart6.Instance = USART6;
+    huart6.Init.BaudRate = baud;
+    huart6.Init.WordLength = UART_WORDLENGTH_8B;
+    huart6.Init.StopBits = UART_STOPBITS_1;
+    huart6.Init.Parity = UART_PARITY_NONE;
+    huart6.Init.Mode = UART_MODE_TX_RX;
+    huart6.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    huart6.Init.OverSampling = UART_OVERSAMPLING_16;
+    if (HAL_UART_Init(&huart6) != HAL_OK)
+    {
+        // Initialization Error
+        Error_Handler();
+    }
 
-	GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_USART6);
-	GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_USART6);
+    // ä½¿èƒ½æ¥æ”¶ä¸­æ–­
+    __HAL_UART_ENABLE_IT(&huart6, UART_IT_RXNE);
 
 
-	USART_InitStructure.USART_BaudRate   = baud;
-	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-	USART_InitStructure.USART_StopBits   = USART_StopBits_1;
-	USART_InitStructure.USART_Parity     = USART_Parity_No;
-	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-	USART_InitStructure.USART_Mode       = USART_Mode_Tx | USART_Mode_Rx;
+    // ä½¿èƒ½USART6ä¸­æ–­
+    HAL_NVIC_SetPriority(USART6_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(USART6_IRQn);
 
-	USART_Init(USART6, &USART_InitStructure);
-
-	/* Ê¹ÄÜ´®¿Ú1 */
-	USART_Cmd(USART6, ENABLE);
-	USART_ITConfig(USART6, USART_IT_RXNE, ENABLE);
-
-    /* NVIC configuration */
-    /* Configure the Priority Group to 2 bits */
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-
-    /* Enable the USARTx Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel = USART6_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-
-    /* Enable USART */
-    USART_Cmd(USART6, ENABLE);
+    // ä½¿èƒ½USART6
+    __HAL_UART_ENABLE(&huart6);
 }
-
 /**********************************************************************************************************
-º¯ÊıÃû³Æ£ºUSART6·¢ËÍÊı¾İº¯Êı
-ÊäÈë²ÎÊı£º·¢ËÍÊı¾İÊ×µØÖ·ºÍÊı¾İ³¤¶È
-Êä³ö²ÎÊı£ºÎŞ
+å‡½æ•°åç§°ï¼šUSART6å‘é€æ•°æ®å‡½æ•°
+è¾“å…¥å‚æ•°ï¼šå‘é€æ•°æ®é¦–åœ°å€å’Œæ•°æ®é•¿åº¦
+è¾“å‡ºå‚æ•°ï¼šæ— 
 **********************************************************************************************************/
 void USART6_Senddata(unsigned char *Data, unsigned int length)
 {
-    while(length--)
-    {
-        USART_SendData(USART6,*Data++);
-        while (USART_GetFlagStatus(USART6, USART_FLAG_TC)==RESET);
-    }
+    HAL_UART_Transmit(&huart6, Data, length, 0xFFFF);
+}
+
+void USART6_IRQHandler(void)
+{
+//    if (USART_GetITStatus(USART6, USART_IT_RXNE) != RESET)                //  è‹¥æ¥æ”¶æ•°æ®å¯„å­˜å™¨æ»¡
+//    {
+//        USART_ClearITPendingBit(USART6, USART_IT_RXNE);
+//
+//        Uart6.Rxbuf[Uart6.RXlenth] = USART_ReceiveData(USART6);
+//
+//        if (Uart6.RXlenth == 0 && Uart6.Rxbuf[0] != 0x55)
+//        {
+//            Uart6.RXlenth = 0;
+//            return;
+//        }
+//        if (Uart6.RXlenth == 1 && Uart6.Rxbuf[1] != 0x53)
+//        {
+//            Uart6.RXlenth = 0;
+//            return;
+//        }
+//
+//
+//        Uart6.RXlenth++;
+//
+//        if(Uart6.RXlenth == 11)
+//        {
+//            memcpy(databuf, &Uart6.Rxbuf[0], 20);
+//
+//            display_flag = 1;
+//            Uart6.RXlenth = 0;
+//        }
+//    }
+
+
+        // ç¡®ä¿åªå¤„ç†USART6çš„å›è°ƒ
+
+        if (__HAL_UART_GET_IT_SOURCE(&huart6, UART_IT_RXNE) != RESET)  // å¦‚æœæ¥æ”¶æ•°æ®å¯„å­˜å™¨æ»¡
+        {
+            __HAL_UART_CLEAR_FLAG(&huart6, UART_IT_RXNE);
+            uint8_t data = (uint8_t)HAL_UART_Receive(&huart6, NULL, 0, 0); // æ¸…é™¤RXNEæ ‡å¿—ä½
+
+            // è¯»å–æ¥æ”¶åˆ°çš„æ•°æ®
+            data = (uint8_t)HAL_UART_Receive(&huart6, &data, 1, HAL_MAX_DELAY);
+
+            Uart6.Rxbuf[Uart6.RXlenth] = data;
+
+            // æ£€æŸ¥èµ·å§‹å­—èŠ‚
+            if (Uart6.RXlenth == 0 && data != 0x55)
+            {
+                Uart6.RXlenth = 0;
+                return;
+            }
+            if (Uart6.RXlenth == 1 && data != 0x53)
+            {
+                Uart6.RXlenth = 0;
+                return;
+            }
+
+            Uart6.RXlenth++;
+
+            // å¦‚æœæ¥æ”¶åˆ°å®Œæ•´çš„åŒ…ï¼ˆå‡è®¾é•¿åº¦ä¸º11ï¼‰
+            if (Uart6.RXlenth == 11)
+            {
+                memcpy(databuf, Uart6.Rxbuf, 11);  // æ³¨æ„ï¼šåŸä»£ç ä¸­memcpyçš„å¤§å°æ˜¯20ï¼Œä½†RXlenthåªæœ‰11
+
+//                display_flag = 1;
+                Uart6.RXlenth = 0;
+            }
+        }
 }

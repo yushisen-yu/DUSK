@@ -50,7 +50,7 @@ void TIM10_PWM_Init(uint32_t arr, uint32_t psc)
 
     // 启用TIM10 PWM通道
     HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1);
-
+    __HAL_RCC_TIM10_CLK_DISABLE();
 }
 
 

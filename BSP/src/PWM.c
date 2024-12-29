@@ -1,5 +1,7 @@
 #include "PWM.h"
+
 TIM_HandleTypeDef htim10;
+
 /**********************************************************************************************************
 函数名称：TIM10_PWM_Init初始化函数
 输入参数：自动重装值、时钟预分频数
@@ -47,17 +49,23 @@ void TIM10_PWM_Init(uint32_t arr, uint32_t psc)
         // Configuration Error
         Error_Handler();
     }
+    TIM10_PWM_Start();
+    TIM10_PWM_SetCompare(1000);
 
-    // 启用TIM10 PWM通道
-    if (HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1) != HAL_OK)
-    {
-        // Start PWM Error
-        Error_Handler();
-    }
 }
 
 
 void TIM10_PWM_SetCompare(uint32_t compare)
 {
     __HAL_TIM_SET_COMPARE(&htim10, TIM_CHANNEL_1, compare);
+}
+
+void TIM10_PWM_Start()
+{
+    HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1);
+}
+
+void TIM10_PWM_Stop()
+{
+    HAL_TIM_PWM_Stop(&htim10, TIM_CHANNEL_1);
 }

@@ -25,7 +25,7 @@ struct lv_ui_t {
     Obj btn_DHT11_settemp;
     Obj btn_DHT11_settemp_label;
 
-    Obj imgbtn_DHT11_value;
+    Obj imgbtn_DHT11;
     Obj btn_DHT11_value_label;//取温湿度的值
     Obj chart_DHT11_temp_humi;
     Obj chart_DHT11_humi;
@@ -52,8 +52,8 @@ LV_IMG_DECLARE(_temp_humi_other2_alpha_60x60)
  */
 class UI {
 public:
-    static auto add_temp_data(auto temp)-> void;// 添加温度数据
-    static auto add_humi_data(auto humi)->  void;// 添加湿度数据
+    static auto add_temp_data(float temp)-> void;// 添加温度数据
+    static auto add_humi_data(float humi)->  void;// 添加湿度数据
 private:
 };
 

@@ -18,6 +18,11 @@ LV_Timer timer;
 lv_chart_cursor_t *cursor;
 lv_point_t point = {0, 100};
 
+// 外部声明
+extern void start_DHT11();
+
+extern void stop_DHT11();
+
 
 //#87CEEB
 //#FF7F50
@@ -31,7 +36,7 @@ auto Screen::init() -> void
     button.init_font(&lv_customer_font_SourceHanSerifSC_Regular_15);
 
     ImageButton::init(gui->main.imgbtn_led, 150, 330, 80, 80, &_led_off_c_alpha_80x80, &_led_on_c_alpha_80x80);
-    ImageButton::init(gui->main.imgbtn_DHT11_value, 50, 340, 60, 60, &_temp_humi2_alpha_60x60,
+    ImageButton::init(gui->main.imgbtn_DHT11, 50, 340, 60, 60, &_temp_humi2_alpha_60x60,
                       &_temp_humi_other2_alpha_60x60);
 
 
@@ -106,28 +111,20 @@ auto Events::init() -> void
          )
     );
 
-    bond(gui->main.imgbtn_DHT11_value, [](event e)
-         {
-             static volatile bool flag2 = false;
-             switch (lv_event_get_code(e))
-             {
-                 case LV_EVENT_CLICKED:
-                     flag2 = !flag2;
-
-                     if (flag2)
+    bond(gui->main.imgbtn_DHT11,
+         imgbtn_fun2([]()
                      {
-                         timer.resume();
-                     }
-                     else
-                     {
-                         timer.pause();
-                     }
-                     break;
-                 default:
-                     break;
+#ifdef GUI_ENABLE
+                         start_DHT11();
+#endif
 
-             }
-         }
+                     }, []()
+                     {
+#ifdef GUI_ENABLE
+                         stop_DHT11();
+#endif
+
+                     })
     );
 
 
@@ -135,14 +132,13 @@ auto Events::init() -> void
             []()
             {
 #ifdef GUI_ENABLE
-                DCMotor_forward(0);
+                DCMotor_forward(800);
 #endif
             },
             []()
             {
 #ifdef GUI_ENABLE
-                DCMotor_forward(1000);
-//                       DCMotor_stop();
+                DCMotor_stop();
 #endif
             }
 
@@ -153,13 +149,13 @@ auto Events::init() -> void
 
 
 // 添加温度数据
-auto UI::add_temp_data(auto temp) -> void
+auto UI::add_temp_data(float temp) -> void
 {
-    Chart::set_next_value(chart_series_temp, temp, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
+    Chart::set_next_value(chart_series_temp, (Coord) temp, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
 }
 
 // 添加湿度数据
-auto UI::add_humi_data(auto humi) -> void
+auto UI::add_humi_data(float humi) -> void
 {
-    Chart::set_next_value(chart_series_humi, humi, GUI_Base::get_ui()->main.chart_DHT11_humi);
+    Chart::set_next_value(chart_series_humi, (Coord) humi, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
 }

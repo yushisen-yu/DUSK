@@ -14,7 +14,7 @@ public:
     static inline auto set_options(const char*options,lv_roller_mode_t mode = LV_ROLLER_MODE_INFINITE,Obj roller=_obj)->void ;
     static inline auto get_selected_option(Obj roller=_obj)->uint16_t ;
     static inline void set_selected_text_color(lv_color_t color,Obj roller=_obj);
-    static inline void set_selected_text_font(lv_font_t* font,Obj roller=_obj);
+    static inline void set_selected_text_font(Font font,Obj roller=_obj);
 };
 
 void Roller::init(Obj roller,Obj parent)
@@ -22,9 +22,22 @@ void Roller::init(Obj roller,Obj parent)
     roller = lv_roller_create(parent);
     _obj = roller;
 }
+
+/**
+ * @brief 创建一个滚动条
+ * @param roller
+ * @param x
+ * @param y
+ * @param w
+ * @param h
+ * @param options
+ * @param mode
+ * @note 默认模式为无限滚动，会把组件传递给内部
+ */
 void Roller::init(Obj roller, Coord x, Coord y, Coord w, Coord h,const char*options,lv_roller_mode_t mode)
 {
-    roller = lv_roller_create(lv_scr_act());
+    roller = lv_roller_create(_parent);
+    _obj = roller;
     lv_obj_set_pos(roller, x, y);
     lv_obj_set_size(roller, w, h);
     if(options)
@@ -46,7 +59,7 @@ void Roller::set_selected_text_color(lv_color_t color,Obj roller)
     lv_obj_set_style_text_color(roller, color, LV_PART_SELECTED);
 }
 
-void Roller::set_selected_text_font(lv_font_t* font,Obj roller)
+void Roller::set_selected_text_font(Font font,Obj roller)
 {
     lv_obj_set_style_text_font(roller, font, LV_PART_SELECTED);
 }

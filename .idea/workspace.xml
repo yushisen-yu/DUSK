@@ -32,8 +32,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="移植了MP3驱动">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="妈的，浪费整整1个小时才解决编译失败问题">
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
@@ -1916,7 +1915,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735485430955</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="妈的，浪费整整1个小时才解决编译失败问题">
+      <option name="closed" value="true" />
+      <created>1735495038250</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1735495038250</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1951,7 +1958,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="触摸屏初始化基本完成，但没有经过验证" />
     <MESSAGE value="准备创建新分支" />
     <MESSAGE value="触摸驱动可以使用" />
     <MESSAGE value="触摸驱动精简了一部分" />
@@ -1976,6 +1982,7 @@
     <MESSAGE value="成功切换引脚" />
     <MESSAGE value="准备尝试MP3模块" />
     <MESSAGE value="移植了MP3驱动" />
-    <option name="LAST_COMMIT_MESSAGE" value="移植了MP3驱动" />
+    <MESSAGE value="妈的，浪费整整1个小时才解决编译失败问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="妈的，浪费整整1个小时才解决编译失败问题" />
   </component>
 </project>

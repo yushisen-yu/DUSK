@@ -35,7 +35,7 @@ void DCMotor_init()
     DCMOTOR_B_L;
 
   TIM10_PWM_Init(1000 - 1, 84 - 1);
-  TIM10_PWM_SetCompare(1000);
+  TIM10_PWM_SetCompare(0);
 
 }
 

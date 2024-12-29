@@ -40,7 +40,7 @@ void TIM10_PWM_Init(uint32_t arr, uint32_t psc)
     // 配置PWM通道
     sConfigOC.OCMode = TIM_OCMODE_PWM1;
     sConfigOC.Pulse = 0; // 初始占空比为0%
-    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
     sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
     if (HAL_TIM_PWM_ConfigChannel(&htim10, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
     {
@@ -49,11 +49,8 @@ void TIM10_PWM_Init(uint32_t arr, uint32_t psc)
     }
 
     // 启用TIM10 PWM通道
-    if (HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1) != HAL_OK)
-    {
-        // Start PWM Error
-        Error_Handler();
-    }
+    HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1);
+
 }
 
 

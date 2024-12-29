@@ -33,14 +33,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备开发温度驱动">
-      <change beforePath="$PROJECT_DIR$/Application/Base/ISR.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Base/ISR.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Base/baseInit.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Base/baseInit.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Base/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Base/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BSP/src/DHT11.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/DHT11.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BSP/src/delay.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/delay.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c" beforeDir="false" afterPath="$PROJECT_DIR$/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/PWM.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/PWM.c" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1582,7 +1575,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="ZQ" />
+        <entry key="$PROJECT_DIR$" value="YU" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -1621,7 +1614,7 @@
   "keyToString": {
     "C/C++ 文件.main.cpp.executor": "Run",
     "CMake 应用程序.Furina.elf.executor": "Debug",
-    "OpenOCD 下载并运行.Furina.elf.executor": "Debug",
+    "OpenOCD 下载并运行.Furina.elf.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -1630,7 +1623,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "ZQ",
+    "git-widget-placeholder": "test",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "E:/Program/Embedded/MCU/STM32/Furina/Resource/STM32F4_svd/STM32F4_svd_V2.0/STM32F407.svd",
     "node.js.detected.package.eslint": "true",

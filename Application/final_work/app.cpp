@@ -119,7 +119,20 @@ void background_handler()
     DHT_ACC::measure();
 
     HAL_Delay(100);
+    mp3_play_selected(2);
+    HAL_Delay(100);
+    mp3_play_selected(3);
+    HAL_Delay(100);
     mp3Play();
+
+
+    HAL_Delay(100);
+    mp3_next();
+    mp3Play();
+    HAL_Delay(100);
+    mp3_prev();
+    mp3Play();
+    HAL_Delay(100);
     HAL_Delay(1000);
     mp3Stop();
 

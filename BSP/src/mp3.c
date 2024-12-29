@@ -1,6 +1,6 @@
 #include "mp3.h"
 #include "USART3.h"
-
+#include "stm32f4xx_hal.h"
 void setMp3Dev(unsigned char dev)
 {
     unsigned char device[5]  = {0x7E, 0x03, 0x09, 0x00, 0xEF};      // 指定设备 0：U 4:FLASH
@@ -25,5 +25,32 @@ void mp3Stop(void)
 {
     unsigned char Stop[4]  = {0x7E, 0x02, 0x10, 0xEF};                  //	停止
     USART6_Senddata(Stop, 4); 
+}
+void mp3_next()
+{
+    uint8_t buf[4]={0x7E,0x02,0x01,0xEF};
+    USART6_Senddata(buf,4);
+}
+void mp3_prev()
+{
+    uint8_t buf[4]={0x7E,0x02,0x02,0xEF};
+    USART6_Senddata(buf,4);
+}
+
+
+/**
+ * @brief 播放指定序号的mp3文件
+ * @param index
+ * @note 使用的是大端字节序
+ */
+void mp3_play_selected(unsigned short index)
+{
+
+    unsigned char buf[6]={0x7E,0x04,0x03,0x00,0x00,0xEF};
+    buf[3]=index>>8;
+    buf[4]=index&0xFF;
+//    *(unsigned short*)(&buf[3])=index;// 小端字节序不对
+
+    USART6_Senddata(buf,6);
 }
 

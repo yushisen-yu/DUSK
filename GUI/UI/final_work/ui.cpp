@@ -18,8 +18,10 @@ lv_chart_series_t *chart_series_humi;
 LV_Timer temp_threshold_timer;
 lv_chart_cursor_t *cursor;
 lv_point_t cursor_point = {0, 100};
-uint16_t temp_threshold;// 温度阈值
-uint8_t roller_mode = 0;//0表示温度，1表示音乐 实在是懒得搞标志了，除非还有时间.它俩之间的逻辑有些耦合，先不管了
+uint16_t temp_threshold;//
+//0表示温度，1表示音乐,2表示音量共有6个档
+// 实在是懒得搞标志了，除非还有时间.它俩之间的逻辑有些耦合，先不管了
+uint8_t roller_mode = 0;
 
 // 外部声明
 extern void start_DHT11();
@@ -54,6 +56,17 @@ void destroy_roller()
     Roller::destroy(GUI_Base::get_ui()->main.roller2);
 }
 
+void create_volume_roller()
+{
+    Roller::init(GUI_Base::get_ui()->main.roller_volume, 305, 330, 40, 100, "0\n1\n2\n3\n4\n5\n6");
+    Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
+    Roller::set_selected_text_font(&lv_customer_font_SourceHanSerifSC_Regular_18);
+}
+
+void destroy_volume_roller()
+{
+    Roller::destroy(GUI_Base::get_ui()->main.roller_volume);
+}
 
 auto Screen::init() -> void
 {
@@ -63,9 +76,10 @@ auto Screen::init() -> void
     Button button;
     button.init_font(&lv_customer_font_SourceHanSerifSC_Regular_15);
 
-    ImageButton::init(gui->main.imgbtn_led, 150, 330, 80, 80, &_led_off_c_alpha_80x80, &_led_on_c_alpha_80x80);
     ImageButton::init(gui->main.imgbtn_DHT11, 50, 340, 60, 60, &_temp_humi2_alpha_60x60,
                       &_temp_humi_other2_alpha_60x60);
+    ImageButton::init(gui->main.imgbtn_led, 120, 330, 80, 80, &_led_off_c_alpha_80x80, &_led_on_c_alpha_80x80);
+    ImageButton::init(gui->main.imgbtn_volume, 210, 343, 60, 60, &_volume_c_alpha_60x60, &_volume_c2_alpha_60x60);
 
 
 
@@ -139,7 +153,6 @@ auto Events::init() -> void
     bond(gui->main.imgbtn_led, imgbtn_fun2(
                  []()
                  {
-                     Roller::enable_drag(gui->main.roller);
 #ifdef GUI_ENABLE
                      led_start();
 #endif
@@ -167,6 +180,23 @@ auto Events::init() -> void
                  }
          )
     );
+
+    bond(gui->main.imgbtn_volume, imgbtn_fun2([]()
+                                              {
+                                                  if (!gui->main.roller_volume)
+                                                  {
+                                                      roller_mode = 2;
+                                                      create_volume_roller();
+                                                  }
+
+                                              }, []()
+                                              {
+                                                  if (gui->main.roller_volume)
+                                                  {
+                                                      destroy_volume_roller();
+                                                  }
+
+                                              }));
 
     // 直流电机
     bond(gui->main.btn_DCMotor, [](event e)
@@ -251,16 +281,16 @@ auto Events::init() -> void
 
                 if (flag)
                 {
-                    if(!gui->main.roller)
+                    if (!gui->main.roller)
                     {
                         roller_mode = 1;
-                        create_roller(320, 330);
-                        Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_music_label);
+                        create_roller(365, 330);
+                        Text::set_text_color(lv_palette_main(LV_PALETTE_BLUE), gui->main.btn_music_label);
                     }
                 }
                 else
                 {
-                    if(gui->main.roller)
+                    if (gui->main.roller)
                     {
                         destroy_roller();
                     }
@@ -323,7 +353,7 @@ auto Events::init() -> void
                     if (!gui->main.roller)
                     {
                         roller_mode = 0;
-                        create_roller(320, 330);
+                        create_roller(365, 330);
                     }
                     Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_DHT11_set_temp_thresold_label);
                 }
@@ -413,36 +443,53 @@ auto Events::init() -> void
 
                 uint16_t temp = Roller::get_selected_option(gui->main.roller);
                 uint16_t temp2 = Roller::get_selected_option(gui->main.roller2);
-                if (roller_mode == 0)
+                switch (roller_mode)
                 {
-                    // 确保不会出现空指针引用
-                    if (gui->main.roller && gui->main.roller2)
-                    {
-                        temp_threshold = temp * 10 + temp2;
-                        cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
+                    case 0:
+                        // 确保不会出现空指针引用
+                        if (gui->main.roller && gui->main.roller2)
+                        {
+                            temp_threshold = temp * 10 + temp2;
+                            cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
 
-                        if (cursor)
-                        {
-                            // 未知原因，直接使用Chart::set_cursor_pos会卡死
-                            cursor->pos.y = cursor_point.y;
-                            cursor->pos_set = 1;
-                            lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
+                            if (cursor)
+                            {
+                                // 未知原因，直接使用Chart::set_cursor_pos会卡死
+                                cursor->pos.y = cursor_point.y;
+                                cursor->pos_set = 1;
+                                lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
+                            }
+                            else
+                            {
+                                Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
+                                                  LV_DIR_RIGHT, cursor);
+                                Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
+                            }
+                            destroy_roller();
                         }
-                        else
-                        {
-                            Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
-                                              LV_DIR_RIGHT, cursor);
-                            Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
-                        }
-                        destroy_roller();
-                    }
-                    else if (roller_mode == 1)
-                    {
+                        break;
+                    case 1:
                         // 音乐播放
+                        if (gui->main.roller && gui->main.roller2)
+                        {
 #ifdef GUI_ENABLE
-                        mp3_play_selected(temp * 10 + temp2);
+                            mp3_play_selected(temp * 10 + temp2);
 #endif
-                    }
+                            destroy_roller();
+                        }
+                        break;
+                    case 2:
+                        // 音乐播放
+                        if (gui->main.roller_volume)
+                        {
+#ifdef GUI_ENABLE
+                            setMp3Vol(Roller::get_selected_option(gui->main.roller_volume) * 5);
+#endif
+                            destroy_volume_roller();
+                        }
+                        break;
+                    default:
+                        break;
                 }
 
             }

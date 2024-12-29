@@ -20,7 +20,8 @@ struct lv_ui_t
         Obj btn_beep_label;// 测试按钮
 
         Obj imgbtn_led;
-        Obj btn_led_label;// 灯光按钮
+        Obj imgbtn_volume;
+
 
         Obj btn_DCMotor;// 直流电机按钮
         Obj btn_DCMotor_label;
@@ -56,6 +57,7 @@ struct lv_ui_t
         // 滚动条
         Obj roller;
         Obj roller2;
+        Obj roller_volume;// 音量
 
         Obj init;
 
@@ -72,6 +74,8 @@ LV_IMG_DECLARE(_led_off_c_alpha_80x80)
 LV_IMG_DECLARE(_led_on_c_alpha_80x80)
 LV_IMG_DECLARE(_temp_humi2_alpha_60x60)
 LV_IMG_DECLARE(_temp_humi_other2_alpha_60x60)
+LV_IMG_DECLARE(_volume_c_alpha_60x60)
+LV_IMG_DECLARE(_volume_c2_alpha_60x60)
 
 /**
  * @brief 界面接口

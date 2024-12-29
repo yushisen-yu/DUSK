@@ -59,6 +59,7 @@ auto Screen::init() -> void
     Chart::set_style_bg_color(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
 
+
 }
 
 auto Events::init() -> void

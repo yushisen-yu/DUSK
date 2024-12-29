@@ -4,7 +4,9 @@
 
 #include "baseInit.hpp"
 #include "stm32f4xx_hal.h"
+#ifdef GUI_ENABLE
 #include "lvgl.h"
+#endif
 #include "lcd.h"
 #include "fsmc.h"
 #include "key_exit.h"
@@ -12,8 +14,10 @@
 #if FreeRTOS_DEBUG
 
 #include "CPU_RunTime.h"
+#ifdef GUI_ENABLE
 #include "lv_port_disp.h"
 #include "GUI.hpp"
+#endif
 #include "touch.h"
 #include "delay.h"
 
@@ -47,7 +51,9 @@ void BaseInit()
 #ifdef USE_FSMC_DMA
     fsmc_dma_init();// 初始化FSMC+DMA
 #endif
+#ifdef GUI_ENABLE
     lv_init();// 混账，搞了半天是因为漏加你才死机
+#endif
 }
 
 
@@ -199,7 +205,9 @@ void TIM7_IRQHandler()
     // 我把TIM7当做系统时钟，只用到了基础定时器的更新计时功能，所以并不需要判断中断源
     __HAL_TIM_CLEAR_FLAG(&htim7, TIM_FLAG_UPDATE);
     HAL_IncTick();
+#ifdef GUI_ENABLE
     lv_tick_inc(1);
+#endif
 }
 }
 

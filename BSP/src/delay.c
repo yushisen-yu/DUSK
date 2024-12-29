@@ -47,6 +47,8 @@ void delay_init()
     {
         Error_Handler();
     }
+    // 启动定时器不能频繁开关，否则会异常
+    timer14_start();
 }
 
 /**
@@ -58,7 +60,7 @@ void delay_us(uint16_t us)
 {
     // 启动定时器
 //    timer14_set_psc(FREQUENCY_PSC_1M);
-    timer14_start();
+
 
     // 频率为84MHz，84M/1000 = 84000
     uint16_t final_count =TIM14->CNT+us;
@@ -70,7 +72,7 @@ void delay_us(uint16_t us)
     while (TIM14->CNT < final_count);
 
     // 停止定时器
-    timer14_stop();
+//    timer14_stop();
 }
 
 //void delay_ms(uint16_t ms)

@@ -398,6 +398,8 @@ __weak void HAL_Delay(uint32_t Delay)
     wait += (uint32_t)(uwTickFreq);
   }
 
+
+  // 阻塞 -》 堵塞
   while((HAL_GetTick() - tickstart) < wait)
   {
   }

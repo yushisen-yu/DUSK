@@ -11,7 +11,7 @@
 #define DHT11_Pin_Location 6
 #define DHT11_GPIO_Port GPIOE
 #define DHT11_GPIO_CLK_ENABLE() __HAL_RCC_GPIOE_CLK_ENABLE()
-#define DHT11_MAX_DELAY_COUNT 4000//防止卡死
+#define DHT11_MAX_DELAY_COUNT 60000//防止卡死
 #define USE_YZHX 1                //优化等级，分为0,1,2,3
 
 #define DHT11_Read() (DHT11_GPIO_Port->IDR & DHT11_Pin) /*HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin)*/
@@ -44,10 +44,11 @@
 //    for (uint16_t i = 0; i < count; ++i)
 //        ;
 //}
-inline void std_delay_25us()
+void std_delay_25us()
 {
-    for (uint16_t i = 0; i < 20; ++i)//单个任务时，大概为273
-        ;
+//    for (uint16_t i = 0; i < 20; ++i)//单个任务时，大概为273
+//        ;
+    delay_us(30);
 }
 
 
@@ -58,23 +59,23 @@ void DHT11_Init()
 
     GPIO_InitStruct.Pin = DHT11_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
     //    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;//输入模式下，最好不要配置速度，所以为了兼容输入就不配置了，即默认2MHz
     HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);
     DHT11_High();
 }
 
 // 不需要很精确的延时
-inline void DHT11_Rst()
+void DHT11_Rst()
 {
     DHT11_OUT();
     DHT11_Low();
-    delay_us(30);//根据时序图可知，需要至少拉低18ms
+    HAL_Delay(30);//根据时序图可知，需要至少拉低18ms
     DHT11_High();
     std_delay_25us();//20-40us
 }
 
-inline void DHT11_Check()
+void DHT11_Check()
 {
     DHT11_IN();
     //等待低电平
@@ -126,7 +127,7 @@ bool DHT11_Read_Data_Fast_Pro(float &temp, float &humi)
 /********************下面为次优级优化********************/
 #if USE_YZHX == 1
 // 全局变量
-static uint8_t timeBuf[40];// 存储计数值
+static uint8_t timeBuf[40]={0};// 存储计数值
 static uint8_t timeBufIndex = 0;
 
 //void DHT11_Read_Byte_Fast_Pro()
@@ -146,12 +147,12 @@ static uint8_t timeBufIndex = 0;
 unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
 {
     static uint8_t buf[5];
-    uint16_t time_count;
+    uint32_t time_count;
     DHT11_Rst();  // 设置输出模式
     DHT11_Check();// 设置输入模式
 
     timeBufIndex = 0;          // 重置计数值索引
-    for (int i = 0; i < 40; i++)// 读取40位数据
+    for (int i = 0; i < 5; i++)// 读取40位数据
     {
         // DHT11_Read_Byte_Fast_Pro();
         // 读取一字节
@@ -160,10 +161,10 @@ unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
             DHT11_Wait_High();// 等待变高电平
 
             // 开始读数据
-            for (time_count=0; DHT11_Read() && time_count < DHT11_MAX_DELAY_COUNT; ++time_count)
+            for (time_count = 0; DHT11_Read(); ++time_count)
             {
                 // 防止卡死
-                if (time_count >= DHT11_MAX_DELAY_COUNT)
+                if (time_count > DHT11_MAX_DELAY_COUNT)
                 {
                     return 0;
                 }
@@ -180,8 +181,8 @@ unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
 
     /***********************对存储的时间计数进行判断*********************/
     // 找出最大值和最小值
-    uint16_t timeMax = 0;
-    uint16_t timeMin = 0xFFFF;
+   volatile uint16_t timeMax = 0;
+   volatile  uint16_t timeMin = 0xFFFF;
     for (int i = 0; i < 40; i++)
     {
         if (i > timeMax) timeMax = i;
@@ -208,7 +209,8 @@ unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
         *humi = (float) (buf[0] * 10 + buf[1]) / 10.0f;
         *temp = (float) (buf[2] * 10 + buf[3]) / 10.0f;
         return 1;
-    } else
+    }
+    else
     {
         return 0;
     }

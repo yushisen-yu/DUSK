@@ -32,11 +32,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="开发温度驱动完毕">
-      <change beforePath="$PROJECT_DIR$/BSP/inc/PWM.h" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/inc/PWM.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BSP/src/DCMotor.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/DCMotor.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BSP/src/PWM.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/PWM.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="直流电机反转无效">
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1617,7 +1614,7 @@
   "keyToString": {
     "C/C++ 文件.main.cpp.executor": "Run",
     "CMake 应用程序.Furina.elf.executor": "Debug",
-    "OpenOCD 下载并运行.Furina.elf.executor": "Run",
+    "OpenOCD 下载并运行.Furina.elf.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -1838,7 +1835,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735469870372</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="直流电机反转无效">
+      <option name="closed" value="true" />
+      <created>1735474711145</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1735474711145</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1892,7 +1897,8 @@
     <MESSAGE value="补充PWM文件" />
     <MESSAGE value="准备开发温度驱动" />
     <MESSAGE value="开发温度驱动完毕" />
-    <option name="LAST_COMMIT_MESSAGE" value="开发温度驱动完毕" />
+    <MESSAGE value="直流电机反转无效" />
+    <option name="LAST_COMMIT_MESSAGE" value="直流电机反转无效" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

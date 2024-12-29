@@ -57,12 +57,6 @@ auto Screen::init() -> void
     Chart::set_style_bg_color(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
 
-
-
-//  Chart::set_next_value(temp, 0, gui->main.chart_DHT11_1);
-
-//  Chart::init(gui->main.chart_DHT11,0,-190,460,100,128);
-
 }
 
 auto Events::init() -> void
@@ -111,6 +105,15 @@ auto Events::init() -> void
          )
     );
 
+    bond(gui->main.imgbtn_DHT11, imgbtn_fun2(
+            [](){
+                start_DHT11();
+                },
+            [](){
+                stop_DHT11();
+            }
+            )
+    );
 
     bond(gui->main.btn_DCMotor, [](event e)
          {

@@ -28,13 +28,13 @@
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug-MinGW_ARM" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="MinGW_ARM" BUILD_OPTIONS="-j 12" />
+      <configuration PROFILE_NAME="Debug-MinGW_ARM" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="MinGW_ARM" BUILD_OPTIONS="-j 16" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备尝试异步延迟类">
-      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Module/inc/Async_Delay.ixx" beforeDir="false" afterPath="$PROJECT_DIR$/Module/inc/Async_Delay.hpp" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="移植了MP3驱动">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1576,7 +1576,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="ZQ" />
+        <entry key="$PROJECT_DIR$" value="test4" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -1615,7 +1615,7 @@
   "keyToString": {
     "C/C++ 文件.main.cpp.executor": "Run",
     "CMake 应用程序.Furina.elf.executor": "Debug",
-    "OpenOCD 下载并运行.Furina.elf.executor": "Debug",
+    "OpenOCD 下载并运行.Furina.elf.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -1683,8 +1683,6 @@
       <workItem from="1735398007869" duration="4046000" />
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
-      <workItem from="1735491581863" duration="291000" />
-      <workItem from="1735491891045" duration="2005000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -1918,31 +1916,7 @@
       <option name="project" value="LOCAL" />
       <updated>1735485430955</updated>
     </task>
-    <task id="LOCAL-00030" summary="MP3模块可以使用">
-      <option name="closed" value="true" />
-      <created>1735485804758</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1735485804758</updated>
-    </task>
-    <task id="LOCAL-00031" summary="添加了播放指定歌曲功能">
-      <option name="closed" value="true" />
-      <created>1735486589008</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1735486589008</updated>
-    </task>
-    <task id="LOCAL-00032" summary="准备尝试异步延迟类">
-      <option name="closed" value="true" />
-      <created>1735492695215</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1735492695215</updated>
-    </task>
-    <option name="localTasksCounter" value="33" />
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1964,7 +1938,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="ZQ" />
+                        <option value="origin/YU" />
                       </list>
                     </value>
                   </entry>
@@ -1977,6 +1951,9 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="触摸屏初始化基本完成，但没有经过验证" />
+    <MESSAGE value="准备创建新分支" />
+    <MESSAGE value="触摸驱动可以使用" />
     <MESSAGE value="触摸驱动精简了一部分" />
     <MESSAGE value="触摸驱动精简完成，可以使用。" />
     <MESSAGE value="触摸功能完全实现" />
@@ -1999,9 +1976,6 @@
     <MESSAGE value="成功切换引脚" />
     <MESSAGE value="准备尝试MP3模块" />
     <MESSAGE value="移植了MP3驱动" />
-    <MESSAGE value="MP3模块可以使用" />
-    <MESSAGE value="添加了播放指定歌曲功能" />
-    <MESSAGE value="准备尝试异步延迟类" />
-    <option name="LAST_COMMIT_MESSAGE" value="准备尝试异步延迟类" />
+    <option name="LAST_COMMIT_MESSAGE" value="移植了MP3驱动" />
   </component>
 </project>

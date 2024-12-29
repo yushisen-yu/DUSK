@@ -1,18 +1,21 @@
 # --------------------------------------选择你的项目--------------------------------
 # 如果你是在CLion里，那么可以直接在斜杆后面输入首字母，会自动弹出相关项目选项
-set(APP_DIR Application/final_work)
+set(APP_DIR Application/StorageOscilloscope)
 
 # --------------------------------------某些可选选项------------------------------
 # 是否使用独立静态库链接
 # 注释后，可以使用链接优化-flto，并且默认开启链接优化
 # ld链接器无法自动创建目录以存放map文件，所以注释下面时需要确保存在bin目录
 #set(STATIC_MODULE_LD True)
-# 使用GUI
+# ---------使用GUI---------
 set(GUI_ENABLE True)
-# 使用AI
+# ---------仅使用GUI的初始化---------
+#set(GUI_ONLY_INIT True)
+# ---------使用AI---------
 #set (AI_ENABLE True)
 # 添加编译器选项，使得支持Module特性
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmodules-ts")
+
 # --------------------------------------某些配置------------------------------
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_VERSION 1)
@@ -41,6 +44,7 @@ set(SIZE arm-none-eabi-size)
 #set(SIZE llvm-size)
 
 # -----------------工程设置-----------------
+
 project(Furina C CXX ASM)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD 11)
@@ -64,6 +68,9 @@ add_definitions(-DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx)
 if(GUI_ENABLE)
     add_definitions(-DGUI_ENABLE)
 endif ()
+if(GUI_ONLY_INIT)
+    add_definitions(-DGUI_ONLY_INIT)
+endif ()
 
 #--------------------------编译选项----------------------------
 # 根据编译器类型设置特定编译选项
@@ -81,7 +88,6 @@ elseif (COMPILER_IS_CLANG)
     link_directories("E:/Tools/Develop/ToolsKits/ARM/arm-gnu-toolchain_v13_3/lib/gcc/arm-none-eabi/13.3.1")
     link_directories("E:/Tools/Develop/ToolsKits/ARM/arm-gnu-toolchain_v13_3/lib/gcc/arm-none-eabi/13.3.1")
 endif ()
-
 
 
 #---------------------------优化选项--------------------------
@@ -102,17 +108,17 @@ if (COMPILER_IS_GCC)
     #-Oz:极度优化大小,进一步优化生成的代码大小，比 -Os更激进,可能会牺牲一些性能。
     #-flto:在链接阶段进行优化,允许进行跨文件的优化，进一步提高性能，但耗时间（项目本来就小我不在乎），并且这个优化容易出问题（这个我很在乎）
     #-fprofile-generate（生成配置文件） 和 -fprofile-use（基于配置文件的优化）
-    add_compile_options(-Og -g)
+    add_compile_options(-Ofast -g)
     # 必须关闭静态库独立模块编译，才能够使用链接优化
     if (NOT STATIC_MODULE_LD)
-#仅使用 add_compile_options(-flto)：
-#   结果：编译器生成的中间表示（IR）包含优化所需的信息，但链接器不会进行优化。
-#   问题：LTO 的效果不完整，性能提升有限。
-#仅使用 add_link_options(-flto)：
-#   结果：链接器尝试进行优化，但编译器生成的对象文件可能不包含足够的信息。
-#   问题：链接器无法进行有效的优化，可能导致编译错误或优化失败。
-#        add_compile_options(-flto )
-#        add_link_options(-flto)
+        #仅使用 add_compile_options(-flto)：
+        #   结果：编译器生成的中间表示（IR）包含优化所需的信息，但链接器不会进行优化。
+        #   问题：LTO 的效果不完整，性能提升有限。
+        #仅使用 add_link_options(-flto)：
+        #   结果：链接器尝试进行优化，但编译器生成的对象文件可能不包含足够的信息。
+        #   问题：链接器无法进行有效的优化，可能导致编译错误或优化失败。
+        #        add_compile_options(-flto )
+        #        add_link_options(-flto)
     endif ()
 elseif (COMPILER_IS_CLANG)
     add_compile_options(-O3 -ffast-math -g3 -Wextra)
@@ -132,6 +138,7 @@ set(UI_DIR "GUI/UI/${APP_DIR_LAST_PART}")
 set(BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/build)
 set(LIB_DIR ${BUILD_DIR}/lib)
 set(BIN_DIR ${BUILD_DIR}/bin)
+file(MAKE_DIRECTORY ${BUILD_DIR} ${LIB_DIR} ${BIN_DIR})
 
 #-------------------------------------------库-------------------------------------------
 # 官方驱动库
@@ -235,26 +242,26 @@ set_target_properties(libdata PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${LIB_DIR})
 
 # ------GUI库------
 if (GUI_ENABLE)
-file(GLOB_RECURSE GUI_SRC
-        "${UI_DIR}/*.*"
-        "GUI/Base/*.cpp"
-        "GUI/Component/*.cpp"
-        "GUI/Events/*.cpp"
-        "GUI/Render/*.cpp"
-)
-set(GUI_DIR
-        ${UI_DIR}
-        GUI/Base
-        GUI/Component
-        GUI/Events
-        GUI/Render
-)
-add_library(libgui STATIC ${GUI_SRC})
-target_include_directories(libgui PUBLIC ${GUI_DIR})
-# 依赖lvgl库
-target_link_libraries(libgui PUBLIC liblvgl libbsp)
-# 设置静态库的输出目录
-set_target_properties(libgui PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${LIB_DIR})
+    file(GLOB_RECURSE GUI_SRC
+            "${UI_DIR}/*.*"
+            "GUI/Base/*.cpp"
+            "GUI/Component/*.cpp"
+            "GUI/Events/*.cpp"
+            "GUI/Render/*.cpp"
+    )
+    set(GUI_DIR
+            ${UI_DIR}
+            GUI/Base
+            GUI/Component
+            GUI/Events
+            GUI/Render
+    )
+    add_library(libgui STATIC ${GUI_SRC})
+    target_include_directories(libgui PUBLIC ${GUI_DIR})
+    # 依赖lvgl库
+    target_link_libraries(libgui PUBLIC liblvgl libbsp)
+    # 设置静态库的输出目录
+    set_target_properties(libgui PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${LIB_DIR})
 endif ()
 
 # ------Module库------
@@ -300,7 +307,7 @@ set_target_properties(libapp PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${LIB_DIR})
 
 # -------------------module特性测试-----------------------
 file(GLOB_RECURSE cxx_modules
-    "Module/inc/*.ixx" "Module/src/*.cppm"
+        "Module/inc/*.ixx" "Module/src/*.cppm"
 )
 
 # ----------------包含公共目录---------------
@@ -310,23 +317,23 @@ include_directories(Application/Conf ${APP_DIR})
 
 # 定义公共的头文件目录和源文件
 set(COMMON_INCLUDE_DIRS
-    ${DRIVERS_DIR}
-    ${BSP_DIR}
-    ${DATA_DIR}
-    ${MODULE_DIR}
-    ${AI_DIR}
-    ${APPLICATION_DIR}
+        ${DRIVERS_DIR}
+        ${BSP_DIR}
+        ${DATA_DIR}
+        ${MODULE_DIR}
+        ${AI_DIR}
+        ${APPLICATION_DIR}
 )
 
 set(COMMON_SOURCES
-    "Core/*.*"
-    "Application/Base/ISR.cpp"
-    ${DRIVERS_SRC}
-    ${BSP_SRC}
-    ${DATA_SRC}
-    ${MODULE_SRC}
-    ${AI_SRC}
-    ${APPLICATION_SRC}
+        "Core/*.*"
+        "Application/Base/ISR.cpp"
+        ${DRIVERS_SRC}
+        ${BSP_SRC}
+        ${DATA_SRC}
+        ${MODULE_SRC}
+        ${AI_SRC}
+        ${APPLICATION_SRC}
 )
 
 if (STATIC_MODULE_LD)
@@ -335,12 +342,12 @@ if (STATIC_MODULE_LD)
 else ()
     if (GUI_ENABLE)
         list(APPEND COMMON_INCLUDE_DIRS
-            ${LVGL_DIR}
-            ${GUI_DIR}
+                ${LVGL_DIR}
+                ${GUI_DIR}
         )
         list(APPEND COMMON_SOURCES
-            ${LVGL_SRC}
-            ${GUI_SRC}
+                ${LVGL_SRC}
+                ${GUI_SRC}
         )
     endif ()
 
@@ -372,7 +379,7 @@ add_link_options(-T ${LINKER_SCRIPT})
 #特别适用于某些架构，如 ARM。
 #-Wl,--strip-all：删除所有符号表和调试信息。可以显著减小二进制文件的大小，但会影响调试体验。
 #-Wl,--strip-debug：仅删除调试信息。
-add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${BIN_DIR}/${PROJECT_NAME}.map)
+add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_NAME}.map)
 #add_link_options(-Wl,--strip-all)# 好像没有作用
 
 # 设置链接目标

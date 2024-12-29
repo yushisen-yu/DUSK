@@ -7,6 +7,8 @@
 #include "dac.h"
 #include "wave_signal.hpp"
 #include "key.hpp"
+#include "adxl345.h"
+
 
 #ifdef GUI_ENABLE
 
@@ -72,35 +74,34 @@ private:
     static inline float humi = 0;
 };
 
-void start_DHT11()
-{
-    DHT::set_flag(DHT_FLAGS::START);
-    DHT::init();
-}
 
-void stop_DHT11()
-{
-    DHT::clear_flag(DHT_FLAGS::START);
-}
 
 //
 void app_init()
 {
     beep_init();
     led_init();
+    // 初始化直流电机
     DCMotor_init();
     // 初始化温湿度传感器
     DHT11_Init();
     DHT::init();
+    // 初始化重力加速度传感器
+    ADXL345_Init();
 
 }
 
 // 后台运算
+short x,y,z;
+float angle = 0;
 void background_handler()
 {
     // 检测温湿度
     DHT::measure();
-
+//    ADXL345Read_XYZ(&x, &y, &z);
+    ADXL345ReadAvval(&x, &y, &z);
+    angle= ADXL345Get_Angle(x, y, z, 2);
+    HAL_Delay(100);
 
 }
 
@@ -163,5 +164,16 @@ void DHT::measure()
             // 处理检测失败的情况
         }
     }
+}
+
+void start_DHT11()
+{
+    DHT::set_flag(DHT_FLAGS::START);
+    DHT::init();
+}
+
+void stop_DHT11()
+{
+    DHT::clear_flag(DHT_FLAGS::START);
 }
 

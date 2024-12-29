@@ -38,14 +38,18 @@ using AsyncDelayHAL = AsyncDelay<HAL_GetTick>;
 enum class DHT_FLAGS : uint8_t
 {
     START = 1 << 0,//bit:0 是否开启测量
-    TYPE = 1 << 1//bit:1 传感器类型,0表示DHT，1表示ACC
+    TYPE = 1 << 1,//bit:1 显示的传感器类型,0表示DHT，1表示ACC
+    DHT11 = 1 << 2,// bit:2 是否是DHT11
+    ACC = 1 << 3,// bit:3 是否是ACC
+
 };
 
 class DHT_ACC
 {
 public:
     static void init();//用于初始内部延时计时器,并默认设置为2s
-    static void reset_delay() { delay.reset(); }
+    static void reset_acc_delay() { acc_delay.reset(); }
+    static void reset_dht_delay() { dht_delay.reset(); }
 
     static void measure();// 测量
     static const float &get_temp() { return temp; }// 获取温度
@@ -84,7 +88,8 @@ private:
 //    static inline uint32_t start_tick = 0;
 //    static inline uint32_t final_tick = 0;
 //    static inline uint32_t delay_tick = TEMP_HUMI_CHECK_DELAY;
-    static inline AsyncDelayHAL delay;
+    static inline AsyncDelayHAL acc_delay;
+    static inline AsyncDelayHAL dht_delay;
     static inline uint8_t flags = 0;// 开始测量温湿度
     static inline float temp = 0;
     static inline float humi = 0;
@@ -135,8 +140,8 @@ void background_handler()
  */
 void DHT_ACC::init()
 {
-    delay.set_delay_tick(TEMP_HUMI_CHECK_DELAY);
-    delay.reset();
+    acc_delay.set_delay_tick(ACC_CHECK_DELAY);
+    dht_delay.set_delay_tick(TEMP_HUMI_CHECK_DELAY);
 }
 
 /**
@@ -147,40 +152,45 @@ short angle1, angle2;
 
 void DHT_ACC::measure()
 {
-
-    if (get_flag(DHT_FLAGS::START))
+    // 测量加速度
+    if (get_flag(DHT_FLAGS::ACC))
     {
-        // 测量温湿度
-        if (delay.is_timeout())
+        if (acc_delay.is_timeout())
         {
-            // 检测传感器类型
+
+            // ACC
+            ADXL345ReadAvval_Once(&x, &y, &z);
+
+            angle1 = ADXL345Get_Angle(x, y, z, 1);
+            angle2 = ADXL345Get_Angle(x, y, z, 2);
+#ifdef GUI_ENABLE
             if (get_flag(DHT_FLAGS::TYPE))
             {
-                // ACC
-                ADXL345ReadAvval_Once(&x, &y, &z);
-
-                angle1 = ADXL345Get_Angle(x, y, z, 1);
-                angle2 = ADXL345Get_Angle(x, y, z, 2);
-#ifdef GUI_ENABLE
                 UI::add_temp_data(angle1);
                 UI::add_humi_data(angle2);
-#endif
-
             }
-            else
-            {
-                // DHT11
-                if (DHT11_Read_Data_Fast_Pro(&temp, &humi))
-                {
-#ifdef GUI_ENABLE
-                    UI::add_temp_data((short) temp);
-                    UI::add_humi_data((short) humi);
 #endif
-                }
-            }
 
         }
     }
+    if(dht_delay.is_timeout())
+    {
+        if (get_flag(DHT_FLAGS::DHT11))
+        {
+            // DHT11
+            if (DHT11_Read_Data_Fast_Pro(&temp, &humi))
+            {
+#ifdef GUI_ENABLE
+                if (!get_flag(DHT_FLAGS::TYPE))
+                {
+                    UI::add_temp_data((short) temp);
+                    UI::add_humi_data((short) humi);
+                }
+#endif
+            }
+        }
+    }
+
 }
 
 void DHT_ACC::switch_sensor(bool type)
@@ -188,32 +198,41 @@ void DHT_ACC::switch_sensor(bool type)
     if (type)
     {
         set_flag(DHT_FLAGS::TYPE);
-        delay.set_delay_tick(ACC_CHECK_DELAY);
     }
     else
     {
         clear_flag(DHT_FLAGS::TYPE);
-        delay.set_delay_tick(TEMP_HUMI_CHECK_DELAY);
     }
 }
 
-void start()
+void start_DHT11()
 {
-    DHT_ACC::set_flag(DHT_FLAGS::START);
-    DHT_ACC::reset_delay();
+    DHT_ACC::set_flag(DHT_FLAGS::DHT11);
+    DHT_ACC::reset_dht_delay();
 }
 
-void stop()
+void stop_DHT11()
 {
-    DHT_ACC::clear_flag(DHT_FLAGS::START);
+    DHT_ACC::clear_flag(DHT_FLAGS::DHT11);
 }
 
 void switch_sensor(bool type)
 {
     DHT_ACC::switch_sensor(type);
 }
+
 const float &get_temp()
 {
     return DHT_ACC::get_temp();
 }
 
+void start_ACC()
+{
+    DHT_ACC::set_flag(DHT_FLAGS::ACC);
+    DHT_ACC::reset_acc_delay();
+}
+
+void stop_ACC()
+{
+    DHT_ACC::clear_flag(DHT_FLAGS::ACC);
+}

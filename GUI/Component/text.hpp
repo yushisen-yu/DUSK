@@ -26,7 +26,7 @@ public:
     set_space(Coord space, Selector selector = selector_default) -> void;
 
     // 设置文本颜色
-    static inline auto set_text_color(Color color) -> void;
+    static inline auto set_text_color(Color color,Obj obj=_obj) -> void;
 
     // 设置文本对齐方式
     [[maybe_unused]] static inline auto set_text_align(Align align,Obj obj=_obj) -> void;
@@ -89,9 +89,9 @@ Text::set_font(Font font, Selector selector) -> void
     lv_obj_set_style_text_letter_space(_obj, space, selector);
 }
 
-inline auto Text::set_text_color(lv_color_t color) -> void
+inline auto Text::set_text_color(lv_color_t color,Obj obj) -> void
 {
-    lv_obj_set_style_text_color(_obj, color, selector_default);
+    lv_obj_set_style_text_color(obj, color, selector_default);
 }
 
 [[maybe_unused]] inline auto Text::set_text_align(lv_text_align_t align,Obj obj) -> void

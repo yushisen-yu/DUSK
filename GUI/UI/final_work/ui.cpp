@@ -20,9 +20,12 @@ lv_point_t cursor_point = {0, 100};
 uint16_t temp_threshold;// 温度阈值
 
 // 外部声明
-extern void start();
+extern void start_DHT11();
 
-extern void stop();
+extern void stop_DHT11();
+extern void start_ACC();
+
+extern void stop_ACC();
 
 extern void switch_sensor(bool type);
 
@@ -62,12 +65,21 @@ auto Screen::init() -> void
                       &_temp_humi_other2_alpha_60x60);
 
 
-    button.init(gui->main.btn_beep, gui->main.btn_test_label, 100, 620, 90, 90, "蜂鸣器");
-    button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 100, 470, 90, 90, "步进电机");
-    button.init(gui->main.btn_DHT11_set_temp_thresold, gui->main.btn_DHT11_settemp_label, 250, 470, 90, 90,
-                "设定温度阈值");
-    button.init(gui->main.btn_switch_DHT_acc, gui->main.btn_switch_DHT_acc_label, 250, 620, 90, 90, "切换传感器");
-    button.init(gui->main.btn_ensure, gui->main.btn_ensure_label, 350, 620, 90, 90, "确定");
+
+    // 480-270=210  80,130
+    button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 65, 470, 90, 90, "步进电机");
+    button.init(gui->main.btn_beep, gui->main.btn_beep_label, 195, 470, 90, 90, "蜂鸣器");
+    button.init(gui->main.btn_DHT11_set_temp_thresold, gui->main.btn_DHT11_settemp_label, 325, 470, 90, 90,
+                "设定温度\n\t  阈值");
+
+    button.init(gui->main.btn_switch_DHT_acc, gui->main.btn_switch_DHT_acc_label, 65, 580, 90, 90, "切换传感器");
+    button.init(gui->main.btn_DHT11, gui->main.btn_DHT11_label, 195, 580, 90, 90, "启用温湿度\n\t  传感器");
+    button.init(gui->main.btn_ACC, gui->main.btn_ACC_label, 325, 580, 90, 90, "启用加速度\n\t  传感器");
+
+    button.init(gui->main.btn_enable_threshold, gui->main.btn_enable_threshold_label, 65, 690, 90, 90,
+                "启用温度\n\t  阈值");
+    button.init(gui->main.btn_drag, gui->main.btn_drag_label, 195, 690, 90, 90, "拖拽");
+    button.init(gui->main.btn_ensure, gui->main.btn_ensure_label, 325, 690, 90, 90, "确定");
 
     Chart::init(gui->main.chart_DHT11_temp_humi, 10, -240, 400, 280, 64);
     Chart::set_range(0, 100);
@@ -89,13 +101,13 @@ auto Events::init() -> void
 
     temp_threshold_timer.create(timer_fun(
 #ifdef GUI_ENABLE
-        // 如果温度大于给定的阈值，蜂鸣器响
-                         if (get_temp()>temp_threshold)
-                 {
-                         beep_start();
-                 }
+                                        // 如果温度大于给定的阈值，蜂鸣器响
+                                        if (get_temp()>temp_threshold)
+                                {
+                                        beep_start();
+                                }
 #endif
-                 ), 2000);
+                                ), 2000);
 
 
     bond(gui->main.btn_beep, btn_fun(
@@ -105,12 +117,14 @@ auto Events::init() -> void
                 flag = !flag;
                 if (flag)
                 {
+                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_beep_label);
 #ifdef GUI_ENABLE
                     beep_start();
 #endif
                 }
                 else
                 {
+                    Text::set_text_color(lv_color_black(), gui->main.btn_beep_label);
 #ifdef GUI_ENABLE
                     beep_stop();
 #endif
@@ -122,7 +136,7 @@ auto Events::init() -> void
     bond(gui->main.imgbtn_led, imgbtn_fun2(
                  []()
                  {
-
+                     Roller::enable_drag(gui->main.roller);
 #ifdef GUI_ENABLE
                      led_start();
 #endif
@@ -139,18 +153,19 @@ auto Events::init() -> void
                  []()
                  {
 #ifdef GUI_ENABLE
-                     start();
+                     start_DHT11();
 #endif
                  },
                  []()
                  {
 #ifdef GUI_ENABLE
-                     stop();
+                     stop_DHT11();
 #endif
                  }
          )
     );
 
+    // 直流电机
     bond(gui->main.btn_DCMotor, [](event e)
          {
              static volatile bool flag2 = false;
@@ -161,6 +176,7 @@ auto Events::init() -> void
 
                      if (flag2)
                      {
+                         Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_DCMotor_label);
 #ifdef GUI_ENABLE
                          DCMotor_forward(1000);
 #endif
@@ -171,6 +187,7 @@ auto Events::init() -> void
                          //                         DCMotor_reverse(300);
                          DCMotor_stop();
 #endif
+                         Text::set_text_color(lv_color_black(), gui->main.btn_DCMotor_label);
                      }
                      break;
                  default:
@@ -180,6 +197,7 @@ auto Events::init() -> void
          }
     );
 
+    // 切换加速度传感器、温湿度传感器显示
     bond(gui->main.btn_switch_DHT_acc, [](event e)
     {
         static volatile bool flag3 = false;
@@ -190,6 +208,7 @@ auto Events::init() -> void
 
                 if (flag3)
                 {
+                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_switch_DHT_acc_label);
 #ifdef GUI_ENABLE
                     //ACC
                     switch_sensor(true);
@@ -200,6 +219,7 @@ auto Events::init() -> void
                 }
                 else
                 {
+                    Text::set_text_color(lv_color_black(), gui->main.btn_switch_DHT_acc_label);
 #ifdef GUI_ENABLE
                     switch_sensor(false);
                     Chart::set_range(0, 100, gui->main.chart_DHT11_temp_humi);
@@ -217,15 +237,139 @@ auto Events::init() -> void
         }
     });
 
+    // 启用温湿度传感器
+    bond(gui->main.btn_DHT11, [](event e)
+    {
+        static volatile bool flag = false;
+        switch (lv_event_get_code(e))
+        {
+            case LV_EVENT_CLICKED:
+                flag = !flag;
+
+                if (flag)
+                {
+#ifdef GUI_ENABLE
+                    start_DHT11();
+#endif
+                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_DHT11_label);
+                }
+                else
+                {
+#ifdef GUI_ENABLE
+                    stop_DHT11();
+#endif
+
+                    Text::set_text_color(lv_color_black(), gui->main.btn_DHT11_label);
+                }
+
+                break;
+            default:
+                break;
+
+        }
+    });
+
+    // 启用加速度传感器
+    bond(gui->main.btn_ACC, [](event e)
+    {
+        static volatile bool flag = false;
+        switch (lv_event_get_code(e))
+        {
+            case LV_EVENT_CLICKED:
+                flag = !flag;
+
+                if (flag)
+                {
+#ifdef GUI_ENABLE
+                    start_ACC();
+#endif
+                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_ACC_label);
+                }
+                else
+                {
+#ifdef GUI_ENABLE
+                    stop_ACC();
+#endif
+                    Text::set_text_color(lv_color_black(), gui->main.btn_ACC_label);
+                }
+
+                break;
+            default:
+                break;
+
+        }
+    });
+
     // 设定温度阈值
     bond(gui->main.btn_DHT11_set_temp_thresold, btn_fun
     (
             []()
             {
                 // 创建滚轮
-                create_roller(200, 400);
+                if (!gui->main.roller) { create_roller(320, 330); }
             }
     ));
+
+    // 启用温度阈值
+    bond(gui->main.btn_enable_threshold, [](event e)
+    {
+        static volatile bool flag = false;
+        switch (lv_event_get_code(e))
+        {
+            case LV_EVENT_CLICKED:
+                flag = !flag;
+
+                if (flag)
+                {
+                    temp_threshold_timer.resume();
+                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_enable_threshold_label);
+                }
+                else
+                {
+                    temp_threshold_timer.pause();
+                    Text::set_text_color(lv_color_black(), gui->main.btn_enable_threshold_label);
+                }
+
+                break;
+            default:
+                break;
+
+        }
+    });
+
+    // 拖拽按钮
+    bond(gui->main.btn_drag, [](event e)
+    {
+        static volatile bool flag4 = false;
+        switch (lv_event_get_code(e))
+        {
+            case LV_EVENT_CLICKED:
+
+                if (gui->main.roller)
+                {
+                    flag4 = !flag4;
+                    if (flag4)
+                    {
+
+                        Roller::enable_drag(gui->main.roller);
+                        Roller::enable_drag(gui->main.roller2);
+
+                        Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_drag_label);
+                    }
+                    else
+                    {
+                        Roller::disable_drag(gui->main.roller);
+                        Roller::disable_drag(gui->main.roller2);
+                        Text::set_text_color(lv_color_black(), gui->main.btn_drag_label);
+                    }
+                }
+
+                break;
+            default:
+                break;
+
+        }
+    });
 
 
     // 确定按钮

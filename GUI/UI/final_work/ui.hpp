@@ -17,7 +17,7 @@ struct lv_ui_t
         Obj screen;// 屏幕自身
 
         Obj btn_beep;// 测试按钮
-        Obj btn_test_label;// 测试按钮
+        Obj btn_beep_label;// 测试按钮
 
         Obj imgbtn_led;
         Obj btn_led_label;// 灯光按钮
@@ -25,11 +25,23 @@ struct lv_ui_t
         Obj btn_DCMotor;// 直流电机按钮
         Obj btn_DCMotor_label;
 
+        Obj btn_DHT11;// 温湿度传感器
+        Obj btn_DHT11_label;
+
+        Obj btn_ACC;// 加速度传感器
+        Obj btn_ACC_label;
+
         Obj btn_DHT11_set_temp_thresold;// 温湿度阈值设定按钮
         Obj btn_DHT11_settemp_label;
 
         Obj btn_switch_DHT_acc;// 切换温湿度传感器和加速度传感器的按钮
         Obj btn_switch_DHT_acc_label;
+
+        Obj btn_enable_threshold;// 开启温度阈值检测按钮
+        Obj btn_enable_threshold_label;
+
+        Obj btn_drag;// 拖拽按钮
+        Obj btn_drag_label;
 
         Obj btn_ensure;// 确定按钮
         Obj btn_ensure_label;

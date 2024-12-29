@@ -155,8 +155,10 @@ void DHT::measure()
             clear_flag(DHT_FLAGS::DELAY);
             if (DHT11_Read_Data_Fast_Pro(&temp, &humi))
             {
+#ifdef GUI_ENABLE
                 UI::add_temp_data(temp);
                 UI::add_humi_data(humi);
+#endif
             }
             // 处理检测失败的情况
         }

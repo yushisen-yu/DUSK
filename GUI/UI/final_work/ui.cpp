@@ -115,13 +115,13 @@ auto Events::init() -> void
          imgbtn_fun2([]()
                      {
 #ifdef GUI_ENABLE
-                         start_DHT11();
+//                         start_DHT11();
 #endif
 
                      }, []()
                      {
 #ifdef GUI_ENABLE
-                         stop_DHT11();
+//                         stop_DHT11();
 #endif
 
                      })

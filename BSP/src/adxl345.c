@@ -46,20 +46,45 @@
 //ADXL345_DIN(PF12)    OUT
 //ADXL345_DO(PF13)     IN
 *********************************************************************************************************/
+// PF11 -> PB2
+// PF12 -> PB7
+// PF13 -> PB11
+// PF14 -> PB14
+
+/********* 如果定义了就使用单片机的第三个端口，否则使用第二个端口******/
+//#define USE_MCU_PORT3
+
+#ifdef  USE_MCU_PORT3
+#define    ADXL345_CS_PIN   GPIO_PIN_14
+#define    ADXL345_CLK_PIN   GPIO_PIN_11
+#define    ADXL345_DIN_PIN   GPIO_PIN_12
+#define    ADXL345_DO_PIN   GPIO_PIN_13
+#define ADXL345_GPIO_PORT GPIOF
+#define ADXL345_ENABLE_RCC __HAL_RCC_GPIOF_CLK_ENABLE
+#else
+#define    ADXL345_CS_PIN   GPIO_PIN_14
+#define    ADXL345_CLK_PIN   GPIO_PIN_2
+#define    ADXL345_DIN_PIN   GPIO_PIN_7
+#define    ADXL345_DO_PIN   GPIO_PIN_11
+#define ADXL345_GPIO_PORT GPIOB
+#define ADXL345_ENABLE_RCC __HAL_RCC_GPIOB_CLK_ENABLE
+#endif
+
 //ADXL345_CS(PF14)     OUT
-#define    ADXL345_CS_L          HAL_GPIO_WritePin(GPIOF,GPIO_PIN_14,  GPIO_PIN_RESET)
-#define    ADXL345_CS_H          HAL_GPIO_WritePin(GPIOF,GPIO_PIN_14,  GPIO_PIN_SET)
+#define    ADXL345_CS_L          HAL_GPIO_WritePin(ADXL345_GPIO_PORT,ADXL345_CS_PIN,  GPIO_PIN_RESET)
+#define    ADXL345_CS_H          HAL_GPIO_WritePin(ADXL345_GPIO_PORT,ADXL345_CS_PIN,  GPIO_PIN_SET)
 
 //ADXL345_CLK(PF11)    OUT
-#define    ADXL345_CLK_L         HAL_GPIO_WritePin(GPIOF,GPIO_PIN_11,  GPIO_PIN_RESET)
-#define    ADXL345_CLK_H         HAL_GPIO_WritePin(GPIOF,GPIO_PIN_11,  GPIO_PIN_SET)
+#define    ADXL345_CLK_L         HAL_GPIO_WritePin(ADXL345_GPIO_PORT,ADXL345_CLK_PIN,  GPIO_PIN_RESET)
+#define    ADXL345_CLK_H         HAL_GPIO_WritePin(ADXL345_GPIO_PORT,ADXL345_CLK_PIN,  GPIO_PIN_SET)
 
 //ADXL345_DIN(PF12)     OUT
-#define    ADXL345_DIN_L          HAL_GPIO_WritePin(GPIOF,GPIO_PIN_12,  GPIO_PIN_RESET)
-#define    ADXL345_DIN_H          HAL_GPIO_WritePin(GPIOF,GPIO_PIN_12,  GPIO_PIN_SET)
+#define    ADXL345_DIN_L          HAL_GPIO_WritePin(ADXL345_GPIO_PORT,ADXL345_DIN_PIN,  GPIO_PIN_RESET)
+#define    ADXL345_DIN_H          HAL_GPIO_WritePin(ADXL345_GPIO_PORT,ADXL345_DIN_PIN,  GPIO_PIN_SET)
 
 //ADXL345_DO(PF13)      IN
-#define    ADXL345_DO          HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_13)
+#define    ADXL345_DO          HAL_GPIO_ReadPin(ADXL345_GPIO_PORT, ADXL345_DO_PIN)
+
 
 
 /********************************内部接口声明*************************************/
@@ -91,18 +116,18 @@ void ADXL345_ISP_Init(void)
     GPIO_InitTypeDef GPIO_InitStructure;
 
     //ADXL345_CS(PF14)、ADXL345_SCK(PF11)、//ADXL345_DO(PF12)
-    __HAL_RCC_GPIOF_CLK_ENABLE();
+    ADXL345_ENABLE_RCC();
 
-    GPIO_InitStructure.Pin = GPIO_PIN_14 | GPIO_PIN_11 | GPIO_PIN_12;
+    GPIO_InitStructure.Pin = ADXL345_CS_PIN | ADXL345_CLK_PIN | ADXL345_DIN_PIN;
     GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;           //输出模式 //推挽输出
     GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_MEDIUM;
     GPIO_InitStructure.Pull = GPIO_PULLUP;
-    HAL_GPIO_Init(GPIOF, &GPIO_InitStructure);
+    HAL_GPIO_Init(ADXL345_GPIO_PORT, &GPIO_InitStructure);
 
     //ADXL345_DIN(PF13)    IN
-    GPIO_InitStructure.Pin = GPIO_PIN_13;
+    GPIO_InitStructure.Pin = ADXL345_DO_PIN;
     GPIO_InitStructure.Mode = GPIO_MODE_INPUT;           //输入模式
-    HAL_GPIO_Init(GPIOF, &GPIO_InitStructure);
+    HAL_GPIO_Init(ADXL345_GPIO_PORT, &GPIO_InitStructure);
 
     ADXL345_CS_H;
     ADXL345_CLK_H;
@@ -354,8 +379,8 @@ void ADXL345ReadAvval_Once(short *x, short *y, short *z)
 
     // 应用一阶滤波算法
     raw_x = (short) ((1 - ALPHA) * raw_x);
-    raw_y =  (short) ((1 - ALPHA) * raw_y);
-    raw_z = (short) ( (1 - ALPHA) * raw_z);
+    raw_y = (short) ((1 - ALPHA) * raw_y);
+    raw_z = (short) ((1 - ALPHA) * raw_z);
 
     // 计算平均值
     *x = (short) (abs(raw_x) == 127 ? 0 : raw_x);

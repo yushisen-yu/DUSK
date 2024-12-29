@@ -63,8 +63,8 @@ int keyboard_thread(void *data)
                 case 'a':
 //                    is_fps = !is_fps;
 //                    uiInterface::show_fps(is_fps);
-//                    printf("FPS显示\n");
-//                    break;
+                    printf("FPS显示\n");
+                    break;
 
                 case 's':
 //                    is_fps_mode = !is_fps_mode;
@@ -109,3 +109,17 @@ int keyboard_thread(void *data)
     return keep_running;  /* 这个函数实际上永远不会返回，因为它一直在循环中运行 */
 }
 
+
+// 后台线程
+int value;
+int background_thread(void *data)
+{
+    (void) data;
+    while (keep_running)
+    {
+//        SDL_Delay(100);
+//        value=lv_roller_get_selected(GUI_Base::get_ui()->main.roller);
+//        printf("%d",value);
+    }
+    return keep_running;
+}

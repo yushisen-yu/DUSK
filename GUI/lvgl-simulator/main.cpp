@@ -47,7 +47,7 @@ volatile int keep_running = 1;
 /******************自定义函数*******************/
 // 测试用的线程
 extern int keyboard_thread(void *data);
-
+extern int background_thread(void *data);
 /******************自定义函数*******************/
 int main(int argc, char **argv)
 {
@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 
     // 自定义线程
     SDL_CreateThread(keyboard_thread, "tick", nullptr);
+    SDL_CreateThread(background_thread, "background", nullptr);
 
     while (keep_running)
     {

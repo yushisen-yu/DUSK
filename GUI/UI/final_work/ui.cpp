@@ -58,6 +58,13 @@ auto Screen::init() -> void
     Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &point);
     Chart::set_style_bg_color(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
+    // 滚动条使用
+    gui->main.roller=lv_roller_create(gui->main.screen);
+    lv_obj_set_size(gui->main.roller, 40, 100);
+    lv_obj_set_pos(gui->main.roller, 300, 500);
+    lv_roller_set_options(gui->main.roller, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
+    lv_obj_set_style_text_color(gui->main.roller, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SELECTED);
+    lv_obj_set_style_text_font(gui->main.roller, &lv_customer_font_SourceHanSerifSC_Regular_18, LV_PART_SELECTED);
 
 
 }

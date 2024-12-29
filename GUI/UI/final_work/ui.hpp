@@ -35,7 +35,10 @@ struct lv_ui_t {
     Obj chart_DHT11_temp_label;
     Obj chart_DHT11_humi_label;
 
+    // 滚动条
+    Obj roller;
 
+    Obj init;
 
   } main;
 
@@ -45,6 +48,7 @@ using lv_ui_t = struct lv_ui_t;
 
 //资源加载
 LV_FONT_DECLARE(lv_customer_font_SourceHanSerifSC_Regular_15)
+LV_FONT_DECLARE(lv_customer_font_SourceHanSerifSC_Regular_18)
 LV_IMG_DECLARE(_led_off_c_alpha_80x80)
 LV_IMG_DECLARE(_led_on_c_alpha_80x80)
 LV_IMG_DECLARE(_temp_humi2_alpha_60x60)

@@ -38,7 +38,7 @@ void DHT11_Wait_Low()
     while (DHT11_Read())
     {
         count++;
-        if (count > 0xFFFF)
+        if (count > 0x3FFF)
         {
             return;
         }
@@ -51,7 +51,7 @@ void DHT11_Wait_High()
     while (!DHT11_Read())
     {
         count++;
-        if (count > 0xFFFF)
+        if (count > 0x3FFF)
         {
             return;
         }

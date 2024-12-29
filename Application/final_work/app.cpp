@@ -49,6 +49,7 @@ class DHT_ACC
 public:
     static void init();//用于初始内部延时计时器,并默认设置为2s
     static void reset_acc_delay() { acc_delay.reset(); }
+
     static void reset_dht_delay() { dht_delay.reset(); }
 
     static void measure();// 测量
@@ -173,9 +174,10 @@ void DHT_ACC::measure()
 
         }
     }
-    if(dht_delay.is_timeout())
+
+    if (get_flag(DHT_FLAGS::DHT11))
     {
-        if (get_flag(DHT_FLAGS::DHT11))
+        if (dht_delay.is_timeout())
         {
             // DHT11
             if (DHT11_Read_Data_Fast_Pro(&temp, &humi))

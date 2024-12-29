@@ -14,6 +14,20 @@ constexpr const Selector selector_default = (static_cast<uint32_t >(LV_PART_MAIN
 constexpr const Selector selector_ticks = (static_cast<uint32_t >(LV_PART_TICKS) |
                                            static_cast<uint32_t >(LV_STATE_DEFAULT));
 
+namespace
+{
+    void drag_event_handler(lv_event_t *e)
+    {
+        lv_obj_t *obj = lv_event_get_target(e); //获取事件产生的对象
+        //获取活动界面输入设备
+        lv_point_t vect;
+        lv_indev_get_vect(lv_indev_get_act(), &vect); //获取vect point
+        lv_coord_t x = lv_obj_get_x(obj) + vect.x; //计算x
+        lv_coord_t y = lv_obj_get_y(obj) + vect.y; // 计算y
+        lv_obj_set_pos(obj, x, y); //移动对象到x,y
+    }
+}
+
 
 /**
  * @brief 屏幕类
@@ -141,6 +155,14 @@ public:
     // 设置边框样式
     static inline auto
     border(Color color, Coord radius = 5, Coord width = 1, uint8_t opa = 255) -> void;
+
+    /*功能*/
+
+    // 可拖动
+    static inline auto enable_drag(Obj obj = _obj) -> void;
+    // 不可拖动
+    static inline auto disable_drag(Obj obj = _obj) -> void;
+
 
 
     /*初始化器*/
@@ -370,9 +392,27 @@ auto Component::appear(Obj obj) -> void
 
 auto Component::destroy(Obj obj) -> void
 {
-    lv_obj_del(obj);
-    obj = nullptr;
-    _obj = nullptr;
+    if(obj)
+    {
+        lv_obj_del(obj);
+        obj = nullptr;
+        _obj = nullptr;
+    }
+}
+
+/**
+ * @brief 启用拖动事件处理
+ * @param obj
+ * @note 缺点：会把原先的PRESSING事件覆盖掉
+ */
+auto Component::enable_drag(Obj obj) -> void
+{
+    lv_obj_add_event_cb(obj, drag_event_handler, LV_EVENT_PRESSING, nullptr);
+}
+
+auto Component::disable_drag(Obj obj) -> void
+{
+    lv_obj_remove_event_cb(obj, drag_event_handler);
 }
 
 

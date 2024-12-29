@@ -25,7 +25,7 @@ struct lv_ui_t
         Obj btn_DCMotor;// 直流电机按钮
         Obj btn_DCMotor_label;
 
-        Obj btn_DHT11_settemp;// 温湿度阈值设定按钮
+        Obj btn_DHT11_set_temp_thresold;// 温湿度阈值设定按钮
         Obj btn_DHT11_settemp_label;
 
         Obj btn_switch_DHT_acc;// 切换温湿度传感器和加速度传感器的按钮
@@ -43,6 +43,7 @@ struct lv_ui_t
 
         // 滚动条
         Obj roller;
+        Obj roller2;
 
         Obj init;
 

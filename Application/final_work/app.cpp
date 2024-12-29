@@ -212,4 +212,8 @@ void switch_sensor(bool type)
 {
     DHT_ACC::switch_sensor(type);
 }
+const float &get_temp()
+{
+    return DHT_ACC::get_temp();
+}
 

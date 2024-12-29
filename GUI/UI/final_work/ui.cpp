@@ -14,9 +14,10 @@
 #endif
 lv_chart_series_t *chart_series_temp;
 lv_chart_series_t *chart_series_humi;
-LV_Timer timer;
+LV_Timer temp_threshold_timer;
 lv_chart_cursor_t *cursor;
-lv_point_t point = {0, 100};
+lv_point_t cursor_point = {0, 100};
+uint16_t temp_threshold;// 温度阈值
 
 // 外部声明
 extern void start();
@@ -25,19 +26,28 @@ extern void stop();
 
 extern void switch_sensor(bool type);
 
+extern const float &get_temp();
+
 //#87CEEB
 //#FF7F50
-
-static void drag_event_handler(lv_event_t* e)
+/***************************一些函数********************************/
+void create_roller(Coord x, Coord y)
 {
-    lv_obj_t* obj = lv_event_get_target(e); //获取事件产生的对象
-    lv_indev_t* indev = lv_indev_get_act();  //获取活动界面输入设备
-    lv_point_t vect;
-    lv_indev_get_vect(indev, &vect); //获取vect point
-    lv_coord_t x = lv_obj_get_x(obj) + vect.x; //计算x
-    lv_coord_t y = lv_obj_get_y(obj) + vect.y; // 计算y
-    lv_obj_set_pos(obj, x, y); //移动对象到x,y
+    Roller::init(GUI_Base::get_ui()->main.roller, x, y, 40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
+    Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
+    Roller::set_selected_text_font(&lv_customer_font_SourceHanSerifSC_Regular_18);
+
+    Roller::init(GUI_Base::get_ui()->main.roller2, x + 50, y, 40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
+    Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
+    Roller::set_selected_text_font(&lv_customer_font_SourceHanSerifSC_Regular_18);
 }
+
+void destroy_roller()
+{
+    Roller::destroy(GUI_Base::get_ui()->main.roller);
+    Roller::destroy(GUI_Base::get_ui()->main.roller2);
+}
+
 
 auto Screen::init() -> void
 {
@@ -53,8 +63,9 @@ auto Screen::init() -> void
 
 
     button.init(gui->main.btn_beep, gui->main.btn_test_label, 100, 620, 90, 90, "蜂鸣器");
-    button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 100, 470, 90, 90, "拉窗帘/开空调");
-    button.init(gui->main.btn_DHT11_settemp, gui->main.btn_DHT11_settemp_label, 250, 470, 90, 90, "设定温度阈值");
+    button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 100, 470, 90, 90, "步进电机");
+    button.init(gui->main.btn_DHT11_set_temp_thresold, gui->main.btn_DHT11_settemp_label, 250, 470, 90, 90,
+                "设定温度阈值");
     button.init(gui->main.btn_switch_DHT_acc, gui->main.btn_switch_DHT_acc_label, 250, 620, 90, 90, "切换传感器");
     button.init(gui->main.btn_ensure, gui->main.btn_ensure_label, 350, 620, 90, 90, "确定");
 
@@ -66,16 +77,9 @@ auto Screen::init() -> void
 
     Chart::add_series(chart_series_temp, lv_color_hex(0x30C0D0), LV_CHART_AXIS_PRIMARY_Y);
     Chart::add_series(chart_series_humi, lv_color_hex(0xC678DD), LV_CHART_AXIS_PRIMARY_Y);
-    Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_GREEN), LV_DIR_RIGHT, cursor);
-    Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &point);
+
     Chart::set_style_bg_color(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
-    // 滚动条使用
-    Roller::init(gui->main.roller,300, 500,40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
-    Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
-    Roller::set_selected_text_font( &lv_customer_font_SourceHanSerifSC_Regular_18);
-
-    lv_obj_add_event_cb(gui->main.roller, drag_event_handler,LV_EVENT_PRESSING, nullptr);
 
 }
 
@@ -83,10 +87,15 @@ auto Events::init() -> void
 {
 // lambda匿名
 
-    timer.create(timer_fun(
-                         UI::add_temp_data(lv_tick_get() & 0x3F);
-                         UI::add_humi_data(lv_tick_get() / 3 & 0x3F);
-                 ), 100);
+    temp_threshold_timer.create(timer_fun(
+#ifdef GUI_ENABLE
+        // 如果温度大于给定的阈值，蜂鸣器响
+                         if (get_temp()>temp_threshold)
+                 {
+                         beep_start();
+                 }
+#endif
+                 ), 2000);
 
 
     bond(gui->main.btn_beep, btn_fun(
@@ -113,6 +122,7 @@ auto Events::init() -> void
     bond(gui->main.imgbtn_led, imgbtn_fun2(
                  []()
                  {
+
 #ifdef GUI_ENABLE
                      led_start();
 #endif
@@ -126,17 +136,19 @@ auto Events::init() -> void
     );
 
     bond(gui->main.imgbtn_DHT11, imgbtn_fun2(
-            [](){
+                 []()
+                 {
 #ifdef GUI_ENABLE
-                start();
+                     start();
 #endif
-                },
-            [](){
+                 },
+                 []()
+                 {
 #ifdef GUI_ENABLE
-                stop();
+                     stop();
 #endif
-            }
-            )
+                 }
+         )
     );
 
     bond(gui->main.btn_DCMotor, [](event e)
@@ -156,7 +168,7 @@ auto Events::init() -> void
                      else
                      {
 #ifdef GUI_ENABLE
-//                         DCMotor_reverse(300);
+                         //                         DCMotor_reverse(300);
                          DCMotor_stop();
 #endif
                      }
@@ -168,7 +180,7 @@ auto Events::init() -> void
          }
     );
 
-    bond(gui->main.btn_switch_DHT_acc,[](event e)
+    bond(gui->main.btn_switch_DHT_acc, [](event e)
     {
         static volatile bool flag3 = false;
         switch (lv_event_get_code(e))
@@ -181,7 +193,7 @@ auto Events::init() -> void
 #ifdef GUI_ENABLE
                     //ACC
                     switch_sensor(true);
-                    Chart::set_range(-360, 360,gui->main.chart_DHT11_temp_humi);
+                    Chart::set_range(-360, 360, gui->main.chart_DHT11_temp_humi);
 
 
 #endif
@@ -190,10 +202,10 @@ auto Events::init() -> void
                 {
 #ifdef GUI_ENABLE
                     switch_sensor(false);
-                    Chart::set_range(0, 100,gui->main.chart_DHT11_temp_humi);
+                    Chart::set_range(0, 100, gui->main.chart_DHT11_temp_humi);
 #endif
                 }
-                for(int i=0;i<64;i++)
+                for (int i = 0; i < 64; i++)
                 {
                     Chart::set_next_value(chart_series_temp, 0, gui->main.chart_DHT11_temp_humi);
                     Chart::set_next_value(chart_series_humi, 0, gui->main.chart_DHT11_temp_humi);
@@ -204,6 +216,48 @@ auto Events::init() -> void
 
         }
     });
+
+    // 设定温度阈值
+    bond(gui->main.btn_DHT11_set_temp_thresold, btn_fun
+    (
+            []()
+            {
+                // 创建滚轮
+                create_roller(200, 400);
+            }
+    ));
+
+
+    // 确定按钮
+    bond(gui->main.btn_ensure, btn_fun(
+            []()
+            {
+                // 确保不会出现空指针引用
+                if (gui->main.roller && gui->main.roller2)
+                {
+                    uint16_t temp = Roller::get_selected_option(gui->main.roller);
+                    uint16_t temp2 = Roller::get_selected_option(gui->main.roller2);
+                    temp_threshold = temp * 10 + temp2;
+                    cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
+
+                    if (cursor)
+                    {
+                        // 未知原因，直接使用Chart::set_cursor_pos会卡死
+                        cursor->pos.y = cursor_point.y;
+                        cursor->pos_set = 1;
+                        lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
+                    }
+                    else
+                    {
+                        Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
+                                          LV_DIR_RIGHT, cursor);
+                        Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
+                    }
+                    destroy_roller();
+                }
+
+            }
+    ));
 
 
 }

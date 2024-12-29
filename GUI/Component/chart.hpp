@@ -206,3 +206,5 @@ auto Chart::set_zoom_x(lv_obj_t * obj, uint16_t zoom_x)
   lv_chart_set_zoom_x(obj, zoom_x);
 //  lv_chart_set_zoom_y(obj, zoom_y);
 }
+
+

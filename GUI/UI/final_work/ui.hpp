@@ -31,6 +31,9 @@ struct lv_ui_t
         Obj btn_switch_DHT_acc;// 切换温湿度传感器和加速度传感器的按钮
         Obj btn_switch_DHT_acc_label;
 
+        Obj btn_ensure;// 确定按钮
+        Obj btn_ensure_label;
+
         Obj imgbtn_DHT11;
         Obj btn_DHT11_value_label;//取温湿度的值
         Obj chart_DHT11_temp_humi;

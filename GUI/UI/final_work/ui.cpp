@@ -28,6 +28,17 @@ extern void switch_sensor(bool type);
 //#87CEEB
 //#FF7F50
 
+static void drag_event_handler(lv_event_t* e)
+{
+    lv_obj_t* obj = lv_event_get_target(e); //获取事件产生的对象
+    lv_indev_t* indev = lv_indev_get_act();  //获取活动界面输入设备
+    lv_point_t vect;
+    lv_indev_get_vect(indev, &vect); //获取vect point
+    lv_coord_t x = lv_obj_get_x(obj) + vect.x; //计算x
+    lv_coord_t y = lv_obj_get_y(obj) + vect.y; // 计算y
+    lv_obj_set_pos(obj, x, y); //移动对象到x,y
+}
+
 auto Screen::init() -> void
 {
     Component::set_parent(gui->main.screen);
@@ -41,10 +52,11 @@ auto Screen::init() -> void
                       &_temp_humi_other2_alpha_60x60);
 
 
-    button.init(gui->main.btn_beep, gui->main.btn_test_label, 100, 620, 100, 100, "蜂鸣器");
-    button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 100, 470, 100, 100, "拉窗帘/开空调");
-    button.init(gui->main.btn_DHT11_settemp, gui->main.btn_DHT11_settemp_label, 250, 470, 100, 100, "设定温度阈值");
-    button.init(gui->main.btn_switch_DHT_acc, gui->main.btn_switch_DHT_acc_label, 250, 620, 100, 100, "112");
+    button.init(gui->main.btn_beep, gui->main.btn_test_label, 100, 620, 90, 90, "蜂鸣器");
+    button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 100, 470, 90, 90, "拉窗帘/开空调");
+    button.init(gui->main.btn_DHT11_settemp, gui->main.btn_DHT11_settemp_label, 250, 470, 90, 90, "设定温度阈值");
+    button.init(gui->main.btn_switch_DHT_acc, gui->main.btn_switch_DHT_acc_label, 250, 620, 90, 90, "切换传感器");
+    button.init(gui->main.btn_ensure, gui->main.btn_ensure_label, 350, 620, 90, 90, "确定");
 
     Chart::init(gui->main.chart_DHT11_temp_humi, 10, -240, 400, 280, 64);
     Chart::set_range(0, 100);
@@ -62,6 +74,8 @@ auto Screen::init() -> void
     Roller::init(gui->main.roller,300, 500,40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
     Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
     Roller::set_selected_text_font( &lv_customer_font_SourceHanSerifSC_Regular_18);
+
+    lv_obj_add_event_cb(gui->main.roller, drag_event_handler,LV_EVENT_PRESSING, nullptr);
 
 }
 

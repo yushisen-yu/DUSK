@@ -26,21 +26,27 @@
 #include "USART3.h"
 #include "mp3.h"
 
+#include "Async_Delay.hpp"
 
 constexpr uint32_t TEMP_HUMI_CHECK_DELAY = 2000;// 2s检测一次
 constexpr uint32_t ACC_CHECK_DELAY = 200;
 
+// 使用别名
+using AsyncDelayHAL = AsyncDelay<HAL_GetTick>;
+
+
 enum class DHT_FLAGS : uint8_t
 {
     START = 1 << 0,//bit:0 是否开启测量
-    DELAY = 1 << 1,//bit:1 检测间隔是否达到
-    TYPE = 1 << 2,//bit:2 传感器类型,0表示DHT，1表示ACC
+    TYPE = 1 << 1//bit:1 传感器类型,0表示DHT，1表示ACC
 };
 
 class DHT_ACC
 {
 public:
-    static void init();//用于初始内部延时计时器
+    static void init();//用于初始内部延时计时器,并默认设置为2s
+    static void reset_delay() { delay.reset(); }
+
     static void measure();// 测量
     static const float &get_temp() { return temp; }// 获取温度
     static const float &get_humi() { return humi; }// 获取湿度
@@ -75,9 +81,10 @@ public:
     }
 
 private:
-    static inline uint32_t start_tick = 0;
-    static inline uint32_t final_tick = 0;
-    static inline uint32_t delay_tick = TEMP_HUMI_CHECK_DELAY;
+//    static inline uint32_t start_tick = 0;
+//    static inline uint32_t final_tick = 0;
+//    static inline uint32_t delay_tick = TEMP_HUMI_CHECK_DELAY;
+    static inline AsyncDelayHAL delay;
     static inline uint8_t flags = 0;// 开始测量温湿度
     static inline float temp = 0;
     static inline float humi = 0;
@@ -107,7 +114,6 @@ void app_init()
     setMp3Vol(9);
 
 
-
 }
 
 // 后台运算
@@ -117,7 +123,6 @@ void background_handler()
 {
     // 检测温湿度
     DHT_ACC::measure();
-
 
 
 }
@@ -130,8 +135,8 @@ void background_handler()
  */
 void DHT_ACC::init()
 {
-    start_tick = HAL_GetTick();// 获取起点
-    final_tick = start_tick + delay_tick;// 计算终点
+    delay.set_delay_tick(TEMP_HUMI_CHECK_DELAY);
+    delay.reset();
 }
 
 /**
@@ -145,36 +150,9 @@ void DHT_ACC::measure()
 
     if (get_flag(DHT_FLAGS::START))
     {
-        // 非阻塞延迟
-        if (final_tick < start_tick)
-        {
-            // 检测溢出情况
-            if (HAL_GetTick() > final_tick && HAL_GetTick() < start_tick)
-            {
-                // 重置
-                start_tick = HAL_GetTick();
-                final_tick = start_tick + delay_tick;
-                // 标志记为1
-                set_flag(DHT_FLAGS::DELAY);
-            }
-        }
-        else
-        {
-            if (HAL_GetTick() > final_tick)
-            {
-                // 重置
-                start_tick = HAL_GetTick();
-                final_tick = start_tick + delay_tick;
-                // 标志记为1
-                set_flag(DHT_FLAGS::DELAY);
-            }
-        }
-
         // 测量温湿度
-        if (get_flag(DHT_FLAGS::DELAY))
+        if (delay.is_timeout())
         {
-            clear_flag(DHT_FLAGS::DELAY);
-
             // 检测传感器类型
             if (get_flag(DHT_FLAGS::TYPE))
             {
@@ -210,19 +188,19 @@ void DHT_ACC::switch_sensor(bool type)
     if (type)
     {
         set_flag(DHT_FLAGS::TYPE);
-        delay_tick = ACC_CHECK_DELAY;
+        delay.set_delay_tick(ACC_CHECK_DELAY);
     }
     else
     {
         clear_flag(DHT_FLAGS::TYPE);
-        delay_tick = TEMP_HUMI_CHECK_DELAY;
+        delay.set_delay_tick(TEMP_HUMI_CHECK_DELAY);
     }
 }
 
 void start()
 {
     DHT_ACC::set_flag(DHT_FLAGS::START);
-    DHT_ACC::init();
+    DHT_ACC::reset_delay();
 }
 
 void stop()

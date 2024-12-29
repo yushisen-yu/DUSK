@@ -1,8 +1,4 @@
-export module async_delay;
 
-
-export
-{
 #include <cstdint>
 
 
@@ -19,7 +15,7 @@ export
     {
     public:
         AsyncDelay() : start_tick(0), final_tick(0), delay_tick(100) {}
-        AsyncDelay(uint32_t delay_tick) : start_tick(0), final_tick(0), delay_tick(delay_tick) {}
+        explicit AsyncDelay(uint32_t delay_tick) : start_tick(0), final_tick(0), delay_tick(delay_tick) {}
 
         void reset();// 重置
         bool is_timeout();// 是否超时
@@ -29,7 +25,6 @@ export
         uint32_t final_tick;
         uint32_t delay_tick;// 默认100个tick
     };
-}
 
 template<uint32_t(*get_tick)()>
 void AsyncDelay<get_tick>::reset()

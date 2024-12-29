@@ -25,8 +25,8 @@ struct lv_ui_t
         Obj btn_DCMotor;// 直流电机按钮
         Obj btn_DCMotor_label;
 
-        Obj btn_DHT11;// 温湿度传感器
-        Obj btn_DHT11_label;
+        Obj btn_music;// 温湿度传感器
+        Obj btn_music_label;
 
         Obj btn_ACC;// 加速度传感器
         Obj btn_ACC_label;

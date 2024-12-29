@@ -73,7 +73,7 @@ auto Screen::init() -> void
                 "设定温度\n\t  阈值");
 
     button.init(gui->main.btn_switch_DHT_acc, gui->main.btn_switch_DHT_acc_label, 65, 580, 90, 90, "切换传感器");
-    button.init(gui->main.btn_DHT11, gui->main.btn_DHT11_label, 195, 580, 90, 90, "启用温湿度\n\t  传感器");
+    button.init(gui->main.btn_music, gui->main.btn_music_label, 195, 580, 90, 90, "音乐播放");
     button.init(gui->main.btn_ACC, gui->main.btn_ACC_label, 325, 580, 90, 90, "启用加速度\n\t  传感器");
 
     button.init(gui->main.btn_enable_threshold, gui->main.btn_enable_threshold_label, 65, 690, 90, 90,
@@ -238,7 +238,7 @@ auto Events::init() -> void
     });
 
     // 启用温湿度传感器
-    bond(gui->main.btn_DHT11, [](event e)
+    bond(gui->main.btn_music, [](event e)
     {
         static volatile bool flag = false;
         switch (lv_event_get_code(e))
@@ -251,7 +251,7 @@ auto Events::init() -> void
 #ifdef GUI_ENABLE
                     start_DHT11();
 #endif
-                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_DHT11_label);
+                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_music_label);
                 }
                 else
                 {
@@ -259,7 +259,7 @@ auto Events::init() -> void
                     stop_DHT11();
 #endif
 
-                    Text::set_text_color(lv_color_black(), gui->main.btn_DHT11_label);
+                    Text::set_text_color(lv_color_black(), gui->main.btn_music_label);
                 }
 
                 break;

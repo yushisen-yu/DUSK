@@ -19,8 +19,6 @@
 #define DHT11_High() DHT11_GPIO_Port->ODR |= (0x01 << DHT11_Pin_Location)
 #define DHT11_Low() DHT11_GPIO_Port->ODR &= ~(0x01 << DHT11_Pin_Location) /*HAL_GPIO_WritePin(DHT11_GPIO_Port, DHT11_Pin, GPIO_PIN_RESET)*/
 
-#define DHT11_Wait_Low() while (DHT11_Read())
-#define DHT11_Wait_High() while (!DHT11_Read())
 
 #define DHT11_IN()                                                  \
     {                                                               \
@@ -33,6 +31,32 @@
         DHT11_GPIO_Port->MODER |= 1 << 2 * DHT11_Pin_Location;      \
     }
 
+
+void DHT11_Wait_Low()
+{
+    volatile uint32_t count = 0;
+    while (DHT11_Read())
+    {
+        count++;
+        if (count > 0xFFFF)
+        {
+            return;
+        }
+    }
+}
+
+void DHT11_Wait_High()
+{
+    volatile uint32_t count = 0;
+    while (!DHT11_Read())
+    {
+        count++;
+        if (count > 0xFFFF)
+        {
+            return;
+        }
+    }
+}
 //static uint16_t std_delay_80us = 875;//事先测试过
 //static uint16_t std_delay_50us = 566;
 
@@ -127,7 +151,7 @@ bool DHT11_Read_Data_Fast_Pro(float &temp, float &humi)
 /********************下面为次优级优化********************/
 #if USE_YZHX == 1
 // 全局变量
-static uint8_t timeBuf[40]={0};// 存储计数值
+static uint8_t timeBuf[40] = {0};// 存储计数值
 static uint8_t timeBufIndex = 0;
 
 //void DHT11_Read_Byte_Fast_Pro()
@@ -181,8 +205,8 @@ unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
 
     /***********************对存储的时间计数进行判断*********************/
     // 找出最大值和最小值
-   volatile uint16_t timeMax = 0;
-   volatile  uint16_t timeMin = 0xFFFF;
+    volatile uint16_t timeMax = 0;
+    volatile uint16_t timeMin = 0xFFFF;
     for (int i = 0; i < 40; i++)
     {
         if (i > timeMax) timeMax = i;

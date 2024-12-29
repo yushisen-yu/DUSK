@@ -10,6 +10,7 @@
 #include "beep.h"
 #include "led.h"
 #include "DCMotor.h"
+#include "mp3.h"
 
 #endif
 lv_chart_series_t *chart_series_temp;
@@ -18,11 +19,13 @@ LV_Timer temp_threshold_timer;
 lv_chart_cursor_t *cursor;
 lv_point_t cursor_point = {0, 100};
 uint16_t temp_threshold;// 温度阈值
+uint8_t roller_mode = 0;//0表示温度，1表示音乐 实在是懒得搞标志了，除非还有时间.它俩之间的逻辑有些耦合，先不管了
 
 // 外部声明
 extern void start_DHT11();
 
 extern void stop_DHT11();
+
 extern void start_ACC();
 
 extern void stop_ACC();
@@ -69,7 +72,7 @@ auto Screen::init() -> void
     // 480-270=210  80,130
     button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 65, 470, 90, 90, "步进电机");
     button.init(gui->main.btn_beep, gui->main.btn_beep_label, 195, 470, 90, 90, "蜂鸣器");
-    button.init(gui->main.btn_DHT11_set_temp_thresold, gui->main.btn_DHT11_settemp_label, 325, 470, 90, 90,
+    button.init(gui->main.btn_DHT11_set_temp_thresold, gui->main.btn_DHT11_set_temp_thresold_label, 325, 470, 90, 90,
                 "设定温度\n\t  阈值");
 
     button.init(gui->main.btn_switch_DHT_acc, gui->main.btn_switch_DHT_acc_label, 65, 580, 90, 90, "切换传感器");
@@ -237,7 +240,7 @@ auto Events::init() -> void
         }
     });
 
-    // 启用温湿度传感器
+    // 启用音乐播放
     bond(gui->main.btn_music, [](event e)
     {
         static volatile bool flag = false;
@@ -248,17 +251,22 @@ auto Events::init() -> void
 
                 if (flag)
                 {
-#ifdef GUI_ENABLE
-                    start_DHT11();
-#endif
-                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_music_label);
+                    if(!gui->main.roller)
+                    {
+                        roller_mode = 1;
+                        create_roller(320, 330);
+                        Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_music_label);
+                    }
                 }
                 else
                 {
+                    if(gui->main.roller)
+                    {
+                        destroy_roller();
+                    }
 #ifdef GUI_ENABLE
-                    stop_DHT11();
+                    mp3Stop();
 #endif
-
                     Text::set_text_color(lv_color_black(), gui->main.btn_music_label);
                 }
 
@@ -301,14 +309,40 @@ auto Events::init() -> void
     });
 
     // 设定温度阈值
-    bond(gui->main.btn_DHT11_set_temp_thresold, btn_fun
-    (
-            []()
-            {
-                // 创建滚轮
-                if (!gui->main.roller) { create_roller(320, 330); }
-            }
-    ));
+    bond(gui->main.btn_DHT11_set_temp_thresold, [](event e)
+    {
+        static volatile bool flag = false;
+        switch (lv_event_get_code(e))
+        {
+            case LV_EVENT_CLICKED:
+                flag = !flag;
+
+                if (flag)
+                {
+                    // 创建滚轮
+                    if (!gui->main.roller)
+                    {
+                        roller_mode = 0;
+                        create_roller(320, 330);
+                    }
+                    Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_DHT11_set_temp_thresold_label);
+                }
+                else
+                {
+                    // 创建滚轮
+                    if (gui->main.roller)
+                    {
+                        destroy_roller();
+                    }
+                    Text::set_text_color(lv_color_black(), gui->main.btn_DHT11_set_temp_thresold_label);
+                }
+
+                break;
+            default:
+                break;
+
+        }
+    });
 
     // 启用温度阈值
     bond(gui->main.btn_enable_threshold, [](event e)
@@ -376,28 +410,39 @@ auto Events::init() -> void
     bond(gui->main.btn_ensure, btn_fun(
             []()
             {
-                // 确保不会出现空指针引用
-                if (gui->main.roller && gui->main.roller2)
-                {
-                    uint16_t temp = Roller::get_selected_option(gui->main.roller);
-                    uint16_t temp2 = Roller::get_selected_option(gui->main.roller2);
-                    temp_threshold = temp * 10 + temp2;
-                    cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
 
-                    if (cursor)
+                uint16_t temp = Roller::get_selected_option(gui->main.roller);
+                uint16_t temp2 = Roller::get_selected_option(gui->main.roller2);
+                if (roller_mode == 0)
+                {
+                    // 确保不会出现空指针引用
+                    if (gui->main.roller && gui->main.roller2)
                     {
-                        // 未知原因，直接使用Chart::set_cursor_pos会卡死
-                        cursor->pos.y = cursor_point.y;
-                        cursor->pos_set = 1;
-                        lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
+                        temp_threshold = temp * 10 + temp2;
+                        cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
+
+                        if (cursor)
+                        {
+                            // 未知原因，直接使用Chart::set_cursor_pos会卡死
+                            cursor->pos.y = cursor_point.y;
+                            cursor->pos_set = 1;
+                            lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
+                        }
+                        else
+                        {
+                            Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
+                                              LV_DIR_RIGHT, cursor);
+                            Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
+                        }
+                        destroy_roller();
                     }
-                    else
+                    else if (roller_mode == 1)
                     {
-                        Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
-                                          LV_DIR_RIGHT, cursor);
-                        Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
+                        // 音乐播放
+#ifdef GUI_ENABLE
+                        mp3_play_selected(temp * 10 + temp2);
+#endif
                     }
-                    destroy_roller();
                 }
 
             }

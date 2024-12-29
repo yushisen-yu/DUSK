@@ -32,7 +32,7 @@ struct lv_ui_t
         Obj btn_ACC_label;
 
         Obj btn_DHT11_set_temp_thresold;// 温湿度阈值设定按钮
-        Obj btn_DHT11_settemp_label;
+        Obj btn_DHT11_set_temp_thresold_label;
 
         Obj btn_switch_DHT_acc;// 切换温湿度传感器和加速度传感器的按钮
         Obj btn_switch_DHT_acc_label;

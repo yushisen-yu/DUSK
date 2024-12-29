@@ -20,7 +20,7 @@ public:
 
     // 设置图表范围，默认设置y轴的显示范围
     static inline auto
-    set_range(Coord min, Coord max, lv_chart_axis_t axis = LV_CHART_AXIS_PRIMARY_Y) -> void;
+    set_range(Coord min, Coord max, Obj obj = _obj, lv_chart_axis_t axis = LV_CHART_AXIS_PRIMARY_Y) -> void;
 
     // 设置数据点个数
     static inline auto set_point_count(uint16_t point_cnt) -> void;
@@ -83,9 +83,9 @@ auto Chart::set_type(lv_chart_type_t type) -> void
 }
 
 // 设置图表范围，默认设置y轴的显示范围
-auto Chart::set_range(Coord min, Coord max, lv_chart_axis_t axis) -> void
+auto Chart::set_range(Coord min, Coord max, Obj obj,lv_chart_axis_t axis) -> void
 {
-    lv_chart_set_range(_obj, axis, min, max);
+    lv_chart_set_range(obj, axis, min, max);
 }
 
 // 设置数据点个数
@@ -159,7 +159,7 @@ auto Chart::init(Obj chart, Coord x_offset, Coord y_offset, Coord w, Coord h, ui
     set_type(LV_CHART_TYPE_LINE);// 设置类型:折线 柱形
     set_point_count(point_cnt);// 设置数据点数量
     set_update_mode(LV_CHART_UPDATE_MODE_SHIFT);// 滚动模式
-    set_range(0, 255, LV_CHART_AXIS_PRIMARY_Y);// 设置Y轴范围
+    set_range(0, 255);// 设置Y轴范围
     remove_dot();// 取消折线点样式
 
     // 自定义刻度线和边框

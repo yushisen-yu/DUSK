@@ -19,11 +19,14 @@ struct lv_ui_t {
     Obj imgbtn_led;
     Obj btn_led_label;// 灯光按钮
 
-    Obj btn_DCMotor;
+    Obj btn_DCMotor;// 直流电机按钮
     Obj btn_DCMotor_label;
 
-    Obj btn_DHT11_settemp;
+    Obj btn_DHT11_settemp;// 温湿度阈值设定按钮
     Obj btn_DHT11_settemp_label;
+
+    Obj btn_switch_DHT_acc;// 切换温湿度传感器和加速度传感器的按钮
+    Obj btn_switch_DHT_acc_label;
 
     Obj imgbtn_DHT11;
     Obj btn_DHT11_value_label;//取温湿度的值
@@ -52,8 +55,8 @@ LV_IMG_DECLARE(_temp_humi_other2_alpha_60x60)
  */
 class UI {
 public:
-    static auto add_temp_data(float temp)-> void;// 添加温度数据
-    static auto add_humi_data(float humi)->  void;// 添加湿度数据
+    static auto add_temp_data(short temp)-> void;// 添加温度数据
+    static auto add_humi_data(short humi)->  void;// 添加湿度数据
 private:
 };
 

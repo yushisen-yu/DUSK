@@ -26,20 +26,26 @@
 
 
 constexpr uint32_t TEMP_HUMI_CHECK_DELAY = 2000;// 2s检测一次
+constexpr uint32_t ACC_CHECK_DELAY = 200;
 
 enum class DHT_FLAGS : uint8_t
 {
     START = 1 << 0,//bit:0 是否开启测量
     DELAY = 1 << 1,//bit:1 检测间隔是否达到
+    TYPE = 1 << 2,//bit:2 传感器类型,0表示DHT，1表示ACC
 };
 
-class DHT
+class DHT_ACC
 {
 public:
     static void init();//用于初始内部延时计时器
     static void measure();// 测量
     static const float &get_temp() { return temp; }// 获取温度
     static const float &get_humi() { return humi; }// 获取湿度
+
+    // 0表示DHT11，1表示ACC
+    static void switch_sensor(bool type);
+
 
 public:
     // 辅助函数：设置指定标志
@@ -69,10 +75,15 @@ public:
 private:
     static inline uint32_t start_tick = 0;
     static inline uint32_t final_tick = 0;
+    static inline uint32_t delay_tick = TEMP_HUMI_CHECK_DELAY;
     static inline uint8_t flags = 0;// 开始测量温湿度
     static inline float temp = 0;
     static inline float humi = 0;
+    static inline short x = 0;
+    static inline short y = 0;
+    static inline short z = 0;
 };
+
 
 
 //
@@ -85,7 +96,7 @@ void app_init()
     DCMotor_init();
     // 初始化温湿度传感器
     DHT11_Init();
-    DHT::init();
+    DHT_ACC::init();
     // 初始化重力加速度传感器
     ADXL345_Init();
     HAL_Delay(100);
@@ -94,16 +105,13 @@ void app_init()
 }
 
 // 后台运算
-short x,y,z;
-float angle = 0;
+
 
 void background_handler()
 {
     // 检测温湿度
-    DHT::measure();
-    ADXL345ReadAvval_Once(&x, &y, &z);
-    angle = ADXL345Get_Angle(x, y, z, 2);
-    HAL_Delay(100);
+    DHT_ACC::measure();
+
 }
 
 // ----------------------类的实现接口-----------------------------
@@ -112,18 +120,21 @@ void background_handler()
  * @brief 初始化内部延时计时器
  * @note 不进行初始化，可能会导致延迟计数器紊乱
  */
-void DHT::init()
+void DHT_ACC::init()
 {
     start_tick = HAL_GetTick();// 获取起点
-    final_tick = start_tick + TEMP_HUMI_CHECK_DELAY;// 计算终点
+    final_tick = start_tick + delay_tick;// 计算终点
 }
 
 /**
  * @brief 测量温度和湿度
  * @note 非阻塞式测量温湿度，测量间隔为2s。已经添加了UI显示
  */
-void DHT::measure()
+short angle1, angle2;
+
+void DHT_ACC::measure()
 {
+
     if (get_flag(DHT_FLAGS::START))
     {
         // 非阻塞延迟
@@ -134,7 +145,7 @@ void DHT::measure()
             {
                 // 重置
                 start_tick = HAL_GetTick();
-                final_tick = start_tick + TEMP_HUMI_CHECK_DELAY;
+                final_tick = start_tick + delay_tick;
                 // 标志记为1
                 set_flag(DHT_FLAGS::DELAY);
             }
@@ -145,7 +156,7 @@ void DHT::measure()
             {
                 // 重置
                 start_tick = HAL_GetTick();
-                final_tick = start_tick + TEMP_HUMI_CHECK_DELAY;
+                final_tick = start_tick + delay_tick;
                 // 标志记为1
                 set_flag(DHT_FLAGS::DELAY);
             }
@@ -155,26 +166,64 @@ void DHT::measure()
         if (get_flag(DHT_FLAGS::DELAY))
         {
             clear_flag(DHT_FLAGS::DELAY);
-            if (DHT11_Read_Data_Fast_Pro(&temp, &humi))
+
+            // 检测传感器类型
+            if (get_flag(DHT_FLAGS::TYPE))
             {
+                // ACC
+                ADXL345ReadAvval_Once(&x, &y, &z);
+
+                angle1 = ADXL345Get_Angle(x, y, z, 1);
+                angle2 = ADXL345Get_Angle(x, y, z, 2);
 #ifdef GUI_ENABLE
-                UI::add_temp_data(temp);
-                UI::add_humi_data(humi);
+                UI::add_temp_data(angle1);
+                UI::add_humi_data(angle2);
 #endif
+
             }
-            // 处理检测失败的情况
+            else
+            {
+                // DHT11
+                if (DHT11_Read_Data_Fast_Pro(&temp, &humi))
+                {
+#ifdef GUI_ENABLE
+                    UI::add_temp_data((short) temp);
+                    UI::add_humi_data((short) humi);
+#endif
+                }
+            }
+
         }
     }
 }
 
-void start_DHT11()
+void DHT_ACC::switch_sensor(bool type)
 {
-    DHT::set_flag(DHT_FLAGS::START);
-    DHT::init();
+    if (type)
+    {
+        set_flag(DHT_FLAGS::TYPE);
+        delay_tick = ACC_CHECK_DELAY;
+    }
+    else
+    {
+        clear_flag(DHT_FLAGS::TYPE);
+        delay_tick = TEMP_HUMI_CHECK_DELAY;
+    }
 }
 
-void stop_DHT11()
+void start()
 {
-    DHT::clear_flag(DHT_FLAGS::START);
+    DHT_ACC::set_flag(DHT_FLAGS::START);
+    DHT_ACC::init();
+}
+
+void stop()
+{
+    DHT_ACC::clear_flag(DHT_FLAGS::START);
+}
+
+void switch_sensor(bool type)
+{
+    DHT_ACC::switch_sensor(type);
 }
 

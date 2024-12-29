@@ -19,10 +19,11 @@ lv_chart_cursor_t *cursor;
 lv_point_t point = {0, 100};
 
 // 外部声明
-extern void start_DHT11();
+extern void start();
 
-extern void stop_DHT11();
+extern void stop();
 
+extern void switch_sensor(bool type);
 
 //#87CEEB
 //#FF7F50
@@ -43,6 +44,7 @@ auto Screen::init() -> void
     button.init(gui->main.btn_beep, gui->main.btn_test_label, 100, 620, 100, 100, "蜂鸣器");
     button.init(gui->main.btn_DCMotor, gui->main.btn_DCMotor_label, 100, 470, 100, 100, "拉窗帘/开空调");
     button.init(gui->main.btn_DHT11_settemp, gui->main.btn_DHT11_settemp_label, 250, 470, 100, 100, "设定温度阈值");
+    button.init(gui->main.btn_switch_DHT_acc, gui->main.btn_switch_DHT_acc_label, 250, 620, 100, 100, "112");
 
     Chart::init(gui->main.chart_DHT11_temp_humi, 10, -240, 400, 280, 64);
     Chart::set_range(0, 100);
@@ -108,12 +110,12 @@ auto Events::init() -> void
     bond(gui->main.imgbtn_DHT11, imgbtn_fun2(
             [](){
 #ifdef GUI_ENABLE
-                start_DHT11();
+                start();
 #endif
                 },
             [](){
 #ifdef GUI_ENABLE
-                stop_DHT11();
+                stop();
 #endif
             }
             )
@@ -148,18 +150,58 @@ auto Events::init() -> void
          }
     );
 
+    bond(gui->main.btn_switch_DHT_acc,[](event e)
+    {
+        static volatile bool flag3 = false;
+        switch (lv_event_get_code(e))
+        {
+            case LV_EVENT_CLICKED:
+                flag3 = !flag3;
+
+                if (flag3)
+                {
+#ifdef GUI_ENABLE
+                    //ACC
+                    switch_sensor(true);
+                    Chart::set_range(-360, 360,gui->main.chart_DHT11_temp_humi);
+
+
+#endif
+                }
+                else
+                {
+#ifdef GUI_ENABLE
+                    switch_sensor(false);
+                    Chart::set_range(0, 100,gui->main.chart_DHT11_temp_humi);
+#endif
+                }
+                for(int i=0;i<64;i++)
+                {
+                    Chart::set_next_value(chart_series_temp, 0, gui->main.chart_DHT11_temp_humi);
+                    Chart::set_next_value(chart_series_humi, 0, gui->main.chart_DHT11_temp_humi);
+                }
+                break;
+            default:
+                break;
+
+        }
+    });
+
 
 }
 
 
 // 添加温度数据
-auto UI::add_temp_data(float temp) -> void
+auto UI::add_temp_data(short temp) -> void
 {
-    Chart::set_next_value(chart_series_temp, (Coord) temp, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
+
+    Chart::set_next_value(chart_series_temp, temp, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
 }
 
 // 添加湿度数据
-auto UI::add_humi_data(float humi) -> void
+auto UI::add_humi_data(short humi) -> void
 {
-    Chart::set_next_value(chart_series_humi, (Coord) humi, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
+    Chart::set_next_value(chart_series_humi, humi, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
 }
+
+

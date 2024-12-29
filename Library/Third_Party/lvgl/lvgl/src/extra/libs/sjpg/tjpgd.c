@@ -188,7 +188,7 @@ static JRESULT create_qt_tbl (	/* 0:OK, !0:Failed */
 
 
 /*-----------------------------------------------------------------------*/
-/* Create huffman code tables with a DHT segment                         */
+/* Create huffman code tables with a DHT_ACC segment                         */
 /*-----------------------------------------------------------------------*/
 
 static JRESULT create_huffman_tbl (	/* 0:OK, !0:Failed */
@@ -1032,7 +1032,7 @@ JRESULT jd_prepare (
 			jd->nrst = LDB_WORD(seg);	/* Get restart interval (MCUs) */
 			break;
 
-		case 0xC4:	/* DHT - Define Huffman Tables */
+		case 0xC4:	/* DHT_ACC - Define Huffman Tables */
 			if (len > JD_SZBUF) return JDR_MEM2;
 			if (jd->infunc(jd, seg, len) != len) return JDR_INP;	/* Load segment data */
 

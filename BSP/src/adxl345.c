@@ -1,6 +1,7 @@
 #include "adxl345.h"
 #include "delay.h"
 #include  <math.h>
+#include <stdlib.h>
 
 #define DEVICE_ID        0X00    //器件ID,0XE5
 #define THRESH_TAP        0X1D    //敲击阀值
@@ -357,8 +358,8 @@ void ADXL345ReadAvval_Once(short *x, short *y, short *z)
     raw_z = (short) ( (1 - ALPHA) * raw_z);
 
     // 计算平均值
-    *x = (short) (raw_x == 127 ? 0 : raw_x);
-    *y = (short) (raw_y == 127 ? 0 : raw_y);
+    *x = (short) (abs(raw_x) == 127 ? 0 : raw_x);
+    *y = (short) (abs(raw_y) == 127 ? 0 : raw_y);
     *z = (short) (raw_z);
 }
 

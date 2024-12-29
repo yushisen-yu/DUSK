@@ -35,6 +35,7 @@ void DCMotor_init()
     DCMOTOR_B_L;
 
   TIM10_PWM_Init(1000 - 1, 84 - 1);
+  TIM10_PWM_SetCompare(1000);
 
 }
 
@@ -43,7 +44,6 @@ void DCMotor_forward(uint32_t speed)
 {
     DCMOTOR_A_L;
     DCMOTOR_B_H;
-    TIM10_PWM_Start();
     TIM10_PWM_SetCompare(speed);
 }
 
@@ -52,7 +52,6 @@ void DCMotor_reverse(uint32_t speed)
 {
     DCMOTOR_A_H;
     DCMOTOR_B_L;
-    TIM10_PWM_Start();
     TIM10_PWM_SetCompare(speed);
 }
 
@@ -61,5 +60,4 @@ void DCMotor_stop()
 {
     DCMOTOR_A_L;
     DCMOTOR_B_L;
-    TIM10_PWM_Stop();
 }

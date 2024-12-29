@@ -67,6 +67,7 @@ auto Screen::init() -> void
     lv_obj_set_style_text_font(gui->main.roller, &lv_customer_font_SourceHanSerifSC_Regular_18, LV_PART_SELECTED);
 
 
+
 }
 
 auto Events::init() -> void

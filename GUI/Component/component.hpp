@@ -41,6 +41,9 @@ public:
     // 初始化自定义组件
     static inline auto init(Obj component) -> void;
 
+    // 销毁组件
+    static inline auto destroy(Obj obj = _obj) -> void;
+
     // 设置位置和尺寸
     static inline auto set_pos_size(Coord x, Coord y, Coord w, Coord h) -> void;// 设置位置和尺寸
     static inline auto set_pos(Coord x, Coord y) -> void;// 设置位置
@@ -363,6 +366,13 @@ auto Component::hidden(Obj obj) -> void
 auto Component::appear(Obj obj) -> void
 {
     clear_flag(LV_OBJ_FLAG_HIDDEN, obj);
+}
+
+auto Component::destroy(Obj obj) -> void
+{
+    lv_obj_del(obj);
+    obj = nullptr;
+    _obj = nullptr;
 }
 
 

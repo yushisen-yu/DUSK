@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 
-
+#define UDISK   0
+#define FLASH0   4
 
 void setMp3Dev(unsigned char dev);
 void setMp3Vol(unsigned char vol);

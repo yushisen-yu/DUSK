@@ -227,12 +227,12 @@ void UART6_Configuration(unsigned int baud)
     }
 
     // 使能接收中断
-    __HAL_UART_ENABLE_IT(&huart6, UART_IT_RXNE);
+//    __HAL_UART_ENABLE_IT(&huart6, UART_IT_RXNE);
 
 
     // 使能USART6中断
-    HAL_NVIC_SetPriority(USART6_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(USART6_IRQn);
+//    HAL_NVIC_SetPriority(USART6_IRQn, 0, 0);
+//    HAL_NVIC_EnableIRQ(USART6_IRQn);
 
     // 使能USART6
     __HAL_UART_ENABLE(&huart6);

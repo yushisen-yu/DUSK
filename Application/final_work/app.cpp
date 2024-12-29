@@ -23,6 +23,8 @@
 #include "led.h"
 #include "DHT11.h"
 #include "DCMotor.h"
+#include "USART3.h"
+#include "mp3.h"
 
 
 constexpr uint32_t TEMP_HUMI_CHECK_DELAY = 2000;// 2s检测一次
@@ -99,7 +101,11 @@ void app_init()
     DHT_ACC::init();
     // 初始化重力加速度传感器
     ADXL345_Init();
-    HAL_Delay(100);
+
+    UART6_Configuration(9600);
+    setMp3Dev(UDISK);
+    setMp3Vol(9);
+
 
 
 }
@@ -111,6 +117,11 @@ void background_handler()
 {
     // 检测温湿度
     DHT_ACC::measure();
+
+    HAL_Delay(100);
+    mp3Play();
+    HAL_Delay(1000);
+    mp3Stop();
 
 }
 

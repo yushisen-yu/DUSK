@@ -1,7 +1,6 @@
 #include "mp3.h"
 #include "USART3.h"
-#define UDISK   0
-#define FLASH0   4
+
 void setMp3Dev(unsigned char dev)
 {
     unsigned char device[5]  = {0x7E, 0x03, 0x09, 0x00, 0xEF};      // 指定设备 0：U 4:FLASH

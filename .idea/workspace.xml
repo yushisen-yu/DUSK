@@ -32,10 +32,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备尝试指纹模块驱动">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-    </list>
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="不尝试指纹模块驱动了" />
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1852,7 +1849,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735475378320</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="不尝试指纹模块驱动了">
+      <option name="closed" value="true" />
+      <created>1735476384726</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1735476384726</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1908,7 +1913,8 @@
     <MESSAGE value="开发温度驱动完毕" />
     <MESSAGE value="直流电机反转无效" />
     <MESSAGE value="准备尝试指纹模块驱动" />
-    <option name="LAST_COMMIT_MESSAGE" value="准备尝试指纹模块驱动" />
+    <MESSAGE value="不尝试指纹模块驱动了" />
+    <option name="LAST_COMMIT_MESSAGE" value="不尝试指纹模块驱动了" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

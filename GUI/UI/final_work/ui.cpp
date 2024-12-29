@@ -107,10 +107,14 @@ auto Events::init() -> void
 
     bond(gui->main.imgbtn_DHT11, imgbtn_fun2(
             [](){
+#ifdef GUI_ENABLE
                 start_DHT11();
+#endif
                 },
             [](){
+#ifdef GUI_ENABLE
                 stop_DHT11();
+#endif
             }
             )
     );

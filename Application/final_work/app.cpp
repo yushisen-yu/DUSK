@@ -75,8 +75,8 @@ private:
 };
 
 
-
 //
+
 void app_init()
 {
     beep_init();
@@ -88,21 +88,22 @@ void app_init()
     DHT::init();
     // 初始化重力加速度传感器
     ADXL345_Init();
+    HAL_Delay(100);
+
 
 }
 
 // 后台运算
 short x,y,z;
 float angle = 0;
+
 void background_handler()
 {
     // 检测温湿度
     DHT::measure();
-//    ADXL345Read_XYZ(&x, &y, &z);
-    ADXL345ReadAvval(&x, &y, &z);
-    angle= ADXL345Get_Angle(x, y, z, 2);
+    ADXL345ReadAvval_Once(&x, &y, &z);
+    angle = ADXL345Get_Angle(x, y, z, 2);
     HAL_Delay(100);
-
 }
 
 // ----------------------类的实现接口-----------------------------

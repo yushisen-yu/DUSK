@@ -73,7 +73,6 @@ void ADXL345WriteReg(unsigned char addr, unsigned char val);
 unsigned char ADXL345ReadReg(unsigned char addr);
 
 
-
 /*************************************************************************
 函数名称：发送端初始化函数
 输入参数：无
@@ -276,27 +275,92 @@ unsigned char ADXL345_Init(void)
 **********************************************************************************************************/
 //读取ADXL的平均值
 //x,y,z:读取10次后取平均值
-void ADXL345ReadAvval(short *x, short *y, short *z)
+
+//void ADXL345ReadAvval(short *x, short *y, short *z,short av_count)
+//{
+//    short tx = 0, ty = 0, tz = 0;
+//    uint8_t i;
+//
+//    for (i = 0; i < av_count; i++)
+//    {
+//        ADXL345Read_XYZ(x, y, z);
+//
+//        HAL_Delay(10);
+//
+//        tx += (short) *x;
+//        ty += (short) *y;
+//        tz += (short) *z;
+//    }
+//
+//    *x = tx / av_count;
+//    *y = ty / av_count;
+//    *z = tz / av_count;
+//
+//
+//}
+
+/**
+  * @brief  对从ADXL345传感器读取的数据进行一阶滤波处理，并计算平均值。
+  * @param  x: 指向X轴数据的指针。
+  * @param  y: 指向Y轴数据的指针。
+  * @param  z: 指向Z轴数据的指针。
+  * @param  av_count: 平均计算的次数。1次即可很稳定
+  * @retval None
+  */
+// 定义一个平滑因子alpha，该值介于0到1之间。
+// alpha越接近1，滤波效果越弱；越接近0，滤波效果越强。
+#define ALPHA 0.5f
+
+void ADXL345ReadAvval(short *x, short *y, short *z, short av_count)
 {
-    short tx = 0, ty = 0, tz = 0;
-    uint8_t i;
+    float sum_x = 0, sum_y = 0, sum_z = 0;  // 存储累加值用于计算平均值
+    float filtered_x = 0, filtered_y = 0, filtered_z = 0;  // 存储每次一阶滤波后的结果
 
-    for (i = 0; i < 10; i++)
+    for (short i = 0; i < av_count; i++)
     {
-        ADXL345Read_XYZ(x, y, z);
+        short raw_x, raw_y, raw_z;
+        ADXL345Read_XYZ(&raw_x, &raw_y, &raw_z);  // 获取原始数据
 
-        HAL_Delay(10);
+        // 应用一阶滤波算法
+        filtered_x = ALPHA * filtered_x + (1 - ALPHA) * raw_x;
+        filtered_y = ALPHA * filtered_y + (1 - ALPHA) * raw_y;
+        filtered_z = ALPHA * filtered_z + (1 - ALPHA) * raw_z;
 
-        tx += (short) *x;
-        ty += (short) *y;
-        tz += (short) *z;
+        // 累加滤波后的数据
+        sum_x += filtered_x;
+        sum_y += filtered_y;
+        sum_z += filtered_z;
+
+        if (i < av_count - 1)
+        {  // 最后一次读取不需要延时
+            HAL_Delay(10);  // 延时10ms等待下一次读取
+        }
     }
 
-    *x = tx / 10;
-    *y = ty / 10;
-    *z = tz / 10;
+    // 计算平均值
+    *x = (short) (sum_x / av_count);
+    *y = (short) (sum_y / av_count);
+    *z = (short) (sum_z / av_count);
+    if (*x == 127) { *x = 0; }
+    if (*y == 127) { *y = 0; }
 }
 
+void ADXL345ReadAvval_Once(short *x, short *y, short *z)
+{
+    float filtered_x = 0, filtered_y = 0, filtered_z = 0;  // 存储每次一阶滤波后的结果
+    short raw_x, raw_y, raw_z;
+    ADXL345Read_XYZ(&raw_x, &raw_y, &raw_z);  // 获取原始数据
+
+    // 应用一阶滤波算法
+    raw_x = (short) ((1 - ALPHA) * raw_x);
+    raw_y =  (short) ((1 - ALPHA) * raw_y);
+    raw_z = (short) ( (1 - ALPHA) * raw_z);
+
+    // 计算平均值
+    *x = (short) (raw_x == 127 ? 0 : raw_x);
+    *y = (short) (raw_y == 127 ? 0 : raw_y);
+    *z = (short) (raw_z);
+}
 
 /**********************************************************************************************************
 函数名称：自动校准
@@ -326,7 +390,7 @@ void ADXL345_AUTO_Adjust(char *xval, char *yval, char *zval)
 
     for (i = 0; i < 10; i++)
     {
-        ADXL345ReadAvval(&tx, &ty, &tz);
+        ADXL345ReadAvval(&tx, &ty, &tz, 50);
 
         offx += tx;
         offy += ty;

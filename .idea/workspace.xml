@@ -32,12 +32,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备尝试加速度驱动">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="加速度驱动初始化成功，但数据不稳定">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BSP/inc/adxl345.h" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/inc/adxl345.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BSP/src/adxl345.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/adxl345.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1871,7 +1871,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735476648336</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="加速度驱动初始化成功，但数据不稳定">
+      <option name="closed" value="true" />
+      <created>1735477820136</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1735477820136</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1929,15 +1937,16 @@
     <MESSAGE value="准备尝试指纹模块驱动" />
     <MESSAGE value="不尝试指纹模块驱动了" />
     <MESSAGE value="准备尝试加速度驱动" />
-    <option name="LAST_COMMIT_MESSAGE" value="准备尝试加速度驱动" />
+    <MESSAGE value="加速度驱动初始化成功，但数据不稳定" />
+    <option name="LAST_COMMIT_MESSAGE" value="加速度驱动初始化成功，但数据不稳定" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Application/final_work/app.cpp</url>
-          <line>103</line>
-          <option name="timeStamp" value="23" />
+          <line>106</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

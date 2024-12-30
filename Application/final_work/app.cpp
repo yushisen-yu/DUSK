@@ -116,7 +116,9 @@ void app_init()
     ADXL345_Init();
 
     UART6_Configuration(9600);
+    HAL_Delay(20);
     setMp3Dev(UDISK);
+    HAL_Delay(20);
     setMp3Vol(9);
 
 

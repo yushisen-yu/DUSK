@@ -41,11 +41,11 @@ extern const float &get_temp();
 /***************************一些函数********************************/
 void create_roller()
 {
-    Roller::init(GUI_Base::get_ui()->main.roller, 365, 330, 40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
+    Roller::init(GUI_Base::get_ui()->main.roller, 365, 330, 40, 120, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
     Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
     Roller::set_selected_text_font(&lv_customer_font_SourceHanSerifSC_Regular_18);
 
-    Roller::init(GUI_Base::get_ui()->main.roller2, 415, 330, 40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
+    Roller::init(GUI_Base::get_ui()->main.roller2, 415, 330, 40, 120, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
     Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
     Roller::set_selected_text_font(&lv_customer_font_SourceHanSerifSC_Regular_18);
 }
@@ -58,7 +58,7 @@ void destroy_roller()
 
 void create_volume_roller()
 {
-    Roller::init(GUI_Base::get_ui()->main.roller_volume, 305, 330, 40, 100, "0\n1\n2\n3\n4\n5\n6");
+    Roller::init(GUI_Base::get_ui()->main.roller_volume, 305, 330, 40, 120, "0\n1\n2\n3\n4\n5\n6");
     Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
     Roller::set_selected_text_font(&lv_customer_font_SourceHanSerifSC_Regular_18);
 }

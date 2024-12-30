@@ -226,14 +226,6 @@ void UART6_Configuration(unsigned int baud)
         Error_Handler();
     }
 
-    // 使能接收中断
-//    __HAL_UART_ENABLE_IT(&huart6, UART_IT_RXNE);
-
-
-    // 使能USART6中断
-//    HAL_NVIC_SetPriority(USART6_IRQn, 0, 0);
-//    HAL_NVIC_EnableIRQ(USART6_IRQn);
-
     // 使能USART6
     __HAL_UART_ENABLE(&huart6);
 }
@@ -247,71 +239,4 @@ void USART6_Senddata(unsigned char *Data, unsigned int length)
     HAL_UART_Transmit(&huart6, Data, length, 0xFFFF);
 }
 
-void USART6_IRQHandler(void)
-{
-//    if (USART_GetITStatus(USART6, USART_IT_RXNE) != RESET)                //  若接收数据寄存器满
-//    {
-//        USART_ClearITPendingBit(USART6, USART_IT_RXNE);
-//
-//        Uart6.Rxbuf[Uart6.RXlenth] = USART_ReceiveData(USART6);
-//
-//        if (Uart6.RXlenth == 0 && Uart6.Rxbuf[0] != 0x55)
-//        {
-//            Uart6.RXlenth = 0;
-//            return;
-//        }
-//        if (Uart6.RXlenth == 1 && Uart6.Rxbuf[1] != 0x53)
-//        {
-//            Uart6.RXlenth = 0;
-//            return;
-//        }
-//
-//
-//        Uart6.RXlenth++;
-//
-//        if(Uart6.RXlenth == 11)
-//        {
-//            memcpy(databuf, &Uart6.Rxbuf[0], 20);
-//
-//            display_flag = 1;
-//            Uart6.RXlenth = 0;
-//        }
-//    }
 
-
-        // 确保只处理USART6的回调
-
-        if (__HAL_UART_GET_IT_SOURCE(&huart6, UART_IT_RXNE) != RESET)  // 如果接收数据寄存器满
-        {
-            __HAL_UART_CLEAR_FLAG(&huart6, UART_IT_RXNE);
-            uint8_t data = (uint8_t)HAL_UART_Receive(&huart6, NULL, 0, 0); // 清除RXNE标志位
-
-            // 读取接收到的数据
-            data = (uint8_t)HAL_UART_Receive(&huart6, &data, 1, HAL_MAX_DELAY);
-
-            Uart6.Rxbuf[Uart6.RXlenth] = data;
-
-            // 检查起始字节
-            if (Uart6.RXlenth == 0 && data != 0x55)
-            {
-                Uart6.RXlenth = 0;
-                return;
-            }
-            if (Uart6.RXlenth == 1 && data != 0x53)
-            {
-                Uart6.RXlenth = 0;
-                return;
-            }
-
-            Uart6.RXlenth++;
-
-            // 如果接收到完整的包（假设长度为11）
-            if (Uart6.RXlenth == 11)
-            {
-                memcpy(databuf, Uart6.Rxbuf, 11);  // 注意：原代码中memcpy的大小是20，但RXlenth只有11
-
-//                display_flag = 1;
-                Uart6.RXlenth = 0;
-            }
-        }
-}

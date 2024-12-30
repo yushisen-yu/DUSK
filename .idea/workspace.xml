@@ -32,8 +32,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="添加了音量控制，各功能之间的逻辑尚未调节">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="音乐播放成功，准备优化应用逻辑">
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1677,7 +1677,7 @@
       <workItem from="1735398007869" duration="4046000" />
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
-      <workItem from="1735534721280" duration="2000" />
+      <workItem from="1735534721280" duration="658000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -1991,7 +1991,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735509028706</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="音乐播放成功，准备优化应用逻辑">
+      <option name="closed" value="true" />
+      <created>1735535008070</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1735535008070</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2013,7 +2021,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/YU" />
+                        <option value="ZQ" />
                       </list>
                     </value>
                   </entry>
@@ -2026,7 +2034,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="补充了DCMotor驱动的细节，正转反转的高低电平控制与TIM10复用的引脚有所冲突，未经测试" />
     <MESSAGE value="调整了一下UI" />
     <MESSAGE value="补充PWM文件" />
     <MESSAGE value="准备开发温度驱动" />
@@ -2051,6 +2058,7 @@
     <MESSAGE value="给温湿度加了超时检测，但是不知道为什么现在测量温度会卡死" />
     <MESSAGE value="他宝贝的，温湿度传感器的数据线和地线接反了" />
     <MESSAGE value="添加了音量控制，各功能之间的逻辑尚未调节" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加了音量控制，各功能之间的逻辑尚未调节" />
+    <MESSAGE value="音乐播放成功，准备优化应用逻辑" />
+    <option name="LAST_COMMIT_MESSAGE" value="音乐播放成功，准备优化应用逻辑" />
   </component>
 </project>

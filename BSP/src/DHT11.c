@@ -11,7 +11,7 @@
 #define DHT11_Pin_Location 6
 #define DHT11_GPIO_Port GPIOE
 #define DHT11_GPIO_CLK_ENABLE() __HAL_RCC_GPIOE_CLK_ENABLE()
-#define DHT11_MAX_DELAY_COUNT 60000//防止卡死
+#define DHT11_MAX_DELAY_COUNT 300000//防止卡死
 #define USE_YZHX 1                //优化等级，分为0,1,2,3
 
 #define DHT11_Read() (DHT11_GPIO_Port->IDR & DHT11_Pin) /*HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin)*/
@@ -34,25 +34,25 @@
 
 void DHT11_Wait_Low()
 {
-    volatile uint32_t count = HAL_GetTick();
+//    uint32_t count = HAL_GetTick();
     while (DHT11_Read())
     {
-        if (HAL_GetTick()-count>100)
-        {
-            return;
-        }
+//        if (HAL_GetTick()-count>100)
+//        {
+//            return;
+//        }
     }
 }
 
 void DHT11_Wait_High()
 {
-    volatile uint32_t count = HAL_GetTick();
+//    uint32_t count = HAL_GetTick();
     while (!DHT11_Read())
     {
-        if (HAL_GetTick()-count>100)
-        {
-            return;
-        }
+//        if (HAL_GetTick()-count>100)
+//        {
+//            return;
+//        }
     }
 }
 //static uint16_t std_delay_80us = 875;//事先测试过
@@ -70,7 +70,7 @@ void std_delay_25us()
 {
 //    for (uint16_t i = 0; i < 20; ++i)//单个任务时，大概为273
 //        ;
-    delay_us(25);
+    delay_us(28);
 }
 
 
@@ -168,7 +168,7 @@ static uint8_t timeBufIndex = 0;
 unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
 {
     static uint8_t buf[5];
-     uint32_t time_count;
+    uint32_t time_count;
     DHT11_Rst();  // 设置输出模式
     DHT11_Check();// 设置输入模式
 

@@ -59,11 +59,9 @@ void delay_init()
 void delay_us(uint16_t us)
 {
     // 启动定时器
-//    timer14_set_psc(FREQUENCY_PSC_1M);
-
 
     // 频率为84MHz，84M/1000 = 84000
-    uint16_t final_count =TIM14->CNT+us;
+    volatile uint16_t final_count =TIM14->CNT+us;
 
     // 针对溢出情况
     while (TIM14->CNT>final_count);
@@ -72,7 +70,6 @@ void delay_us(uint16_t us)
     while (TIM14->CNT < final_count);
 
     // 停止定时器
-//    timer14_stop();
 }
 
 //void delay_ms(uint16_t ms)

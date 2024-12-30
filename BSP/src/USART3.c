@@ -193,23 +193,27 @@ void UART3_Configuration(void)
 void UART6_Configuration(unsigned int baud)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-
     __HAL_RCC_GPIOC_CLK_ENABLE();  // 开启GPIOC的时钟
     __HAL_RCC_USART6_CLK_ENABLE(); // 开启串口6的时钟
-
-    // 初始化Uart6结构体成员
-    Uart6.ReceiveFinish = 0;
-    Uart6.RXlenth = 0;
-    Uart6.Time = 0;
-    Uart6.Rxbuf = Uart6ReceiveBuf;
-
-    // 配置PC6 (USART6_TX) 和 PC7 (USART6_RX) 为复用推挽输出，上拉，2MHz速度
-    GPIO_InitStruct.Pin = GPIO_PIN_6 | GPIO_PIN_7;
+    /**USART6 GPIO Configuration
+    PC6     ------> USART6_TX
+    PC7     ------> USART6_RX
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW; // 对应2MHz
-    GPIO_InitStruct.Alternate = GPIO_AF8_USART6; // 设置为USART6复用功能
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF8_USART6;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+
+//    // 配置PC6 (USART6_TX) 和 PC7 (USART6_RX) 为复用推挽输出，上拉，2MHz速度
+//    GPIO_InitStruct.Pin = GPIO_PIN_6 | GPIO_PIN_7;
+//    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+//    GPIO_InitStruct.Pull = GPIO_PULLUP;
+//    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW; // 对应2MHz
+//    GPIO_InitStruct.Alternate = GPIO_AF8_USART6; // 设置为USART6复用功能
+//    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
     // 初始化USART6
     huart6.Instance = USART6;
@@ -226,8 +230,7 @@ void UART6_Configuration(unsigned int baud)
         Error_Handler();
     }
 
-    // 使能USART6
-    __HAL_UART_ENABLE(&huart6);
+
 }
 /**********************************************************************************************************
 函数名称：USART6发送数据函数

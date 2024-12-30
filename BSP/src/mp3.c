@@ -3,7 +3,7 @@
 #include "stm32f4xx_hal.h"
 void setMp3Dev(unsigned char dev)
 {
-    unsigned char device[5]  = {0x7E, 0x03, 0x09, 0x00, 0xEF};      // 指定设备 0：U 4:FLASH
+    uint8_t device[5]  = {0x7E, 0x03, 0x09, 0x00, 0xEF};      // 指定设备 0：U 4:FLASH
     device[3] = dev;
     USART6_Senddata(device, 5);
 }

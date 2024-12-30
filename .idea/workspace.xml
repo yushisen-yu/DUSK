@@ -32,8 +32,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="音乐播放成功，准备优化应用逻辑">
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="发现问题，只有调试时，音乐播放才正常，与预期不符">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Base/baseInit.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Base/baseInit.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Conf/JYZQ_Conf.h" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Conf/JYZQ_Conf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/final_work/app.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/USART3.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/USART3.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/mp3.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/mp3.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32F407ZGTX_FLASH.ld" beforeDir="false" afterPath="$PROJECT_DIR$/STM32F407ZGTX_FLASH.ld" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +82,7 @@
         <entry key="STM32F407.svd|g:I2C" value="-C" />
         <entry key="STM32F407.svd|g:SPI" value="-C" />
         <entry key="STM32F407.svd|g:TIM" value="-E" />
-        <entry key="STM32F407.svd|g:USART" value="-C" />
+        <entry key="STM32F407.svd|g:USART" value="-E" />
         <entry key="STM32F407.svd|g:USB_OTG_FS" value="-C" />
         <entry key="STM32F407.svd|g:USB_OTG_HS" value="-C" />
         <entry key="STM32F407.svd|p:ADC1" value="-C" />
@@ -1342,18 +1349,18 @@
         <entry key="STM32F407.svd|p:TIM13|EGR" value="HC" />
         <entry key="STM32F407.svd|p:TIM13|PSC" value="HC" />
         <entry key="STM32F407.svd|p:TIM13|SR" value="HC" />
-        <entry key="STM32F407.svd|p:TIM14" value="-E" />
+        <entry key="STM32F407.svd|p:TIM14" value="-C" />
         <entry key="STM32F407.svd|p:TIM14|ARR" value="HC" />
         <entry key="STM32F407.svd|p:TIM14|CCER" value="HC" />
         <entry key="STM32F407.svd|p:TIM14|CCMR1_Input" value="HC" />
         <entry key="STM32F407.svd|p:TIM14|CCMR1_Output" value="HC" />
         <entry key="STM32F407.svd|p:TIM14|CCR1" value="HC" />
-        <entry key="STM32F407.svd|p:TIM14|CNT" value="HE" />
+        <entry key="STM32F407.svd|p:TIM14|CNT" value="HC" />
         <entry key="STM32F407.svd|p:TIM14|CR1" value="HC" />
         <entry key="STM32F407.svd|p:TIM14|DIER" value="HC" />
         <entry key="STM32F407.svd|p:TIM14|EGR" value="HC" />
         <entry key="STM32F407.svd|p:TIM14|PSC" value="HC" />
-        <entry key="STM32F407.svd|p:TIM14|SR" value="HE" />
+        <entry key="STM32F407.svd|p:TIM14|SR" value="HC" />
         <entry key="STM32F407.svd|p:TIM1|ARR" value="HC" />
         <entry key="STM32F407.svd|p:TIM1|BDTR" value="HC" />
         <entry key="STM32F407.svd|p:TIM1|CCER" value="HC" />
@@ -1556,7 +1563,7 @@
         <entry key="STM32F407.svd|p:USART3|DR" value="HC" />
         <entry key="STM32F407.svd|p:USART3|GTPR" value="HC" />
         <entry key="STM32F407.svd|p:USART3|SR" value="HC" />
-        <entry key="STM32F407.svd|p:USART6" value="-C" />
+        <entry key="STM32F407.svd|p:USART6" value="-E" />
         <entry key="STM32F407.svd|p:USART6|BRR" value="HC" />
         <entry key="STM32F407.svd|p:USART6|CR1" value="HC" />
         <entry key="STM32F407.svd|p:USART6|CR2" value="HC" />
@@ -1610,32 +1617,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;C/C++ 文件.main.cpp.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.Furina.elf.executor&quot;: &quot;Debug&quot;,
-    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;ZQ&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Program/Embedded/MCU/STM32/Furina/Resource/STM32F4_svd/STM32F4_svd_V2.0/STM32F407.svd&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "C/C++ 文件.main.cpp.executor": "Run",
+    "CMake 应用程序.Furina.elf.executor": "Debug",
+    "OpenOCD 下载并运行.Furina.elf.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "ZQ",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "E:/Program/Embedded/MCU/STM32/Furina/Resource/STM32F4_svd/STM32F4_svd_V2.0/STM32F407.svd",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CMakeSettings",
+    "structure.view.defaults.are.configured": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\EDA\MCU\STM32F407VET6\BSP\inc" />
@@ -1643,7 +1650,12 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Furina.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Furina" TARGET_NAME="Furina.elf" CONFIG_NAME="Debug-MinGW" version="1" RUN_TARGET_PROJECT_NAME="Furina" RUN_TARGET_NAME="Furina.elf">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Furina.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Furina" TARGET_NAME="Furina.elf" CONFIG_NAME="Debug-MinGW_ARM" version="1" RUN_TARGET_PROJECT_NAME="Furina" RUN_TARGET_NAME="Furina.elf">
       <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="E:\Program\Embedded\MCU\STM32\final_homework\stlink.cfg" reset-type="INIT" download-type="UPDATED_ONLY">
         <debugger kind="GDB" isBundled="true" />
       </openocd>
@@ -1677,7 +1689,7 @@
       <workItem from="1735398007869" duration="4046000" />
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
-      <workItem from="1735534721280" duration="658000" />
+      <workItem from="1735534721280" duration="5168000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -1999,7 +2011,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735535008070</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="发现问题，只有调试时，音乐播放才正常，与预期不符">
+      <option name="closed" value="true" />
+      <created>1735535733255</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1735535733255</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2034,7 +2054,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="调整了一下UI" />
     <MESSAGE value="补充PWM文件" />
     <MESSAGE value="准备开发温度驱动" />
     <MESSAGE value="开发温度驱动完毕" />
@@ -2059,6 +2078,7 @@
     <MESSAGE value="他宝贝的，温湿度传感器的数据线和地线接反了" />
     <MESSAGE value="添加了音量控制，各功能之间的逻辑尚未调节" />
     <MESSAGE value="音乐播放成功，准备优化应用逻辑" />
-    <option name="LAST_COMMIT_MESSAGE" value="音乐播放成功，准备优化应用逻辑" />
+    <MESSAGE value="发现问题，只有调试时，音乐播放才正常，与预期不符" />
+    <option name="LAST_COMMIT_MESSAGE" value="发现问题，只有调试时，音乐播放才正常，与预期不符" />
   </component>
 </project>

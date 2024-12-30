@@ -10,6 +10,8 @@
 #include "lcd.h"
 #include "fsmc.h"
 #include "key_exit.h"
+#include "delay.h"
+#include "touch.h"
 
 #if FreeRTOS_DEBUG
 

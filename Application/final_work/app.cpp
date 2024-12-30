@@ -86,9 +86,6 @@ public:
     }
 
 private:
-//    static inline uint32_t start_tick = 0;
-//    static inline uint32_t final_tick = 0;
-//    static inline uint32_t delay_tick = TEMP_HUMI_CHECK_DELAY;
     static inline AsyncDelayHAL acc_delay;
     static inline AsyncDelayHAL dht_delay;
     static inline uint8_t flags = 0;// 开始测量温湿度
@@ -116,10 +113,7 @@ void app_init()
     ADXL345_Init();
 
     UART6_Configuration(9600);
-    HAL_Delay(20);
     setMp3Dev(UDISK);
-    HAL_Delay(20);
-    setMp3Vol(9);
 
 
 }

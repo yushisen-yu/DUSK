@@ -11,6 +11,7 @@
 #include "led.h"
 #include "DCMotor.h"
 #include "mp3.h"
+#include "stm32f4xx_hal.h"
 
 #endif
 lv_chart_series_t *chart_series_temp;

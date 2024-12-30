@@ -96,7 +96,7 @@ extern "C" {
   *        (when HSE is used as system clock source, directly or through the PLL).
   */
 #if !defined  (HSE_VALUE)
-#define HSE_VALUE    12000000U /*!< Value of the External oscillator in Hz */
+#define HSE_VALUE    25000000U /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
 
 #if !defined  (HSE_STARTUP_TIMEOUT)
@@ -147,7 +147,7 @@ extern "C" {
 /**
   * @brief This is the HAL system configuration section
   */
-#define  VDD_VALUE              3300U /*!< Value of VDD in mv */
+#define  VDD_VALUE		      3300U /*!< Value of VDD in mv */
 #define  TICK_INT_PRIORITY            15U   /*!< tick interrupt priority */
 #define  USE_RTOS                     0U
 #define  PREFETCH_ENABLE              1U
@@ -199,7 +199,7 @@ extern "C" {
   * @brief Uncomment the line below to expanse the "assert_param" macro in the
   *        HAL drivers code
   */
-//#define USE_FULL_ASSERT    1U
+/* #define USE_FULL_ASSERT    1U */
 
 /* ################## Ethernet peripheral configuration ##################### */
 
@@ -272,33 +272,23 @@ extern "C" {
   */
 
 #ifdef HAL_RCC_MODULE_ENABLED
-
 #include "stm32f4xx_hal_rcc.h"
-
 #endif /* HAL_RCC_MODULE_ENABLED */
 
 #ifdef HAL_GPIO_MODULE_ENABLED
-
 #include "stm32f4xx_hal_gpio.h"
-
 #endif /* HAL_GPIO_MODULE_ENABLED */
 
 #ifdef HAL_EXTI_MODULE_ENABLED
-
 #include "stm32f4xx_hal_exti.h"
-
 #endif /* HAL_EXTI_MODULE_ENABLED */
 
 #ifdef HAL_DMA_MODULE_ENABLED
-
 #include "stm32f4xx_hal_dma.h"
-
 #endif /* HAL_DMA_MODULE_ENABLED */
 
 #ifdef HAL_CORTEX_MODULE_ENABLED
-
 #include "stm32f4xx_hal_cortex.h"
-
 #endif /* HAL_CORTEX_MODULE_ENABLED */
 
 #ifdef HAL_ADC_MODULE_ENABLED
@@ -342,15 +332,11 @@ extern "C" {
 #endif /* HAL_ETH_LEGACY_MODULE_ENABLED */
 
 #ifdef HAL_FLASH_MODULE_ENABLED
-
 #include "stm32f4xx_hal_flash.h"
-
 #endif /* HAL_FLASH_MODULE_ENABLED */
 
 #ifdef HAL_SRAM_MODULE_ENABLED
-
 #include "stm32f4xx_hal_sram.h"
-
 #endif /* HAL_SRAM_MODULE_ENABLED */
 
 #ifdef HAL_NOR_MODULE_ENABLED
@@ -394,9 +380,7 @@ extern "C" {
 #endif /* HAL_LTDC_MODULE_ENABLED */
 
 #ifdef HAL_PWR_MODULE_ENABLED
-
 #include "stm32f4xx_hal_pwr.h"
-
 #endif /* HAL_PWR_MODULE_ENABLED */
 
 #ifdef HAL_RNG_MODULE_ENABLED
@@ -416,15 +400,11 @@ extern "C" {
 #endif /* HAL_SD_MODULE_ENABLED */
 
 #ifdef HAL_SPI_MODULE_ENABLED
-
 #include "stm32f4xx_hal_spi.h"
-
 #endif /* HAL_SPI_MODULE_ENABLED */
 
 #ifdef HAL_TIM_MODULE_ENABLED
-
 #include "stm32f4xx_hal_tim.h"
-
 #endif /* HAL_TIM_MODULE_ENABLED */
 
 #ifdef HAL_UART_MODULE_ENABLED
@@ -501,13 +481,9 @@ extern "C" {
   *         If expr is true, it returns no value.
   * @retval None
   */
-#define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
-
+  #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
 /* Exported functions ------------------------------------------------------- */
-void assert_failed(uint8_t *file, uint32_t line);
-
-// 自定义的
-# define assert(__e) ((__e) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+  void assert_failed(uint8_t* file, uint32_t line);
 #else
 #define assert_param(expr) ((void)0U)
 #endif /* USE_FULL_ASSERT */

@@ -32,11 +32,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="基本完善的版本">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Component/component.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Component/component.hpp" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="添加了进度条">
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1686,15 +1683,7 @@
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
       <workItem from="1735534721280" duration="7691000" />
-      <workItem from="1735543795892" duration="7330000" />
-    </task>
-    <task id="LOCAL-00001" summary="可以用的版本">
-      <option name="closed" value="true" />
-      <created>1734421746330</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1734421746331</updated>
+      <workItem from="1735543795892" duration="8049000" />
     </task>
     <task id="LOCAL-00002" summary="完成fsmc.c的配置">
       <option name="closed" value="true" />
@@ -2080,7 +2069,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735549425949</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="添加了进度条">
+      <option name="closed" value="true" />
+      <created>1735551198616</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1735551198616</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2115,7 +2112,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="解决了加速度传感器数据不稳定" />
     <MESSAGE value="添加了加速度传感器的显示" />
     <MESSAGE value="成功切换引脚" />
     <MESSAGE value="准备尝试MP3模块" />
@@ -2140,6 +2136,7 @@
     <MESSAGE value="搞定了温湿度传感器" />
     <MESSAGE value="添加了超温检测的闪烁效果" />
     <MESSAGE value="基本完善的版本" />
-    <option name="LAST_COMMIT_MESSAGE" value="基本完善的版本" />
+    <MESSAGE value="添加了进度条" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加了进度条" />
   </component>
 </project>

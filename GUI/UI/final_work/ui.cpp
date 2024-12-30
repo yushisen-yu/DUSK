@@ -113,11 +113,13 @@ void destroy_volume_roller()
 // 弹窗
 void create_msgbox()
 {
-    MsgBox::init(GUI_Base::get_ui()->main.msgbox_configure, "Warning", "Please configure the current option or cancel the current configuration item first!", nullptr, true);
-    lv_obj_set_style_text_font(GUI_Base::get_ui()->main.msgbox_configure, &lv_customer_font_SourceHanSerifSC_Regular_15,LV_PART_SELECTED);
+    MsgBox::init(GUI_Base::get_ui()->main.msgbox_configure, "Warning",
+                 "Please configure the current option or cancel the current configuration item first!", nullptr, true);
+    lv_obj_set_style_text_font(GUI_Base::get_ui()->main.msgbox_configure, &lv_customer_font_SourceHanSerifSC_Regular_15,
+                               LV_PART_SELECTED);
     MsgBox::enable_drag(GUI_Base::get_ui()->main.msgbox_configure);
 //    MsgBox::set_align(LV_ALIGN_CENTER,0,0,GUI_Base::get_ui()->main.msgbox_configure);// 设置居中
-    MsgBox::set_pos_size(90,320,300, 200, GUI_Base::get_ui()->main.msgbox_configure);
+    MsgBox::set_pos_size(90, 320, 300, 200, GUI_Base::get_ui()->main.msgbox_configure);
     lv_obj_move_foreground(GUI_Base::get_ui()->main.msgbox_configure);
 }
 
@@ -125,6 +127,35 @@ void destroy_msgbox()
 {
     MsgBox::destroy(GUI_Base::get_ui()->main.msgbox_configure);
 }
+
+// 直流电机事件
+static void bar_event_cb(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *bar = lv_event_get_target(e); // 获取触发事件的对象
+
+    if (code == LV_EVENT_VALUE_CHANGED)
+    {
+        int32_t value= lv_bar_get_value(bar);
+#ifdef GUI_ENABLE
+        DCMotor_forward(value);
+#endif
+    }
+}
+void create_slider_motor()
+{
+    Slider::init(GUI_Base::get_ui()->main.slider_motor, 90, 430, 180, 10);
+    Slider::set_range(0,1000);
+    lv_obj_add_event_cb(GUI_Base::get_ui()->main.slider_motor, bar_event_cb, LV_EVENT_VALUE_CHANGED, nullptr);
+}
+void destroy_slider_motor()
+{
+    Slider::destroy(GUI_Base::get_ui()->main.slider_motor);
+}
+
+
+
+
 
 auto Screen::init() -> void
 {
@@ -168,564 +199,572 @@ auto Screen::init() -> void
     Chart::set_style_bg_color(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
 
-    Slider::init(gui->main.slider_motor, 90, 430, 180, 10);
+
+
+//    Text::init(test, "12", &lv_customer_font_SourceHanSerifSC_Regular_15);
+//    Text::set_pos_size(0, 0, 200, 30);
+
 }
 
-auto Events::init() -> void
-{
+    auto Events::init() -> void
+    {
 // lambda匿名
 
-    temp_threshold_timer.create(timer_fun(
+        temp_threshold_timer.create(timer_fun(
 #ifdef GUI_ENABLE
-                                        // 如果温度大于给定的阈值，蜂鸣器响
-                                        if (get_temp()>temp_threshold)
-                                {
-                                        beep_start();
-                                }else
-                                {
-                                        beep_stop();
-                                }
+                                            // 如果温度大于给定的阈值，蜂鸣器响
+                                            if (get_temp()>temp_threshold)
+                                    {
+                                            beep_start();
+                                    }else
+                                    {
+                                            beep_stop();
+                                    }
 #endif
-                                ), 2000);
+                                    ), 2000);
 
 
-    blink_timer.create(timer_fun(
+        blink_timer.create(timer_fun(
 #ifdef GUI_ENABLE
-                               static bool flag = false;
-                               flag = !flag;
-                               // 如果温度大于给定的阈值，蜂鸣器响
-                               if (get_temp()>temp_threshold)
-                       {
-                               if (flag)
-                       { led_start(); }
-                               else
-                       {
-                               led_stop();
-                       }
-                       }
-                               else
-                       {
-                               led_stop();
-                       }
+                                   static bool flag = false;
+                                   flag = !flag;
+                                   // 如果温度大于给定的阈值，蜂鸣器响
+                                   if (get_temp()>temp_threshold)
+                           {
+                                   if (flag)
+                           { led_start(); }
+                                   else
+                           {
+                                   led_stop();
+                           }
+                           }
+                                   else
+                           {
+                                   led_stop();
+                           }
 
 #endif
-                       ), 200);
+                           ), 200);
 
 
-    bond(gui
-                 ->main.btn_beep, btn_fun(
-                 []()
-                 {
-                     static bool flag = false;
-                     flag = !flag;
-                     if (flag)
+        bond(gui
+                     ->main.btn_beep, btn_fun(
+                     []()
                      {
-                         Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_beep_label);
-#ifdef GUI_ENABLE
-                         beep_start();
-#endif
-                     }
-                     else
-                     {
-                         Text::set_text_color(lv_color_black(), gui->main.btn_beep_label);
-#ifdef GUI_ENABLE
-                         beep_stop();
-#endif
-                     }
-                 }
-         ));
-
-
-    bond(gui
-                 ->main.imgbtn_led, imgbtn_fun2(
-                 []()
-                 {
-#ifdef GUI_ENABLE
-                     led_start();
-#endif
-                 }, []()
-                 {
-#ifdef GUI_ENABLE
-                     led_stop();
-#endif
-                 }
-         )
-    );
-
-    bond(gui
-                 ->main.imgbtn_DHT11, imgbtn_fun2(
-                 []()
-                 {
-#ifdef GUI_ENABLE
-                     start_DHT11();
-#endif
-                 },
-                 []()
-                 {
-#ifdef GUI_ENABLE
-                     stop_DHT11();
-#endif
-                 }
-         )
-    );
-
-
-    // 音量
-    bond(gui
-                 ->main.imgbtn_volume, imgbtn_fun2([]()
-                                                   {
-                                                       if (Config::get_flag(ConfigFlags::TEMP_THRESHOLD))
-                                                       {
-                                                           create_msgbox();
-                                                           ImageButton::release(gui->main.imgbtn_volume);
-                                                           return;
-                                                       }
-                                                       if (!gui->main.roller_volume)
-                                                       {
-                                                           Config::set_flag(ConfigFlags::VOLUME);
-                                                           create_volume_roller();
-
-                                                       }
-
-                                                   }, []()
-                                                   {
-                                                       if (gui->main.roller_volume)
-                                                       {
-                                                           Config::clear_flag(ConfigFlags::VOLUME);
-                                                           destroy_volume_roller();
-                                                       }
-
-                                                   }));
-
-// 直流电机
-    bond(gui
-                 ->main.btn_DCMotor, [](
-                 event e
-         )
-         {
-             static volatile bool flag2 = false;
-             switch (
-                     lv_event_get_code(e)
-                     )
-             {
-                 case LV_EVENT_CLICKED:
-                     flag2 = !flag2;
-
-                     if (flag2)
-                     {
-                         Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
-
-                                 ->main.btn_DCMotor_label);
-#ifdef GUI_ENABLE
-                         DCMotor_forward(1000);
-#endif
-                     }
-                     else
-                     {
-#ifdef GUI_ENABLE
-
-//                         DCMotor_reverse(300);
-                         DCMotor_stop();
-
-#endif
-
-                         Text::set_text_color(lv_color_black(), gui
-
-                                 ->main.btn_DCMotor_label);
-                     }
-                     break;
-                 default:
-                     break;
-
-             }
-         }
-    );
-
-// 切换加速度传感器、温湿度传感器显示
-    bond(gui
-                 ->main.btn_switch_DHT_acc, [](
-            event e
-    )
-         {
-             static volatile bool flag3 = false;
-             switch (
-                     lv_event_get_code(e)
-                     )
-             {
-                 case LV_EVENT_CLICKED:
-                     flag3 = !flag3;
-
-                     if (flag3)
-                     {
-                         Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
-
-                                 ->main.btn_switch_DHT_acc_label);
-#ifdef GUI_ENABLE
-//ACC
-                         switch_sensor(true);
-                         Chart::set_range(-360, 360, gui->main.chart_DHT11_temp_humi);
-
-
-#endif
-                     }
-                     else
-                     {
-                         Text::set_text_color(lv_color_black(), gui
-
-                                 ->main.btn_switch_DHT_acc_label);
-#ifdef GUI_ENABLE
-                         switch_sensor(false);
-                         Chart::set_range(0, 100, gui->main.chart_DHT11_temp_humi);
-#endif
-                     }
-                     for (
-                             int i = 0;
-                             i < 64; i++)
-                     {
-                         Chart::set_next_value(chart_series_temp,
-                                               0, gui->main.chart_DHT11_temp_humi);
-                         Chart::set_next_value(chart_series_humi,
-                                               0, gui->main.chart_DHT11_temp_humi);
-                     }
-                     break;
-                 default:
-                     break;
-
-             }
-         });
-
-// 启用音乐播放
-    bond(gui
-                 ->main.btn_music, [](
-            event e
-    )
-         {
-             static volatile bool flag = false;
-             switch (
-                     lv_event_get_code(e)
-                     )
-             {
-                 case LV_EVENT_CLICKED:
-                     flag = !flag;
-
-                     if (flag)
-                     {
-                         if (!gui->main.roller)
+                         static bool flag = false;
+                         flag = !flag;
+                         if (flag)
                          {
-                             Config::set_flag(ConfigFlags::MUSIC_INDEX);// 音乐播放
-                             create_roller();
-
-                             Text::set_text_color(lv_palette_main(LV_PALETTE_BLUE), gui
-
-                                     ->main.btn_music_label);
-                         }
-                     }
-                     else
-                     {
-                         if (gui->main.roller)
-                         {
-                             Config::clear_flag(ConfigFlags::MUSIC_INDEX);
-
-                             destroy_roller();
-
-                         }
+                             Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_beep_label);
 #ifdef GUI_ENABLE
-
-                         mp3Stop();
-
+                             beep_start();
 #endif
-
-                         Text::set_text_color(lv_color_black(), gui
-
-                                 ->main.btn_music_label);
-                     }
-
-                     break;
-                 default:
-                     break;
-
-             }
-         });
-
-// 启用加速度传感器
-    bond(gui
-                 ->main.btn_ACC, [](
-            event e
-    )
-         {
-             static volatile bool flag = false;
-             switch (
-                     lv_event_get_code(e)
-                     )
-             {
-                 case LV_EVENT_CLICKED:
-                     flag = !flag;
-
-                     if (flag)
-                     {
-#ifdef GUI_ENABLE
-
-                         start_ACC();
-
-#endif
-
-                         Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
-
-                                 ->main.btn_ACC_label);
-                     }
-                     else
-                     {
-#ifdef GUI_ENABLE
-
-                         stop_ACC();
-
-#endif
-
-                         Text::set_text_color(lv_color_black(), gui
-
-                                 ->main.btn_ACC_label);
-                     }
-
-                     break;
-                 default:
-                     break;
-
-             }
-         });
-
-// 设定温度阈值
-    bond(gui
-                 ->main.btn_DHT11_set_temp_thresold, [](
-            event e
-    )
-         {
-             static volatile bool flag = false;
-             switch (
-                     lv_event_get_code(e)
-                     )
-             {
-                 case LV_EVENT_CLICKED:
-                     flag = !flag;
-
-                     if (flag)
-                     {
-// 创建滚轮
-                         if (!gui->main.roller)
-                         {
-                             Config::set_flag(ConfigFlags::TEMP_THRESHOLD);
-
-                             create_roller();
-
-                         }
-
-                         Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
-
-                                 ->main.btn_DHT11_set_temp_thresold_label);
-                     }
-                     else
-                     {
-// 创建滚轮
-                         if (gui->main.roller)
-                         {
-                             Config::clear_flag(ConfigFlags::TEMP_THRESHOLD);
-
-                             destroy_roller();
-
-                         }
-
-                         Text::set_text_color(lv_color_black(), gui
-
-                                 ->main.btn_DHT11_set_temp_thresold_label);
-                     }
-
-                     break;
-                 default:
-                     break;
-
-             }
-         });
-
-// 启用温度阈值
-    bond(gui
-                 ->main.btn_enable_threshold, [](
-            event e
-    )
-         {
-             static volatile bool flag = false;
-             switch (
-                     lv_event_get_code(e)
-                     )
-             {
-                 case LV_EVENT_CLICKED:
-                     flag = !flag;
-
-                     if (flag)
-                     {
-                         temp_threshold_timer.
-
-                                 resume();
-
-                         blink_timer.
-
-                                 resume();
-
-                         Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
-
-                                 ->main.btn_enable_threshold_label);
-                     }
-                     else
-                     {
-
-                         temp_threshold_timer.
-
-                                 pause();
-
-                         blink_timer.
-
-                                 pause();
-
-#ifdef GUI_ENABLE
-
-                         beep_stop();
-                         led_stop();
-
-#endif
-
-                         Text::set_text_color(lv_color_black(), gui
-
-                                 ->main.btn_enable_threshold_label);
-                     }
-
-                     break;
-                 default:
-                     break;
-
-             }
-         });
-
-// 拖拽按钮
-    bond(gui
-                 ->main.btn_drag, [](
-            event e
-    )
-         {
-             static volatile bool flag4 = false;
-             switch (
-                     lv_event_get_code(e)
-                     )
-             {
-                 case LV_EVENT_CLICKED:
-
-                     if (gui->main.roller)
-                     {
-                         flag4 = !flag4;
-                         if (flag4)
-                         {
-
-                             Roller::enable_drag(gui
-                                                         ->main.roller);
-                             Roller::enable_drag(gui
-                                                         ->main.roller2);
-
-                             Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
-
-                                     ->main.btn_drag_label);
                          }
                          else
                          {
-                             Roller::disable_drag(gui
-                                                          ->main.roller);
-                             Roller::disable_drag(gui
-                                                          ->main.roller2);
+                             Text::set_text_color(lv_color_black(), gui->main.btn_beep_label);
+#ifdef GUI_ENABLE
+                             beep_stop();
+#endif
+                         }
+                     }
+             ));
+
+
+        bond(gui
+                     ->main.imgbtn_led, imgbtn_fun2(
+                     []()
+                     {
+#ifdef GUI_ENABLE
+                         led_start();
+#endif
+                     }, []()
+                     {
+#ifdef GUI_ENABLE
+                         led_stop();
+#endif
+                     }
+             )
+        );
+
+        bond(gui
+                     ->main.imgbtn_DHT11, imgbtn_fun2(
+                     []()
+                     {
+#ifdef GUI_ENABLE
+                         start_DHT11();
+#endif
+                     },
+                     []()
+                     {
+#ifdef GUI_ENABLE
+                         stop_DHT11();
+#endif
+                     }
+             )
+        );
+
+
+        // 音量
+        bond(gui
+                     ->main.imgbtn_volume, imgbtn_fun2([]()
+                                                       {
+                                                           if (Config::get_flag(ConfigFlags::TEMP_THRESHOLD))
+                                                           {
+                                                               create_msgbox();
+                                                               ImageButton::release(gui->main.imgbtn_volume);
+                                                               return;
+                                                           }
+                                                           if (!gui->main.roller_volume)
+                                                           {
+                                                               Config::set_flag(ConfigFlags::VOLUME);
+                                                               create_volume_roller();
+
+                                                           }
+
+                                                       }, []()
+                                                       {
+                                                           if (gui->main.roller_volume)
+                                                           {
+                                                               Config::clear_flag(ConfigFlags::VOLUME);
+                                                               destroy_volume_roller();
+                                                           }
+
+                                                       }));
+
+// 直流电机
+        bond(gui
+                     ->main.btn_DCMotor, [](
+                     event e
+             )
+             {
+                 static volatile bool flag2 = false;
+                 switch (
+                         lv_event_get_code(e)
+                         )
+                 {
+                     case LV_EVENT_CLICKED:
+                         flag2 = !flag2;
+
+                         if (flag2)
+                         {
+                             Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
+
+                                     ->main.btn_DCMotor_label);
+                             if(!gui->main.slider_motor) { create_slider_motor(); }
+#ifdef GUI_ENABLE
+
+#endif
+                         }
+                         else
+                         {
+#ifdef GUI_ENABLE
+
+                                                      DCMotor_stop();
+                             if(gui->main.slider_motor)
+                             {
+                                 destroy_slider_motor();
+                             }
+
+#endif
 
                              Text::set_text_color(lv_color_black(), gui
 
-                                     ->main.btn_drag_label);
+                                     ->main.btn_DCMotor_label);
                          }
-                     }
+                         break;
+                     default:
+                         break;
 
-                     break;
-                 default:
-                     break;
-
+                 }
              }
-         });
+        );
 
-
-// 确定按钮
-    bond(gui
-                 ->main.btn_ensure, btn_fun(
-                 []()
+// 切换加速度传感器、温湿度传感器显示
+        bond(gui
+                     ->main.btn_switch_DHT_acc, [](
+                event e
+        )
+             {
+                 static volatile bool flag3 = false;
+                 switch (
+                         lv_event_get_code(e)
+                         )
                  {
+                     case LV_EVENT_CLICKED:
+                         flag3 = !flag3;
 
-                     uint16_t temp = Roller::get_selected_option(gui->main.roller);
-                     uint16_t temp2 = Roller::get_selected_option(gui->main.roller2);
+                         if (flag3)
+                         {
+                             Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
 
-                     if (Config::get_flag(ConfigFlags::TEMP_THRESHOLD))
-                     {
-                         // 确保不会出现空指针引用
-                         if (gui->main.roller && gui->main.roller2)
+                                     ->main.btn_switch_DHT_acc_label);
+#ifdef GUI_ENABLE
+                             //ACC
+                                                      switch_sensor(true);
+                                                      Chart::set_range(-360, 360, gui->main.chart_DHT11_temp_humi);
+
+
+#endif
+                         }
+                         else
+                         {
+                             Text::set_text_color(lv_color_black(), gui
+
+                                     ->main.btn_switch_DHT_acc_label);
+#ifdef GUI_ENABLE
+                             switch_sensor(false);
+                             Chart::set_range(0, 100, gui->main.chart_DHT11_temp_humi);
+#endif
+                         }
+                         for (
+                                 int i = 0;
+                                 i < 64; i++)
+                         {
+                             Chart::set_next_value(chart_series_temp,
+                                                   0, gui->main.chart_DHT11_temp_humi);
+                             Chart::set_next_value(chart_series_humi,
+                                                   0, gui->main.chart_DHT11_temp_humi);
+                         }
+                         break;
+                     default:
+                         break;
+
+                 }
+             });
+
+// 启用音乐播放
+        bond(gui
+                     ->main.btn_music, [](
+                event e
+        )
+             {
+                 static volatile bool flag = false;
+                 switch (
+                         lv_event_get_code(e)
+                         )
+                 {
+                     case LV_EVENT_CLICKED:
+                         flag = !flag;
+
+                         if (flag)
+                         {
+                             if (!gui->main.roller)
+                             {
+                                 Config::set_flag(ConfigFlags::MUSIC_INDEX);// 音乐播放
+                                 create_roller();
+
+                                 Text::set_text_color(lv_palette_main(LV_PALETTE_BLUE), gui
+
+                                         ->main.btn_music_label);
+                             }
+                         }
+                         else
+                         {
+                             if (gui->main.roller)
+                             {
+                                 Config::clear_flag(ConfigFlags::MUSIC_INDEX);
+
+                                 destroy_roller();
+
+                             }
+#ifdef GUI_ENABLE
+
+                             mp3Stop();
+
+#endif
+
+                             Text::set_text_color(lv_color_black(), gui
+
+                                     ->main.btn_music_label);
+                         }
+
+                         break;
+                     default:
+                         break;
+
+                 }
+             });
+
+// 启用加速度传感器
+        bond(gui
+                     ->main.btn_ACC, [](
+                event e
+        )
+             {
+                 static volatile bool flag = false;
+                 switch (
+                         lv_event_get_code(e)
+                         )
+                 {
+                     case LV_EVENT_CLICKED:
+                         flag = !flag;
+
+                         if (flag)
+                         {
+#ifdef GUI_ENABLE
+
+                             start_ACC();
+
+#endif
+
+                             Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
+
+                                     ->main.btn_ACC_label);
+                         }
+                         else
+                         {
+#ifdef GUI_ENABLE
+
+                             stop_ACC();
+
+#endif
+
+                             Text::set_text_color(lv_color_black(), gui
+
+                                     ->main.btn_ACC_label);
+                         }
+
+                         break;
+                     default:
+                         break;
+
+                 }
+             });
+
+// 设定温度阈值
+        bond(gui
+                     ->main.btn_DHT11_set_temp_thresold, [](
+                event e
+        )
+             {
+                 static volatile bool flag = false;
+                 switch (
+                         lv_event_get_code(e)
+                         )
+                 {
+                     case LV_EVENT_CLICKED:
+                         flag = !flag;
+
+                         if (flag)
+                         {
+// 创建滚轮
+                             if (!gui->main.roller)
+                             {
+                                 Config::set_flag(ConfigFlags::TEMP_THRESHOLD);
+
+                                 create_roller();
+
+                             }
+
+                             Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
+
+                                     ->main.btn_DHT11_set_temp_thresold_label);
+                         }
+                         else
+                         {
+// 创建滚轮
+                             if (gui->main.roller)
+                             {
+                                 Config::clear_flag(ConfigFlags::TEMP_THRESHOLD);
+
+                                 destroy_roller();
+
+                             }
+
+                             Text::set_text_color(lv_color_black(), gui
+
+                                     ->main.btn_DHT11_set_temp_thresold_label);
+                         }
+
+                         break;
+                     default:
+                         break;
+
+                 }
+             });
+
+// 启用温度阈值
+        bond(gui
+                     ->main.btn_enable_threshold, [](
+                event e
+        )
+             {
+                 static volatile bool flag = false;
+                 switch (
+                         lv_event_get_code(e)
+                         )
+                 {
+                     case LV_EVENT_CLICKED:
+                         flag = !flag;
+
+                         if (flag)
+                         {
+                             temp_threshold_timer.
+
+                                     resume();
+
+                             blink_timer.
+
+                                     resume();
+
+                             Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
+
+                                     ->main.btn_enable_threshold_label);
+                         }
+                         else
                          {
 
-                             temp_threshold = temp * 10 + temp2;
-                             cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
+                             temp_threshold_timer.
 
-                             if (cursor)
+                                     pause();
+
+                             blink_timer.
+
+                                     pause();
+
+#ifdef GUI_ENABLE
+
+                             beep_stop();
+                             led_stop();
+
+#endif
+
+                             Text::set_text_color(lv_color_black(), gui
+
+                                     ->main.btn_enable_threshold_label);
+                         }
+
+                         break;
+                     default:
+                         break;
+
+                 }
+             });
+
+// 拖拽按钮
+        bond(gui
+                     ->main.btn_drag, [](
+                event e
+        )
+             {
+                 static volatile bool flag4 = false;
+                 switch (
+                         lv_event_get_code(e)
+                         )
+                 {
+                     case LV_EVENT_CLICKED:
+
+                         if (gui->main.roller)
+                         {
+                             flag4 = !flag4;
+                             if (flag4)
                              {
-                                 // 未知原因，直接使用Chart::set_cursor_pos会卡死
-                                 cursor->pos.y = cursor_point.y;
-                                 cursor->pos_set = 1;
-                                 lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
+
+                                 Roller::enable_drag(gui
+                                                             ->main.roller);
+                                 Roller::enable_drag(gui
+                                                             ->main.roller2);
+
+                                 Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui
+
+                                         ->main.btn_drag_label);
                              }
                              else
                              {
-                                 Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
-                                                   LV_DIR_RIGHT, cursor);
-                                 Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
+                                 Roller::disable_drag(gui
+                                                              ->main.roller);
+                                 Roller::disable_drag(gui
+                                                              ->main.roller2);
+
+                                 Text::set_text_color(lv_color_black(), gui
+
+                                         ->main.btn_drag_label);
                              }
-                             Button::click(gui->main.btn_DHT11_set_temp_thresold);
-                             Config::clear_flag(ConfigFlags::TEMP_THRESHOLD);
                          }
-                     }
-                     if (Config::get_flag(ConfigFlags::MUSIC_INDEX))
-                     {
-                         // 音乐播放
-                         if (gui->main.roller && gui->main.roller2)
-                         {
-#ifdef GUI_ENABLE
-                             mp3_play_selected(temp * 10 + temp2);
-#endif
-                             destroy_roller();
-                         }
-                     }
-                     if (Config::get_flag(ConfigFlags::VOLUME))
-                     {
 
+                         break;
+                     default:
+                         break;
 
-#ifdef GUI_ENABLE
-                         setMp3Vol(Roller::get_selected_option(gui->main.roller_volume) * 5);
-#endif
-                         ImageButton::release(gui->main.imgbtn_volume);
-                         Config::clear_flag(ConfigFlags::VOLUME);
-                     }
                  }
-         ));
+             });
 
 
-}
+// 确定按钮
+        bond(gui
+                     ->main.btn_ensure, btn_fun(
+                     []()
+                     {
+
+                         uint16_t temp = Roller::get_selected_option(gui->main.roller);
+                         uint16_t temp2 = Roller::get_selected_option(gui->main.roller2);
+
+                         if (Config::get_flag(ConfigFlags::TEMP_THRESHOLD))
+                         {
+                             // 确保不会出现空指针引用
+                             if (gui->main.roller && gui->main.roller2)
+                             {
+
+                                 temp_threshold = temp * 10 + temp2;
+                                 cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
+
+                                 if (cursor)
+                                 {
+                                     // 未知原因，直接使用Chart::set_cursor_pos会卡死
+                                     cursor->pos.y = cursor_point.y;
+                                     cursor->pos_set = 1;
+                                     lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
+                                 }
+                                 else
+                                 {
+                                     Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
+                                                       LV_DIR_RIGHT, cursor);
+                                     Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
+                                 }
+                                 Button::click(gui->main.btn_DHT11_set_temp_thresold);
+                                 Config::clear_flag(ConfigFlags::TEMP_THRESHOLD);
+                             }
+                         }
+                         if (Config::get_flag(ConfigFlags::MUSIC_INDEX))
+                         {
+                             // 音乐播放
+                             if (gui->main.roller && gui->main.roller2)
+                             {
+#ifdef GUI_ENABLE
+                                 mp3_play_selected(temp * 10 + temp2);
+#endif
+                                 destroy_roller();
+                             }
+                         }
+                         if (Config::get_flag(ConfigFlags::VOLUME))
+                         {
+
+
+#ifdef GUI_ENABLE
+                             setMp3Vol(Roller::get_selected_option(gui->main.roller_volume) * 5);
+#endif
+                             ImageButton::release(gui->main.imgbtn_volume);
+                             Config::clear_flag(ConfigFlags::VOLUME);
+                         }
+                     }
+             ));
+
+
+    }
 
 
 // 添加温度数据
-auto UI::add_temp_data(short temp) -> void
-{
+    auto UI::add_temp_data(short temp) -> void
+    {
 
-    Chart::set_next_value(chart_series_temp, temp, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
-}
+        Chart::set_next_value(chart_series_temp, temp, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
+    }
 
 // 添加湿度数据
-auto UI::add_humi_data(short humi) -> void
-{
-    Chart::set_next_value(chart_series_humi, humi, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
-}
+    auto UI::add_humi_data(short humi) -> void
+    {
+        Chart::set_next_value(chart_series_humi, humi, GUI_Base::get_ui()->main.chart_DHT11_temp_humi);
+    }
 
 

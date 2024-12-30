@@ -34,11 +34,10 @@
 
 void DHT11_Wait_Low()
 {
-    volatile uint32_t count = 0;
+    volatile uint32_t count = HAL_GetTick();
     while (DHT11_Read())
     {
-        count++;
-        if (count > 0x3FFF)
+        if (HAL_GetTick()-count>100)
         {
             return;
         }
@@ -47,11 +46,10 @@ void DHT11_Wait_Low()
 
 void DHT11_Wait_High()
 {
-    volatile uint32_t count = 0;
+    volatile uint32_t count = HAL_GetTick();
     while (!DHT11_Read())
     {
-        count++;
-        if (count > 0x3FFF)
+        if (HAL_GetTick()-count>100)
         {
             return;
         }
@@ -72,7 +70,7 @@ void std_delay_25us()
 {
 //    for (uint16_t i = 0; i < 20; ++i)//单个任务时，大概为273
 //        ;
-    delay_us(30);
+    delay_us(25);
 }
 
 
@@ -84,7 +82,6 @@ void DHT11_Init()
     GPIO_InitStruct.Pin = DHT11_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    //    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;//输入模式下，最好不要配置速度，所以为了兼容输入就不配置了，即默认2MHz
     HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);
     DHT11_High();
 }
@@ -171,7 +168,7 @@ static uint8_t timeBufIndex = 0;
 unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
 {
     static uint8_t buf[5];
-    uint32_t time_count;
+     uint32_t time_count;
     DHT11_Rst();  // 设置输出模式
     DHT11_Check();// 设置输入模式
 

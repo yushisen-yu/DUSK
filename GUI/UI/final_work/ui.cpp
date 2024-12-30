@@ -23,6 +23,46 @@ uint16_t temp_threshold;//
 //0表示温度，1表示音乐,2表示音量共有6个档
 // 实在是懒得搞标志了，除非还有时间.它俩之间的逻辑有些耦合，先不管了
 uint8_t roller_mode = 0;
+enum class ConfigFlags : uint8_t
+{
+    TEMP_THRESHOLD = 1 << 0,// 温度阈值
+    MUSIC_INDEX = 1 << 1,// 音乐索引
+    VOLUME = 1 << 2,// 音量
+};
+
+class Config
+{
+public:
+    static uint8_t get_flags() { return flags; }
+
+public:
+    // 辅助函数：设置指定标志
+    static void set_flag(ConfigFlags flag)
+    {
+        flags |= static_cast<uint8_t>(flag);
+    }
+
+    // 辅助函数：清除指定标志
+    static void clear_flag(ConfigFlags flag)
+    {
+        flags &= ~static_cast<uint8_t>(flag);
+    }
+
+    // 辅助函数：获取指定标志
+    static uint8_t get_flag(ConfigFlags flag)
+    {
+        return flags & static_cast<uint8_t>(flag);
+    }
+
+    // 辅助函数：翻转指定标志
+    static void toggle_flag(ConfigFlags flag)
+    {
+        flags ^= static_cast<uint8_t>(flag);
+    }
+
+private:
+    static inline uint8_t flags = 0;
+};
 
 // 外部声明
 extern void start_DHT11();
@@ -67,6 +107,18 @@ void create_volume_roller()
 void destroy_volume_roller()
 {
     Roller::destroy(GUI_Base::get_ui()->main.roller_volume);
+}
+
+// 弹窗
+void create_msgbox()
+{
+    MsgBox::init(GUI_Base::get_ui()->main.msgbox_configure, "警告", "请先配置当前选项或者取消当前配置！", nullptr, true);
+    MsgBox::enable_drag(GUI_Base::get_ui()->main.msgbox_configure);
+}
+
+void destroy_msgbox()
+{
+    MsgBox::destroy(GUI_Base::get_ui()->main.msgbox_configure);
 }
 
 auto Screen::init() -> void
@@ -186,14 +238,16 @@ auto Events::init() -> void
                                               {
                                                   if (!gui->main.roller_volume)
                                                   {
-                                                      roller_mode = 2;
+                                                      Config::set_flag(ConfigFlags::VOLUME);
                                                       create_volume_roller();
+
                                                   }
 
                                               }, []()
                                               {
                                                   if (gui->main.roller_volume)
                                                   {
+                                                      Config::clear_flag(ConfigFlags::VOLUME);
                                                       destroy_volume_roller();
                                                   }
 
@@ -284,7 +338,7 @@ auto Events::init() -> void
                 {
                     if (!gui->main.roller)
                     {
-                        roller_mode = 1;
+                        Config::set_flag(ConfigFlags::MUSIC_INDEX);// 音乐播放
                         create_roller();
                         Text::set_text_color(lv_palette_main(LV_PALETTE_BLUE), gui->main.btn_music_label);
                     }
@@ -293,6 +347,7 @@ auto Events::init() -> void
                 {
                     if (gui->main.roller)
                     {
+                        Config::clear_flag(ConfigFlags::MUSIC_INDEX);
                         destroy_roller();
                     }
 #ifdef GUI_ENABLE
@@ -353,7 +408,7 @@ auto Events::init() -> void
                     // 创建滚轮
                     if (!gui->main.roller)
                     {
-                        roller_mode = 0;
+                        Config::set_flag(ConfigFlags::TEMP_THRESHOLD);
                         create_roller();
                     }
                     Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_DHT11_set_temp_thresold_label);
@@ -363,6 +418,7 @@ auto Events::init() -> void
                     // 创建滚轮
                     if (gui->main.roller)
                     {
+                        Config::clear_flag(ConfigFlags::TEMP_THRESHOLD);
                         destroy_roller();
                     }
                     Text::set_text_color(lv_color_black(), gui->main.btn_DHT11_set_temp_thresold_label);
@@ -391,7 +447,9 @@ auto Events::init() -> void
                 }
                 else
                 {
+
                     temp_threshold_timer.pause();
+                    beep_stop();
                     Text::set_text_color(lv_color_black(), gui->main.btn_enable_threshold_label);
                 }
 
@@ -444,59 +502,54 @@ auto Events::init() -> void
 
                 uint16_t temp = Roller::get_selected_option(gui->main.roller);
                 uint16_t temp2 = Roller::get_selected_option(gui->main.roller2);
-                switch (roller_mode)
+
+                if (Config::get_flag(ConfigFlags::TEMP_THRESHOLD))
                 {
-                    case 0:
-                        // 确保不会出现空指针引用
-                        if (gui->main.roller && gui->main.roller2)
-                        {
-                            Button::click(gui->main.btn_DHT11_set_temp_thresold);
-                            temp_threshold = temp * 10 + temp2;
-                            cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
+                    // 确保不会出现空指针引用
+                    if (gui->main.roller && gui->main.roller2)
+                    {
 
-                            if (cursor)
-                            {
-                                // 未知原因，直接使用Chart::set_cursor_pos会卡死
-                                cursor->pos.y = cursor_point.y;
-                                cursor->pos_set = 1;
-                                lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
-                            }
-                            else
-                            {
-                                Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
-                                                  LV_DIR_RIGHT, cursor);
-                                Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
-                            }
-                            destroy_roller();
-                        }
-                        break;
-                    case 1:
-                        // 音乐播放
-                        if (gui->main.roller && gui->main.roller2)
-                        {
+                        temp_threshold = temp * 10 + temp2;
+                        cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
 
-#ifdef GUI_ENABLE
-                            mp3_play_selected(temp * 10 + temp2);
-#endif
-                            destroy_roller();
-                        }
-                        break;
-                    case 2:
-                        // 音乐播放
-                        if (gui->main.roller_volume)
+                        if (cursor)
                         {
-                            ImageButton::release(gui->main.imgbtn_volume);
-
-#ifdef GUI_ENABLE
-                            setMp3Vol(Roller::get_selected_option(gui->main.roller_volume) * 5);
-#endif
-                            destroy_volume_roller();
+                            // 未知原因，直接使用Chart::set_cursor_pos会卡死
+                            cursor->pos.y = cursor_point.y;
+                            cursor->pos_set = 1;
+                            lv_chart_refresh(gui->main.chart_DHT11_temp_humi);
                         }
-                        break;
-                    default:
-                        break;
+                        else
+                        {
+                            Chart::add_cursor(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_RED),
+                                              LV_DIR_RIGHT, cursor);
+                            Chart::set_cursor_pos(gui->main.chart_DHT11_temp_humi, cursor, &cursor_point);
+                        }
+                        Button::click(gui->main.btn_DHT11_set_temp_thresold);
+                        Config::clear_flag(ConfigFlags::TEMP_THRESHOLD);
+                    }
                 }
+               if (Config::get_flag(ConfigFlags::MUSIC_INDEX))
+                {
+                    // 音乐播放
+                    if (gui->main.roller && gui->main.roller2)
+                    {
+#ifdef GUI_ENABLE
+                        mp3_play_selected(temp * 10 + temp2);
+#endif
+                        destroy_roller();
+                    }
+                }
+                if (Config::get_flag(ConfigFlags::VOLUME))
+                {
 
+
+#ifdef GUI_ENABLE
+                        setMp3Vol(Roller::get_selected_option(gui->main.roller_volume) * 5);
+#endif
+                    ImageButton::release(gui->main.imgbtn_volume);
+                    Config::clear_flag(ConfigFlags::VOLUME);
+                }
             }
     ));
 

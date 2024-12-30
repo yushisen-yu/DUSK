@@ -32,8 +32,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="淦!终于他妈找到问题了，足足浪费了一个小时半。调试时使用的是sytem_stm32f4xx.c配置的HSE_VALUE，而运行时使用的是stm32f4xx_hal_conf.h里的HSE_VALUE，这就导致了一个问题，如果两者不同，那么运行与调试的实际时钟是不同的，串口自然也就无法正常运行。">
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="给设定温度阈值按钮和音量调节按钮添加了回程操作">
+      <change afterPath="$PROJECT_DIR$/GUI/Component/msgbox.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Base/GUI.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Base/GUI.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/lv_customer_font_SourceHanSerifSC_Regular_15.c" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/lv_customer_font_SourceHanSerifSC_Regular_15.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1610,32 +1616,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C/C++ 文件.main.cpp.executor": "Run",
-    "CMake 应用程序.Furina.elf.executor": "Debug",
-    "OpenOCD 下载并运行.Furina.elf.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.west.config.association.type.startup.service": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "ZQ",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "E:/Program/Embedded/MCU/STM32/Furina/Resource/STM32F4_svd/STM32F4_svd_V2.0/STM32F407.svd",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CMakeSettings",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C/C++ 文件.main.cpp.executor&quot;: &quot;Run&quot;,
+    &quot;CMake 应用程序.Furina.elf.executor&quot;: &quot;Debug&quot;,
+    &quot;OpenOCD 下载并运行.Furina.elf.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ZQ&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Program/Embedded/MCU/STM32/Furina/Resource/STM32F4_svd/STM32F4_svd_V2.0/STM32F407.svd&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\EDA\MCU\STM32F407VET6\BSP\inc" />
@@ -1643,11 +1649,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Furina.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Furina" TARGET_NAME="Furina.elf" CONFIG_NAME="Debug-MinGW_ARM" version="1" RUN_TARGET_PROJECT_NAME="Furina" RUN_TARGET_NAME="Furina.elf">
       <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="E:\Program\Embedded\MCU\STM32\final_homework\stlink.cfg" reset-type="INIT" download-type="UPDATED_ONLY">
         <debugger kind="GDB" isBundled="true" />
@@ -1682,7 +1683,8 @@
       <workItem from="1735398007869" duration="4046000" />
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
-      <workItem from="1735534721280" duration="6620000" />
+      <workItem from="1735534721280" duration="7691000" />
+      <workItem from="1735543795892" duration="594000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -2028,7 +2030,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735540777987</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="给设定温度阈值按钮和音量调节按钮添加了回程操作">
+      <option name="closed" value="true" />
+      <created>1735541627106</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1735541627106</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2063,7 +2073,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="开发温度驱动完毕" />
     <MESSAGE value="直流电机反转无效" />
     <MESSAGE value="准备尝试指纹模块驱动" />
     <MESSAGE value="不尝试指纹模块驱动了" />
@@ -2088,6 +2097,7 @@
     <MESSAGE value="发现问题，只有调试时，音乐播放才正常，与预期不符" />
     <MESSAGE value="准备测试时钟配置" />
     <MESSAGE value="淦!终于他妈找到问题了，足足浪费了一个小时半。调试时使用的是sytem_stm32f4xx.c配置的HSE_VALUE，而运行时使用的是stm32f4xx_hal_conf.h里的HSE_VALUE，这就导致了一个问题，如果两者不同，那么运行与调试的实际时钟是不同的，串口自然也就无法正常运行。" />
-    <option name="LAST_COMMIT_MESSAGE" value="淦!终于他妈找到问题了，足足浪费了一个小时半。调试时使用的是sytem_stm32f4xx.c配置的HSE_VALUE，而运行时使用的是stm32f4xx_hal_conf.h里的HSE_VALUE，这就导致了一个问题，如果两者不同，那么运行与调试的实际时钟是不同的，串口自然也就无法正常运行。" />
+    <MESSAGE value="给设定温度阈值按钮和音量调节按钮添加了回程操作" />
+    <option name="LAST_COMMIT_MESSAGE" value="给设定温度阈值按钮和音量调节按钮添加了回程操作" />
   </component>
 </project>

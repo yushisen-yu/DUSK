@@ -54,6 +54,8 @@ struct lv_ui_t
         Obj chart_DHT11_temp_label;
         Obj chart_DHT11_humi_label;
 
+        Obj msgbox_configure;//弹窗
+
         // 滚动条
         Obj roller;
         Obj roller2;

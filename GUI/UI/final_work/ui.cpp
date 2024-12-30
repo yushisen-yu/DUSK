@@ -574,6 +574,7 @@ auto Events::init() -> void
 #ifdef GUI_ENABLE
 
                          beep_stop();
+                         led_stop();
 
 #endif
 

@@ -39,13 +39,13 @@ extern const float &get_temp();
 //#87CEEB
 //#FF7F50
 /***************************一些函数********************************/
-void create_roller(Coord x, Coord y)
+void create_roller()
 {
-    Roller::init(GUI_Base::get_ui()->main.roller, x, y, 40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
+    Roller::init(GUI_Base::get_ui()->main.roller, 365, 330, 40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
     Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
     Roller::set_selected_text_font(&lv_customer_font_SourceHanSerifSC_Regular_18);
 
-    Roller::init(GUI_Base::get_ui()->main.roller2, x + 50, y, 40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
+    Roller::init(GUI_Base::get_ui()->main.roller2, 415, 330, 40, 100, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9");
     Roller::set_selected_text_color(lv_palette_main(LV_PALETTE_ORANGE));
     Roller::set_selected_text_font(&lv_customer_font_SourceHanSerifSC_Regular_18);
 }
@@ -284,7 +284,7 @@ auto Events::init() -> void
                     if (!gui->main.roller)
                     {
                         roller_mode = 1;
-                        create_roller(365, 330);
+                        create_roller();
                         Text::set_text_color(lv_palette_main(LV_PALETTE_BLUE), gui->main.btn_music_label);
                     }
                 }
@@ -353,7 +353,7 @@ auto Events::init() -> void
                     if (!gui->main.roller)
                     {
                         roller_mode = 0;
-                        create_roller(365, 330);
+                        create_roller();
                     }
                     Text::set_text_color(lv_palette_main(LV_PALETTE_RED), gui->main.btn_DHT11_set_temp_thresold_label);
                 }

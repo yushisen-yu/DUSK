@@ -32,9 +32,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备尝试串口打印">
-      <change beforePath="$PROJECT_DIR$/Application/final_work/app.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BSP/src/DHT11.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/DHT11.c" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="搞定了温湿度传感器">
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1679,7 +1678,7 @@
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
       <workItem from="1735534721280" duration="7691000" />
-      <workItem from="1735543795892" duration="4831000" />
+      <workItem from="1735543795892" duration="5137000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -2049,7 +2048,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735548032046</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="搞定了温湿度传感器">
+      <option name="closed" value="true" />
+      <created>1735548759382</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1735548759382</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2084,7 +2091,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="不尝试指纹模块驱动了" />
     <MESSAGE value="准备尝试加速度驱动" />
     <MESSAGE value="加速度驱动初始化成功，但数据不稳定" />
     <MESSAGE value="解决了加速度传感器数据不稳定" />
@@ -2109,6 +2115,7 @@
     <MESSAGE value="给设定温度阈值按钮和音量调节按钮添加了回程操作" />
     <MESSAGE value="温湿度传感器调试时可行" />
     <MESSAGE value="准备尝试串口打印" />
-    <option name="LAST_COMMIT_MESSAGE" value="准备尝试串口打印" />
+    <MESSAGE value="搞定了温湿度传感器" />
+    <option name="LAST_COMMIT_MESSAGE" value="搞定了温湿度传感器" />
   </component>
 </project>

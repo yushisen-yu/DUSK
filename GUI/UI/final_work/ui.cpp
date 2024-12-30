@@ -450,6 +450,7 @@ auto Events::init() -> void
                         // 确保不会出现空指针引用
                         if (gui->main.roller && gui->main.roller2)
                         {
+                            Button::click(gui->main.btn_DHT11_set_temp_thresold);
                             temp_threshold = temp * 10 + temp2;
                             cursor_point.y = (99 - temp_threshold) / 100.0f * 280;
 
@@ -473,6 +474,7 @@ auto Events::init() -> void
                         // 音乐播放
                         if (gui->main.roller && gui->main.roller2)
                         {
+
 #ifdef GUI_ENABLE
                             mp3_play_selected(temp * 10 + temp2);
 #endif
@@ -483,6 +485,8 @@ auto Events::init() -> void
                         // 音乐播放
                         if (gui->main.roller_volume)
                         {
+                            ImageButton::release(gui->main.imgbtn_volume);
+
 #ifdef GUI_ENABLE
                             setMp3Vol(Roller::get_selected_option(gui->main.roller_volume) * 5);
 #endif

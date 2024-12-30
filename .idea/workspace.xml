@@ -32,8 +32,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备测试时钟配置">
-      <change beforePath="$PROJECT_DIR$/Core/system_stm32f4xx.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/system_stm32f4xx.c" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="淦!终于他妈找到问题了，足足浪费了一个小时半。调试时使用的是sytem_stm32f4xx.c配置的HSE_VALUE，而运行时使用的是stm32f4xx_hal_conf.h里的HSE_VALUE，这就导致了一个问题，如果两者不同，那么运行与调试的实际时钟是不同的，串口自然也就无法正常运行。">
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1614,7 +1614,7 @@
   "keyToString": {
     "C/C++ 文件.main.cpp.executor": "Run",
     "CMake 应用程序.Furina.elf.executor": "Debug",
-    "OpenOCD 下载并运行.Furina.elf.executor": "Debug",
+    "OpenOCD 下载并运行.Furina.elf.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -1682,7 +1682,7 @@
       <workItem from="1735398007869" duration="4046000" />
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
-      <workItem from="1735534721280" duration="5669000" />
+      <workItem from="1735534721280" duration="6620000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -2020,7 +2020,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735540379111</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="淦!终于他妈找到问题了，足足浪费了一个小时半。调试时使用的是sytem_stm32f4xx.c配置的HSE_VALUE，而运行时使用的是stm32f4xx_hal_conf.h里的HSE_VALUE，这就导致了一个问题，如果两者不同，那么运行与调试的实际时钟是不同的，串口自然也就无法正常运行。">
+      <option name="closed" value="true" />
+      <created>1735540777987</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1735540777987</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2055,7 +2063,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="准备开发温度驱动" />
     <MESSAGE value="开发温度驱动完毕" />
     <MESSAGE value="直流电机反转无效" />
     <MESSAGE value="准备尝试指纹模块驱动" />
@@ -2080,6 +2087,7 @@
     <MESSAGE value="音乐播放成功，准备优化应用逻辑" />
     <MESSAGE value="发现问题，只有调试时，音乐播放才正常，与预期不符" />
     <MESSAGE value="准备测试时钟配置" />
-    <option name="LAST_COMMIT_MESSAGE" value="准备测试时钟配置" />
+    <MESSAGE value="淦!终于他妈找到问题了，足足浪费了一个小时半。调试时使用的是sytem_stm32f4xx.c配置的HSE_VALUE，而运行时使用的是stm32f4xx_hal_conf.h里的HSE_VALUE，这就导致了一个问题，如果两者不同，那么运行与调试的实际时钟是不同的，串口自然也就无法正常运行。" />
+    <option name="LAST_COMMIT_MESSAGE" value="淦!终于他妈找到问题了，足足浪费了一个小时半。调试时使用的是sytem_stm32f4xx.c配置的HSE_VALUE，而运行时使用的是stm32f4xx_hal_conf.h里的HSE_VALUE，这就导致了一个问题，如果两者不同，那么运行与调试的实际时钟是不同的，串口自然也就无法正常运行。" />
   </component>
 </project>

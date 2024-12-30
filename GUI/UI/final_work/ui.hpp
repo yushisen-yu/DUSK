@@ -56,6 +56,8 @@ struct lv_ui_t
 
         Obj msgbox_configure;//弹窗
 
+        Obj slider_motor;// 电机控制条
+
         // 滚动条
         Obj roller;
         Obj roller2;

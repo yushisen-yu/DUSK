@@ -59,9 +59,9 @@ public:
     static inline auto destroy(Obj obj = _obj) -> void;
 
     // 设置位置和尺寸
-    static inline auto set_pos_size(Coord x, Coord y, Coord w, Coord h) -> void;// 设置位置和尺寸
-    static inline auto set_pos(Coord x, Coord y) -> void;// 设置位置
-    static inline auto set_size(Coord w, Coord h) -> void;// 设置尺寸
+    static inline auto set_pos_size(Coord x, Coord y, Coord w, Coord h,Obj obj=_obj) -> void;// 设置位置和尺寸
+    static inline auto set_pos(Coord x, Coord y,Obj obj=_obj) -> void;// 设置位置
+    static inline auto set_size(Coord w, Coord h,Obj obj=_obj) -> void;// 设置尺寸
 
     // 隐藏组件
     static inline auto hidden(Obj obj = _obj) -> void;
@@ -199,22 +199,22 @@ auto Component::init(Obj component) -> void
  * @param x,y 默认起始坐标为左上角（参考系起点也在左上角）
  * @param w,h 图片宽高
  */
-auto Component::set_pos_size(Coord x, Coord y, Coord w, Coord h) -> void
+auto Component::set_pos_size(Coord x, Coord y, Coord w, Coord h,Obj obj) -> void
 {
-    set_pos(x, y);
-    set_size(w, h);
+    set_pos(x, y,obj);
+    set_size(w, h,obj);
 }
 
 // 设置位置
-auto Component::set_pos(Coord x, Coord y) -> void
+auto Component::set_pos(Coord x, Coord y,Obj obj) -> void
 {
-    lv_obj_set_pos(_obj, x, y);
+    lv_obj_set_pos(obj, x, y);
 }
 
 // 设置尺寸
-auto Component::set_size(Coord w, Coord h) -> void
+auto Component::set_size(Coord w, Coord h,Obj obj) -> void
 {
-    lv_obj_set_size(_obj, w, h);
+    lv_obj_set_size(obj, w, h);
 }
 
 // 添加标志

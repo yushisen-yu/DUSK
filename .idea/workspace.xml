@@ -32,8 +32,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="搞定了温湿度传感器">
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="基本完善的版本">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Component/component.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Component/component.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1643,6 +1646,11 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Furina.elf" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Furina" TARGET_NAME="Furina.elf" CONFIG_NAME="Debug-MinGW_ARM" version="1" RUN_TARGET_PROJECT_NAME="Furina" RUN_TARGET_NAME="Furina.elf">
       <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="E:\Program\Embedded\MCU\STM32\final_homework\stlink.cfg" reset-type="INIT" download-type="UPDATED_ONLY">
         <debugger kind="GDB" isBundled="true" />
@@ -1678,7 +1686,7 @@
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
       <workItem from="1735534721280" duration="7691000" />
-      <workItem from="1735543795892" duration="5137000" />
+      <workItem from="1735543795892" duration="7330000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -2056,7 +2064,23 @@
       <option name="project" value="LOCAL" />
       <updated>1735548759382</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="添加了超温检测的闪烁效果">
+      <option name="closed" value="true" />
+      <created>1735549181104</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1735549181104</updated>
+    </task>
+    <task id="LOCAL-00049" summary="基本完善的版本">
+      <option name="closed" value="true" />
+      <created>1735549425949</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1735549425949</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2091,8 +2115,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="准备尝试加速度驱动" />
-    <MESSAGE value="加速度驱动初始化成功，但数据不稳定" />
     <MESSAGE value="解决了加速度传感器数据不稳定" />
     <MESSAGE value="添加了加速度传感器的显示" />
     <MESSAGE value="成功切换引脚" />
@@ -2116,6 +2138,8 @@
     <MESSAGE value="温湿度传感器调试时可行" />
     <MESSAGE value="准备尝试串口打印" />
     <MESSAGE value="搞定了温湿度传感器" />
-    <option name="LAST_COMMIT_MESSAGE" value="搞定了温湿度传感器" />
+    <MESSAGE value="添加了超温检测的闪烁效果" />
+    <MESSAGE value="基本完善的版本" />
+    <option name="LAST_COMMIT_MESSAGE" value="基本完善的版本" />
   </component>
 </project>

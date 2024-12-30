@@ -113,8 +113,12 @@ void destroy_volume_roller()
 // 弹窗
 void create_msgbox()
 {
-    MsgBox::init(GUI_Base::get_ui()->main.msgbox_configure, "警告", "请先配置当前选项或者取消当前配置！", nullptr, true);
+    MsgBox::init(GUI_Base::get_ui()->main.msgbox_configure, "Warning", "Please configure the current option or cancel the current configuration item first!", nullptr, true);
+    lv_obj_set_style_text_font(GUI_Base::get_ui()->main.msgbox_configure, &lv_customer_font_SourceHanSerifSC_Regular_15,LV_PART_SELECTED);
     MsgBox::enable_drag(GUI_Base::get_ui()->main.msgbox_configure);
+//    MsgBox::set_align(LV_ALIGN_CENTER,0,0,GUI_Base::get_ui()->main.msgbox_configure);// 设置居中
+    MsgBox::set_pos_size(90,320,300, 200, GUI_Base::get_ui()->main.msgbox_configure);
+    lv_obj_move_foreground(GUI_Base::get_ui()->main.msgbox_configure);
 }
 
 void destroy_msgbox()
@@ -164,6 +168,7 @@ auto Screen::init() -> void
     Chart::set_style_bg_color(gui->main.chart_DHT11_temp_humi, lv_palette_main(LV_PALETTE_ORANGE), LV_PART_SCROLLBAR);
 
 
+    Slider::init(gui->main.slider_motor, 90, 430, 180, 10);
 }
 
 auto Events::init() -> void
@@ -264,9 +269,17 @@ auto Events::init() -> void
          )
     );
 
+
+    // 音量
     bond(gui
                  ->main.imgbtn_volume, imgbtn_fun2([]()
                                                    {
+                                                       if (Config::get_flag(ConfigFlags::TEMP_THRESHOLD))
+                                                       {
+                                                           create_msgbox();
+                                                           ImageButton::release(gui->main.imgbtn_volume);
+                                                           return;
+                                                       }
                                                        if (!gui->main.roller_volume)
                                                        {
                                                            Config::set_flag(ConfigFlags::VOLUME);

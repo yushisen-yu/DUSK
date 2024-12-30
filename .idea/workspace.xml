@@ -32,14 +32,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="给设定温度阈值按钮和音量调节按钮添加了回程操作">
-      <change afterPath="$PROJECT_DIR$/GUI/Component/msgbox.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Base/GUI.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Base/GUI.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/font.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/lv_customer_font_SourceHanSerifSC_Regular_15.c" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/lv_customer_font_SourceHanSerifSC_Regular_15.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/UI/final_work/ui.hpp" afterDir="false" />
+    <list default="true" id="ea21caf4-af62-471c-956b-4c90e7f5b3e1" name="更改" comment="准备尝试串口打印">
+      <change beforePath="$PROJECT_DIR$/Application/final_work/app.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Application/final_work/app.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BSP/src/DHT11.c" beforeDir="false" afterPath="$PROJECT_DIR$/BSP/src/DHT11.c" afterDir="false" />
     </list>
     <list id="c8f13a23-8628-49c1-8890-6213de7d2e32" name="fairy 进行的更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1684,7 +1679,7 @@
       <workItem from="1735450259586" duration="606000" />
       <workItem from="1735460391077" duration="8752000" />
       <workItem from="1735534721280" duration="7691000" />
-      <workItem from="1735543795892" duration="594000" />
+      <workItem from="1735543795892" duration="4831000" />
     </task>
     <task id="LOCAL-00001" summary="可以用的版本">
       <option name="closed" value="true" />
@@ -2038,7 +2033,23 @@
       <option name="project" value="LOCAL" />
       <updated>1735541627106</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="温湿度传感器调试时可行">
+      <option name="closed" value="true" />
+      <created>1735546652146</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1735546652146</updated>
+    </task>
+    <task id="LOCAL-00046" summary="准备尝试串口打印">
+      <option name="closed" value="true" />
+      <created>1735548032046</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1735548032046</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -2073,8 +2084,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="直流电机反转无效" />
-    <MESSAGE value="准备尝试指纹模块驱动" />
     <MESSAGE value="不尝试指纹模块驱动了" />
     <MESSAGE value="准备尝试加速度驱动" />
     <MESSAGE value="加速度驱动初始化成功，但数据不稳定" />
@@ -2098,6 +2107,8 @@
     <MESSAGE value="准备测试时钟配置" />
     <MESSAGE value="淦!终于他妈找到问题了，足足浪费了一个小时半。调试时使用的是sytem_stm32f4xx.c配置的HSE_VALUE，而运行时使用的是stm32f4xx_hal_conf.h里的HSE_VALUE，这就导致了一个问题，如果两者不同，那么运行与调试的实际时钟是不同的，串口自然也就无法正常运行。" />
     <MESSAGE value="给设定温度阈值按钮和音量调节按钮添加了回程操作" />
-    <option name="LAST_COMMIT_MESSAGE" value="给设定温度阈值按钮和音量调节按钮添加了回程操作" />
+    <MESSAGE value="温湿度传感器调试时可行" />
+    <MESSAGE value="准备尝试串口打印" />
+    <option name="LAST_COMMIT_MESSAGE" value="准备尝试串口打印" />
   </component>
 </project>

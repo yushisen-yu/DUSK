@@ -16,4 +16,5 @@
 #define USE_DAC // 使用DAC
 #define USE_TOUCH // 使用触摸屏
 //#define USE_LCD
+//#define USE_USART
 #endif //FURINA_APP_H

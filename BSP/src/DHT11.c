@@ -34,25 +34,25 @@
 
 void DHT11_Wait_Low()
 {
-//    uint32_t count = HAL_GetTick();
+    uint32_t count = HAL_GetTick();
     while (DHT11_Read())
     {
-//        if (HAL_GetTick()-count>100)
-//        {
-//            return;
-//        }
+        if (HAL_GetTick()-count>100)
+        {
+            return;
+        }
     }
 }
 
 void DHT11_Wait_High()
 {
-//    uint32_t count = HAL_GetTick();
+    uint32_t count = HAL_GetTick();
     while (!DHT11_Read())
     {
-//        if (HAL_GetTick()-count>100)
-//        {
-//            return;
-//        }
+        if (HAL_GetTick()-count>100)
+        {
+            return;
+        }
     }
 }
 //static uint16_t std_delay_80us = 875;//事先测试过
@@ -148,7 +148,7 @@ bool DHT11_Read_Data_Fast_Pro(float &temp, float &humi)
 /********************下面为次优级优化********************/
 #if USE_YZHX == 1
 // 全局变量
-static uint8_t timeBuf[40] = {0};// 存储计数值
+static uint16_t timeBuf[40] = {0};// 存储计数值
 static uint8_t timeBufIndex = 0;
 
 //void DHT11_Read_Byte_Fast_Pro()
@@ -191,7 +191,7 @@ unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
                 }
             }
 
-            timeBuf[timeBufIndex++] = time_count >> 4;// 存储计数值,由于事先已经知道一个为875，一个为275左右，所以除以16
+            timeBuf[timeBufIndex++] = time_count >> 2;// 存储计数值,由于事先已经知道一个为875，一个为275左右，所以除以16
         }
     }
 
@@ -202,12 +202,12 @@ unsigned char DHT11_Read_Data_Fast_Pro(float *temp, float *humi)
 
     /***********************对存储的时间计数进行判断*********************/
     // 找出最大值和最小值
-    volatile uint16_t timeMax = 0;
-    volatile uint16_t timeMin = 0xFFFF;
+    uint16_t timeMax = 0;
+    uint16_t timeMin = 0xFFFF;
     for (int i = 0; i < 40; i++)
     {
-        if (i > timeMax) timeMax = i;
-        if (i < timeMin) timeMin = i;
+        if (timeBuf[i] > timeMax) timeMax = timeBuf[i];
+        if (timeBuf[i] < timeMin) timeMin = timeBuf[i];
     }
 
     // 取中位数
